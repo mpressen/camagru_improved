@@ -7,6 +7,8 @@ services:
       - "80:80"
     volumes:
      - ./app/:/var/www/html/
+    links:
+     - db
   db:
     image: mysql:5.7
     container_name: camagru_db
@@ -20,5 +22,7 @@ services:
     container_name: camagru_phpmyadmin
     ports:
       - "8081:80"
+    links:
+      - db
 volumes:
   volume:
