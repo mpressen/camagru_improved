@@ -5,6 +5,4 @@ RewriteRule ^work/index/?$ /index.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !home/index
-RewriteCond %{REQUEST_FILENAME} !work/index
 RewriteRule . / [R]

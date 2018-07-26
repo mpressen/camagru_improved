@@ -20,7 +20,7 @@ function router()
 	else
 	{	
 		$instance = new HomeController();
-		$instance->not_found();
+		$instance->index($params);
 	}
 }
 

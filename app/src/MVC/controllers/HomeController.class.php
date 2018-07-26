@@ -4,14 +4,12 @@ require_once($PATH."src/libraries/Classes/Controller.class.php");
 
 class HomeController extends Controller
 {
-	public function index()
+	public function index($params)
 	{
-		echo "<h1>HOME index</h1>";
-	}
-
-	public function not_found()
-	{
-		echo "<h1>not found</h1>";
+		$path = getenv('PROJECT_ROOT')."src/MVC/views/";
+		$var1 = 'lol';
+		$
+		require_once($path."gallery.php");
 	}
 }
 ?>
