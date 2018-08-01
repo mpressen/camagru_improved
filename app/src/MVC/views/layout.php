@@ -7,6 +7,6 @@
 		<?php require_once($path."templates/".$template) ?>
 	</div>
 	<?php require_once($path."partials/footer.php") ?>
-	<script src="js/header.js"></script>
+	<script src="/js/header.js"></script>
 </body>
 </html>

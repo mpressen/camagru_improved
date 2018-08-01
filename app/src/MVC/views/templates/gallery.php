@@ -1,1 +1,1 @@
-<p><?php echo $data['user']; ?></p>
+<p><?php echo "gallery" ?></p>

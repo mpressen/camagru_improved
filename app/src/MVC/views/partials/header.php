@@ -2,8 +2,8 @@
 	<nav>
 		<ul class="header-nav">
 			<li><a href="/">HOME</a></li>
-			<li><a href="/home/sign-in">SIGN IN</a></li>
-			<li><a href="/home/sign-up">SIGN UP</a></li>
+			<li><a href="/user/signin/">SIGN IN</a></li>
+			<li><a href="/user/signup/">SIGN UP</a></li>
 		</ul>
 	</nav>
 	<div class="sandwitch" onclick="sandwitch(this)">

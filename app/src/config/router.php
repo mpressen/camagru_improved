@@ -1,6 +1,7 @@
 <?php
 
 require_once($PATH."src/MVC/controllers/HomeController.class.php");
+require_once($PATH."src/MVC/controllers/UserController.class.php");
 require_once($PATH."src/MVC/controllers/WorkController.class.php");
 
 function router()

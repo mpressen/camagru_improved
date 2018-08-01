@@ -1,10 +1,10 @@
 <head>
 	<?php 
-  if (isset($data['title']))
-    echo "<title>".$data['title']." | Camagru</title>";
-  else
-    echo "<title>Camagru</title>";
-  ?>
+	if (isset($data['title']))
+		echo "<title>".$data['title']." | Camagru</title>";
+	else
+		echo "<title>Camagru</title>";
+	?>
 	<link href="/images/favicon.png" rel="icon">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
