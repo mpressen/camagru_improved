@@ -8,6 +8,10 @@ class HomeController extends Controller
 	public function index($params)
 	{
 		$user = "user param";
-		new View("gallery.php", ['user' => $user]);
+		$data = [
+			'title' => 'Accueil',
+			'user' => $user,
+		];
+		new View("gallery.php", $data);
 	}
 }
