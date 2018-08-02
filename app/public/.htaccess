@@ -2,12 +2,14 @@ RewriteEngine on
 
 RewriteRule ^home/index/?$ /index.php [L]
 
-RewriteRule ^user/signin/?$ /index.php [L]
 RewriteRule ^user/signup/?$ /index.php [L]
+RewriteRule ^user/signin/?$ /index.php [L]
+RewriteRule ^user/edit/?$ /index.php [L]
 RewriteRule ^user/signout/?$ /index.php [L]
 RewriteRule ^user/create/?$ /index.php [L]
+RewriteRule ^user/connect/?$ /index.php [L]
+RewriteRule ^user/update/?$ /index.php [L]
 
-RewriteRule ^work/index/?$ /index.php [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

@@ -15,12 +15,27 @@ class UserController extends Controller
 		new View("signin.php", ['title' => 'Sign In']);
 	}
 
+	public function edit($params)
+	{
+		new View("edit.php", ['title' => 'Edit']);
+	}
+
 	public function signout()
 	{
 
 	}
 
 	public function create($params)
+	{
+		echo "create action";
+	}
+
+	public function connect($params)
+	{
+		print_r($params);
+	}
+
+	public function update($params)
 	{
 		print_r($params);
 	}

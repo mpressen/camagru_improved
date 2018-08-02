@@ -9,8 +9,7 @@ class HomeController extends Controller
 	{
 		$user = "user param";
 		$data = [
-			'title' => 'Accueil',
-			'user' => $user,
+			'title' => 'Home',
 		];
 		new View("gallery.php", $data);
 	}

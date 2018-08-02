@@ -2,7 +2,19 @@
 
 require_once($PATH."src/MVC/controllers/HomeController.class.php");
 require_once($PATH."src/MVC/controllers/UserController.class.php");
-require_once($PATH."src/MVC/controllers/WorkController.class.php");
+
+function validate($params)
+{
+	$args = array(
+		'login' => array(
+			'filter'    => FILTER_VALIDATE_REGEXP,
+			'options'   => array("regexp" => "/^(?=.*\w).{3,}$/")),
+		'mail'  => FILTER_VALIDATE_EMAIL,
+		'pwd'   => array(
+			'filter'    => FILTER_VALIDATE_REGEXP,
+			'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/")));
+	return filter_input_array($params, $args);
+}
 
 function router()
 {
@@ -10,9 +22,15 @@ function router()
 	$controller = ucfirst(explode('/', $uri)[1])."Controller";
 	$action = explode('/', $uri)[2];
 	if ($_SERVER['REQUEST_METHOD'] === 'GET')
-		$params = $_GET;
+	{
+		$params = validate(INPUT_GET);
+		print_r($params);
+	}
 	else
-		$params = $_POST;
+	{
+		$params = validate(INPUT_POST);
+		print_r($params);
+	}
 	if (class_exists($controller) && method_exists($controller, $action))
 	{	
 		$instance = new $controller();
