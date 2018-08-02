@@ -3,6 +3,7 @@
 <?php require_once($path."partials/head.php") ?>
 <body>
 	<?php require_once($path."partials/header.php") ?>
+	<?php require_once($path."partials/flash.php") ?>
 	<div class="content-container">
 		<?php require_once($path."templates/".$template) ?>
 	</div>

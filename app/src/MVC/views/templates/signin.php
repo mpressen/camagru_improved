@@ -2,11 +2,14 @@
 	<form action="/user/connect" method="POST">
 		<div class="inputs">
 			<label for="mail">Email :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
-			<input type="email" name="mail">
+			<input type="email" name="mail" autofocus>
 		</div>
 		<div class="inputs">
 			<label for="pwd">Password :</label>
-			<input type="password" name="pwd">
+			<div class="tooltip">
+				<input type="password" name="pwd">
+				<span class="forgotten"><a href="/auth/reset">forgotten password ?</a></span>
+			</div>
 		</div>
 		<div class="inputs">
 			<input type="submit" value="Submit">

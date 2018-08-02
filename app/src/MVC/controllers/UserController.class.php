@@ -5,7 +5,7 @@ require_once($PATH."src/libraries/Classes/View.class.php");
 
 class UserController extends Controller
 {
-	public function signup()
+	public function signup($params)
 	{
 		new View("signup.php", ['title' => 'Sign Up']);
 	}
@@ -27,7 +27,16 @@ class UserController extends Controller
 
 	public function create($params)
 	{
-		echo "create action";
+		foreach ($params as $key => $param) {
+			if (empty($param))
+			{
+				sleep(1);
+				$_SESSION['error'] = "Incorrect ".ucfirst($key)." field.";
+				header("Location: /user/signup");
+				exit;
+			}
+		}
+		echo "validation passed";
 	}
 
 	public function connect($params)
