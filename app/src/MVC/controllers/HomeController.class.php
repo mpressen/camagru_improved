@@ -1,7 +1,7 @@
 <?php
 
-require_once($PATH."src/libraries/Classes/Controller.class.php");
-require_once($PATH."src/libraries/Classes/View.class.php");
+require_once ROOT_PATH."src/libraries/Classes/Controller.class.php";
+require_once ROOT_PATH."src/libraries/Classes/View.class.php";
 
 class HomeController extends Controller
 {

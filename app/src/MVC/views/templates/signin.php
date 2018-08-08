@@ -1,5 +1,6 @@
 <div class="form-container">
 	<form action="/user/connect" method="POST">
+		<?php echo $data['csrf']?>
 		<div class="inputs">
 			<label for="mail">Email :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<input type="email" name="mail" autofocus>

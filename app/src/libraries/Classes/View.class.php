@@ -2,9 +2,11 @@
 
 class View
 {
+	private $path;
+
 	public function __construct($template, $data)
 	{
-		$path = getenv('PROJECT_ROOT')."src/MVC/views/";
-		require_once($path."layout.php");
+		$this->path = ROOT_PATH."src/MVC/views/";
+		require_once($this->path."layout.php");
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once($PATH."database/db_env.php");
+require_once ROOT_PATH."database/db_env.php";
 
 try
 {
@@ -8,7 +8,7 @@ try
 	$PDO->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	$PDO->setAttribute(PDO::MYSQL_ATTR_FOUND_ROWS, true);
 	$PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$PDO->exec(file_get_contents($PATH."database/db_init.sql"));
+	$PDO->exec(file_get_contents(ROOT_PATH."database/db_init.sql"));
 }
 catch (Exception $e)
 {

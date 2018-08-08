@@ -1,18 +1,18 @@
 use camagru_db;
 CREATE TABLE IF NOT EXISTS `users` (
   `user_id` int(11) PRIMARY KEY AUTO_INCREMENT,
-  `login` varchar(255) UNIQUE NOT NULL,
+  `login` varchar(50) UNIQUE NOT NULL,
   `pwd` varchar(255) NOT NULL,
-  `mail` varchar(255) UNIQUE NOT NULL,
+  `mail` varchar(50) UNIQUE NOT NULL,
   `confirmkey` varchar(15) NOT NULL,
-  `confirmation` int(1) DEFAULT '0'
+  `confirmation` tinyint(1) DEFAULT '0'
 );
 CREATE TABLE IF NOT EXISTS `pictures` (
   `picture_id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11),
   `title` varchar(255),
   `publish` int(1) DEFAULT '1',
-  `flip` int(1),
+  `flip` tinyint(1),
   CONSTRAINT fk_users_to_pictures FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 CREATE TABLE IF NOT EXISTS `comments` (

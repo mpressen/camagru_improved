@@ -1,5 +1,6 @@
 <div class="form-container">
 	<form action="/user/create" method="POST">
+		<?php echo $data['csrf']?>
 		<div class="inputs">
 			<label for="login">Login :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<div class="tooltip">

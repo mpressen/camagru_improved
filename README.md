@@ -1,12 +1,12 @@
 # Camagru (Improved)
 ##### *(en cours de développement)*
 Premier projet web de l'école 42, il s'agit de créer une petite app' de partage de photos, **sans utiliser de librairie ou framework**.
-___
+---
 
 Stack imposée : 
 - back : **PHP** avec interface PDO pour communiquer avec une base SQL.
 - front : **HTML**, **CSS** et **JavaScript** (avec les API natives des navigateurs uniquement).
-___
+---
 
 >Ce projet est un reboot du premier projet web que j'ai réalisé il y a deux ans (dispo [ici](https://github.com/mpressen/web-portfolio/tree/master/camagru), attention les yeux !). Il a pour but de démontrer le chemin parcouru en terme de programmation web.
 
@@ -28,5 +28,4 @@ docker-compose up
 Camagru est alors disponible sur http://localhost.
 
 Et PhpMyAdmin sur http://localhost:8081.
->login : root
-> password : mpressen
+>login : root, password : mpressen

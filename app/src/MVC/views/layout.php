@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<?php require_once($path."partials/head.php") ?>
+<?php require_once($this->path."partials/head.php") ?>
 <body>
-	<?php require_once($path."partials/header.php") ?>
-	<?php require_once($path."partials/flash.php") ?>
+	<?php require_once($this->path."partials/header.php") ?>
+	<?php require_once($this->path."partials/flash.php") ?>
 	<div class="content-container">
-		<?php require_once($path."templates/".$template) ?>
+		<?php require_once($this->path."templates/".$template) ?>
 	</div>
-	<?php require_once($path."partials/footer.php") ?>
+	<?php require_once($this->path."partials/footer.php") ?>
 	<script src="/js/header.js"></script>
 </body>
 </html>
