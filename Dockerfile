@@ -12,11 +12,16 @@ RUN a2enmod headers && a2enmod rewrite
 
 RUN apt-get update && apt-get install -y ssmtp
 
-RUN echo "mailhub=mail" >> /etc/ssmtp/ssmtp.conf
+# Here is the gmail configuration
+RUN echo "mailhub=smtp.gmail.com:587" >> /etc/ssmtp/ssmtp.conf
+RUN echo "AuthUser=camagru.mpressen@gmail.com" >> /etc/ssmtp/ssmtp.conf
+RUN echo "AuthPass=Camagru2018" >> /etc/ssmtp/ssmtp.conf
+RUN echo "UseTLS=YES" >> /etc/ssmtp/ssmtp.conf
+RUN echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
 
-# RUN echo "UseTLS=YES" >> /etc/ssmtp/ssmtp.conf
-# RUN echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
+# private local smtp server
+# RUN echo "mailhub=mail" >> /etc/ssmtp/ssmtp.conf
+
+
 RUN echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
-
-
 RUN echo "sendmail_path=sendmail -i -t" >> /usr/local/etc/php/conf.d/php-sendmail.ini
