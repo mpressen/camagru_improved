@@ -5,23 +5,13 @@ require_once ROOT_PATH."src/libraries/Helpers/Security.class.php";
 class FormKey
 {
     private $form_key;
-    private $old_form_key;
     
     public function __construct()
     {
-        if (isset($_SESSION['form_key']))
-            $this->old_form_key = $_SESSION['form_key'];
-        $this->form_key = $this->generateKey();
-        $_SESSION['form_key'] = $this->form_key;
-    }
-
-    private function generateKey()
-    {
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $uniqid = uniqid(mt_rand(), true);
-
         $security = new Security();
-        return ($security->my_hash($ip.$uniqid));
+        if (!isset($_SESSION['form_key']))
+            $_SESSION['form_key'] = $security->create_key();
+        $this->form_key = $_SESSION['form_key'];
     }
 
     public function outputKey()
@@ -31,13 +21,15 @@ class FormKey
 
     public function validate()
     {
-        if($_POST['form_key'] == $this->old_form_key)
+        $this->_destroy_key();
+        if($_POST['form_key'] == $this->form_key)
             return true;
         return false;
     }
 
-    public function get_form_key()
+    private function _destroy_key()
     {
-        return $this->form_key;
+        unset($_SESSION['form_key']);
     }
+
 }

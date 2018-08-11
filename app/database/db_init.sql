@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `login` varchar(50) UNIQUE NOT NULL,
   `pwd` varchar(255) NOT NULL,
   `mail` varchar(50) UNIQUE NOT NULL,
-  `confirmkey` varchar(15) NOT NULL,
+  `confirmkey` varchar(255) NOT NULL,
   `confirmation` tinyint(1) DEFAULT '0'
 );
 CREATE TABLE IF NOT EXISTS `pictures` (

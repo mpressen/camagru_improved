@@ -9,6 +9,7 @@ RewriteRule ^user/signout/?$ /index.php [L]
 RewriteRule ^user/create/?$ /index.php [L]
 RewriteRule ^user/connect/?$ /index.php [L]
 RewriteRule ^user/update/?$ /index.php [L]
+RewriteRule ^user/confirm/?$ /index.php [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !-f

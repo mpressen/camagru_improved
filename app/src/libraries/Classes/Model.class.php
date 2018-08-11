@@ -6,24 +6,27 @@ class Model
 
 	public function __construct()
 	{
-		try
+		if (!isset($this->PDO))
 		{
-			require_once ROOT_PATH."database/db_env.php";
-			$this->PDO = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
-			$this->PDO->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-			$this->PDO->setAttribute(PDO::MYSQL_ATTR_FOUND_ROWS, true);
-			$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			$this->PDO->exec(file_get_contents(ROOT_PATH."database/db_init.sql"));
-		}
-		catch (Exception $e)
-		{
-			die('Erreur : ' . $e->getMessage());
+			try
+			{
+				require_once ROOT_PATH."database/db_env.php";
+				$this->PDO = new PDO($DB_DSN, $DB_USER, $DB_PASSWORD);
+				$this->PDO->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+				$this->PDO->setAttribute(PDO::MYSQL_ATTR_FOUND_ROWS, true);
+				$this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$this->PDO->exec(file_get_contents(ROOT_PATH."database/db_init.sql"));
+			}
+			catch (Exception $e)
+			{
+				die('Erreur : ' . $e->getMessage());
+			}
 		}
 	}
 
 	public function insert($params)
 	{
-		$class = strtolower(get_class($this))."s";
+		$class = strtolower(str_replace('Collection', '', get_class($this)))."s";
 
 		$table_columns = "(";
 		$table_bindings = "(";
@@ -40,8 +43,7 @@ class Model
 
 	public function find($field, $value)
 	{
-		$class = strtolower(get_class($this))."s";
-
+		$class = strtolower(str_replace('Collection', '', get_class($this)))."s";
 		$prep = $this->PDO->prepare('SELECT '.$field.' FROM '.$class.' WHERE '.$field.' = ?');
 		$prep->execute(array($value));
 		$ret = $prep->fetch()[0];

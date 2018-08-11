@@ -3,11 +3,13 @@
 require_once ROOT_PATH."src/libraries/Classes/Controller.class.php";
 require_once ROOT_PATH."src/libraries/Classes/View.class.php";
 
+require_once ROOT_PATH."src/MVC/models/UserCollection.class.php";
 require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
 
 require_once ROOT_PATH."src/libraries/Services/Mailer.class.php";
 
 require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
+require_once ROOT_PATH."src/libraries/Helpers/Security.class.php";
 
 class UserController extends Controller
 {
@@ -35,33 +37,18 @@ class UserController extends Controller
 
 	public function create($params)
 	{
-		// check CSRF
-		$csrf = new FormKey();
-		if (!($csrf->validate()))
-		{	
-			//echo $csrf->get_form_key();
-			$_SESSION['message'] = "CSRF attack spotted.";
-			header("Location: /user/signup");
-			exit;
-		}
+		$security = new Security();
+
+		$security->check_csrf('/user/signup');
 		unset($params['form_key']);
 
-		// validate form inputs 
-		foreach ($params as $key => $param) {
-			if (empty($param))
-			{
-				sleep(1);
-				$_SESSION['message'] = "Incorrect ".ucfirst($key)." field.";
-				header("Location: /user/signup");
-				exit;
-			}
-		}
+		$security->validate_inputs_format($params, '/user/signup');
 
 		// find if login and mail are already in database (must be uniques)
-		$user = new User();
+		$meta_user = new UserCollection();
 		foreach(['login', 'mail'] as $field)
 		{
-			if ($user->find($field, $params[$field]))
+			if ($meta_user->find($field, $params[$field]))
 			{
 				$_SESSION['message'] = '"'.$params[$field].'" is already used.';
 				header("Location: /user/signup");
@@ -69,12 +56,11 @@ class UserController extends Controller
 			}
 		}
 
-		// create new user on db
-		$new_user = $user->new($params);
+		$params = $meta_user->new($params);
 
 		// send the confirmation mail
-		// $mailer = new Mailer();
-		// $mailer->send_confirmation($new_user->get_mail);
+		$mailer = new Mailer();
+		$mailer->send_confirmation($params['login'], $params['mail'], $params['confirmkey']);
 
 		$_SESSION['message'] = 'Almost done ! Now please check your mailbox to confirm your email !';
 		header("Location: /user/signin");
@@ -82,9 +68,12 @@ class UserController extends Controller
 
 	public function connect($params)
 	{
-		// check CSRF
-		
-		print_r($params);
+		$security = new Security();
+
+		$security->check_csrf('/user/signin');
+		unset($params['form_key']);
+
+		$security->validate_inputs_format($params, '/user/signin');
 	}
 
 	public function update($params)

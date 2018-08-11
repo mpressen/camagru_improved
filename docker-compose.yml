@@ -3,12 +3,14 @@ services:
   web:
     build: .
     container_name: camagru_app
+    hostname: localhost
     ports:
       - "80:80"
     volumes:
      - ./app/:/var/www/html/
     links:
      - db
+     - mail
   db:
     image: mysql:5.7
     container_name: camagru_db
@@ -24,5 +26,10 @@ services:
       - "8081:80"
     links:
       - db
+  mail:
+    image: namshi/smtp
+    container_name: camagru_smtp
+    ports:
+      - "25:25"
 volumes:
   volume:
