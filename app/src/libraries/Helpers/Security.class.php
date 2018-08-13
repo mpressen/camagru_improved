@@ -4,12 +4,27 @@ require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
 
 class Security
 {
+	public function validate($params)
+	{
+		$args = array(
+			'form_key' => FILTER_SANITIZE_STRING,
+			'confirmkey' => FILTER_SANITIZE_STRING,
+			'login' => array(
+				'filter'    => FILTER_VALIDATE_REGEXP,
+				'options'   => array("regexp" => "/^(?=.*\w).{3,}$/")),
+			'mail'  => FILTER_VALIDATE_EMAIL,
+			'pwd'   => array(
+				'filter'    => FILTER_VALIDATE_REGEXP,
+				'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/")));
+		return filter_input_array($params, $args, false);
+	}
+
 	public function create_key()
 	{
 		$ip = $_SERVER['REMOTE_ADDR'];
-        $uniqid = uniqid(mt_rand(), true);
+		$uniqid = uniqid(mt_rand(), true);
 
-        return ($this->my_hash($ip.$uniqid));
+		return ($this->my_hash($ip.$uniqid));
 	}
 
 	public function my_hash($str)

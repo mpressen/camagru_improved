@@ -3,7 +3,6 @@ services:
   web:
     build: .
     container_name: camagru_app
-    hostname: localhost
     ports:
       - "80:80"
     volumes:
@@ -15,8 +14,8 @@ services:
     image: mysql:5.7
     container_name: camagru_db
     environment:
-     - MYSQL_ROOT_PASSWORD=mpressen
-     - MYSQL_DATABASE=camagru_db
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
     volumes:
      - "volume:/var/lib/mysql"
   phpmyadmin:
@@ -31,5 +30,8 @@ services:
     container_name: camagru_smtp
     ports:
       - "25:25"
+    environment:
+      GMAIL_USER: $GMAIL_USER
+      GMAIL_PASSWORD: $GMAIL_PASSWORD
 volumes:
   volume:
