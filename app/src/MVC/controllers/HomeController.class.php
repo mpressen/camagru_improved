@@ -15,6 +15,6 @@ class HomeController extends Controller
 		$data = [
 			'title' => 'Home',
 		];
-		$this->get_container()->get_View("gallery.php", $data);
+		$this->container->get_View("gallery.php", $data);
 	}
 }

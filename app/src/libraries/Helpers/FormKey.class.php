@@ -4,10 +4,10 @@ class FormKey
 {
     private $form_key;
     
-    public function __construct($SECURITY)
+    public function __construct($security)
     {
         if (!isset($_SESSION['form_key']))
-            $_SESSION['form_key'] = $SECURITY->create_key();
+            $_SESSION['form_key'] = $security->create_key();
         $this->form_key = $_SESSION['form_key'];
     }
 

@@ -2,15 +2,10 @@
 
 class Controller
 {
-	private $container;
+	protected $container;
 
 	public function __construct($container)
 	{
 		$this->container = $container;
-	}
-
-	public function get_container()
-	{
-		return $this->container;
 	}
 }

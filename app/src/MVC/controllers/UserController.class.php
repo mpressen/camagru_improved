@@ -11,35 +11,45 @@ class UserController extends Controller
 	
 	public function signup($params)
 	{	
-		$csrf = $this->get_container()->get_FormKey();
-		$this->get_container()->get_View("signup.php", ['title' => 'Sign Up', 'csrf' => $csrf->outputKey()]);
+		$this->container->get_auth()->being_auth(false);
+
+		$csrf = $this->container->get_FormKey();
+
+		$this->container->get_View("signup.php", ['title' => 'Sign Up', 'csrf' => $csrf->outputKey()]);
 	}
 
 	public function signin()
 	{
-		$csrf = $this->get_container()->get_FormKey();
-		$this->get_container()->get_View("signin.php", ['title' => 'Sign In', 'csrf' => $csrf->outputKey()]);
-	}
+		$this->container->get_auth()->being_auth(false);
 
-	public function edit($params)
-	{
-		$this->get_container()->get_View("edit.php", ['title' => 'Edit']);
+		$csrf = $this->container->get_FormKey();
+
+		$this->container->get_View("signin.php", ['title' => 'Sign In', 'csrf' => $csrf->outputKey()]);
 	}
 
 	public function signout()
 	{
+		$user_id = $this->container->get_auth()->being_auth(true);
 
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
+
+		$_SESSION['message'] = 'Bye '.$user->get_login().' !!!';
+
+		$this->container->get_auth()->disconnect();
+		header("Location: /");
 	}
 
 	public function create($params)
 	{
-		$this->get_container()->get_SECURITY()->check_csrf('/user/signup');
+		$this->container->get_auth()->being_auth(false);
+		
+		$this->container->get_security()->check_csrf('/user/signup');
 		unset($params['form_key']);
 
-		$this->get_container()->get_SECURITY()->validate_inputs_format($params, '/user/signup');
+		$this->container->get_security()->validate_inputs_format($params, '/user/signup');
 
 		// find if login and mail are already in database (must be uniques)
-		$meta_user = $this->get_container()->get_UserCollection();
+		$meta_user = $this->container->get_UserCollection();
 		foreach(['login', 'mail'] as $field)
 		{
 			if ($meta_user->find($field, $params[$field]))
@@ -52,16 +62,51 @@ class UserController extends Controller
 
 		$new_user = $meta_user->new($params);
 
-		$mailer = $this->get_container()->get_Mailer();
+		$mailer = $this->container->get_Mailer();
 		$mailer->send_confirmation($new_user);
 
 		$_SESSION['message'] = 'Almost done ! Now please check your mailbox to confirm your email !';
 		header("Location: /user/signin");
 	}
 
+	public function connect($params)
+	{
+		$this->container->get_auth()->being_auth(false);
+		
+		$this->container->get_security()->check_csrf('/user/signin');
+		unset($params['form_key']);
+		
+		$this->container->get_security()->validate_inputs_format($params, '/user/signin');
+
+		$meta_user = $this->container->get_UserCollection();
+		$user = $meta_user->find('mail', $params['mail']);
+		if (!$user)
+		{
+			$_SESSION['message'] = '"'.$params['mail'].'" is not registered. Please create your account first.';
+			header("Location: /user/signup");
+			exit;	
+		}
+		if (!($user->get_pwd() === $this->container->get_security()->my_hash($params['pwd'])))
+		{
+			$_SESSION['message'] = 'Wrong password';
+			header("Location: /user/signin");
+			exit;
+		}
+		if ($user->get_confirmation() == 0)
+			$_SESSION['message'] = "You haven't confirm your account yet. Check your mailbox";
+		else
+		{
+			$_SESSION['message'] = "Welcome ".$user->get_login()." !";
+			$this->container->get_auth()->connect($user->get_id());
+		}
+		header("Location: /");
+	}
+
 	public function confirm($params)
 	{
-		$meta_user = $this->get_container()->get_UserCollection();
+		$this->container->get_auth()->being_auth(false);
+
+		$meta_user = $this->container->get_UserCollection();
 		$user = $meta_user->find('login', $params['login']);
 		
 		if (!$user)
@@ -79,35 +124,17 @@ class UserController extends Controller
 			exit;
 		}
 
-		if ($user->get_confirmkey() === $params['confirmkey'])
-		{
-			$user->set_confirmation(true);
-			$user->update('confirmation');
-		}
-		else
+		if ($user->get_confirmkey() !== $params['confirmkey'])
 		{
 			sleep(1);
 			$_SESSION['message'] = 'Confirmation failed';
 			header("Location: /user/signin");	
 			exit;
 		}
-
+		
+		$user->set_confirmation(true);
+		$user->update('confirmation');
 		$_SESSION['message'] = 'Your mail is confirmed. Please sign in !';
 		header("Location: /user/signin");
-	}
-
-	public function connect($params)
-	{
-		$this->get_container()->get_SECURITY()->check_csrf('/user/signin');
-		unset($params['form_key']);
-		
-		$this->get_container()->get_SECURITY()->validate_inputs_format($params, '/user/signin');
-	}
-
-	public function update($params)
-	{
-		// check CSRF
-
-		print_r($params);
 	}
 }

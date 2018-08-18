@@ -11,9 +11,9 @@ class User extends Model
 	private $confirmkey;
 	private $confirmation;
 
-	public function __construct($params, $PDO, $SECURITY)
+	public function __construct($params, $pdo, $security)
 	{
-		parent::__construct($PDO, $SECURITY);
+		parent::__construct($pdo, $security);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}
@@ -30,6 +30,11 @@ class User extends Model
 	public function get_login()
 	{
 		return $this->login;
+	}
+
+	public function get_pwd()
+	{
+		return $this->pwd;
 	}
 
 	public function get_mail()

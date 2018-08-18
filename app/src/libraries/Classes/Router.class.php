@@ -14,7 +14,7 @@ class Router {
 		if (class_exists($controller) && method_exists($controller, $action))
 		{	
 			$instance = new $controller($container);
-			$params = $container->get_SECURITY()->validate($_SERVER['REQUEST_METHOD'] === 'GET' ? INPUT_GET : INPUT_POST);
+			$params = $container->get_security()->validate($_SERVER['REQUEST_METHOD'] === 'GET' ? INPUT_GET : INPUT_POST);
 			$instance->$action($params);
 		}
 		else

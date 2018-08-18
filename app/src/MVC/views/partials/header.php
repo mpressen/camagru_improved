@@ -8,20 +8,28 @@
 				?>
 				>HOME
 			</a></li>
-			<li><a href="/user/signin"
-				<?php 
+			<?php
+			if ($auth === false)
+			{
+				echo '<li><a href="/user/signin"';
 				if ($data['title'] == "Sign In")
-					echo " class='active-link'"
-				?>
-				>SIGN IN
-			</a></li>
-			<li><a href="/user/signup"
-				<?php 
+					echo " class='active-link'";
+				echo ">SIGN IN</a></li>";
+				echo '<li><a href="/user/signup"';
 				if ($data['title'] == "Sign Up")
-					echo " class='active-link'"
-				?>
-				>SIGN UP
-			</a></li>
+					echo " class='active-link'";
+				echo ">SIGN UP</a></li>";
+			}
+			else
+			{
+				echo '<li><a href="/user/workshop"';
+				if ($data['title'] == "Workshop")
+					echo " class='active-link'";
+				echo ">WORKSHOP</a></li>";
+				echo '<li><a href="/user/signout"';
+				echo ">SIGN OUT</a></li>";
+			}
+			?>
 		</ul>
 	</nav>
 	<div class="sandwitch" onclick="sandwitch(this)">
