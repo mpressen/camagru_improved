@@ -19,6 +19,6 @@ class Mailer
 		$sujet = "Welcome to Camagruuuuu!";
 		$header = "From: Camagru<camagru.mpressen@gmail.com>\r\n";
 		$header .= "Content-Type: text/html; charset=UTF-8\r\n";
-		mail($user->mail, $sujet, $message, $header);
+		mail($user->get_mail(), $sujet, $message, $header);
 	}
 }

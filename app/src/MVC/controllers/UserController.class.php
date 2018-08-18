@@ -1,33 +1,29 @@
 <?php
 
 require_once ROOT_PATH."src/libraries/Classes/Controller.class.php";
-require_once ROOT_PATH."src/libraries/Classes/View.class.php";
-
-require_once ROOT_PATH."src/MVC/models/UserCollection.class.php";
-require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
-
-require_once ROOT_PATH."src/libraries/Services/Mailer.class.php";
-
-require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
-require_once ROOT_PATH."src/libraries/Helpers/Security.class.php";
 
 class UserController extends Controller
 {
+	public function __construct($container)
+	{
+		parent::__construct($container);
+	}
+	
 	public function signup($params)
 	{	
-		$csrf = new FormKey();
-		new View("signup.php", ['title' => 'Sign Up', 'csrf' => $csrf->outputKey()]);
+		$csrf = $this->get_container()->get_FormKey();
+		$this->get_container()->get_View("signup.php", ['title' => 'Sign Up', 'csrf' => $csrf->outputKey()]);
 	}
 
 	public function signin()
 	{
-		$csrf = new FormKey();
-		new View("signin.php", ['title' => 'Sign In', 'csrf' => $csrf->outputKey()]);
+		$csrf = $this->get_container()->get_FormKey();
+		$this->get_container()->get_View("signin.php", ['title' => 'Sign In', 'csrf' => $csrf->outputKey()]);
 	}
 
 	public function edit($params)
 	{
-		new View("edit.php", ['title' => 'Edit']);
+		$this->get_container()->get_View("edit.php", ['title' => 'Edit']);
 	}
 
 	public function signout()
@@ -37,15 +33,13 @@ class UserController extends Controller
 
 	public function create($params)
 	{
-		$security = new Security();
-
-		$security->check_csrf('/user/signup');
+		$this->get_container()->get_SECURITY()->check_csrf('/user/signup');
 		unset($params['form_key']);
 
-		$security->validate_inputs_format($params, '/user/signup');
+		$this->get_container()->get_SECURITY()->validate_inputs_format($params, '/user/signup');
 
 		// find if login and mail are already in database (must be uniques)
-		$meta_user = new UserCollection();
+		$meta_user = $this->get_container()->get_UserCollection();
 		foreach(['login', 'mail'] as $field)
 		{
 			if ($meta_user->find($field, $params[$field]))
@@ -58,7 +52,7 @@ class UserController extends Controller
 
 		$new_user = $meta_user->new($params);
 
-		$mailer = new Mailer();
+		$mailer = $this->get_container()->get_Mailer();
 		$mailer->send_confirmation($new_user);
 
 		$_SESSION['message'] = 'Almost done ! Now please check your mailbox to confirm your email !';
@@ -67,7 +61,7 @@ class UserController extends Controller
 
 	public function confirm($params)
 	{
-		$meta_user = new UserCollection();
+		$meta_user = $this->get_container()->get_UserCollection();
 		$user = $meta_user->find('login', $params['login']);
 		
 		if (!$user)
@@ -77,25 +71,25 @@ class UserController extends Controller
 			header("Location: /user/signup");
 		}
 
-		if ($user->get_confirmation() === 1)
+		if ($user->get_confirmation() == 1)
 		{	
 			sleep(1);
 			$_SESSION['message'] = 'This account is already activated. Please log in';
 			header("Location: /user/signin");
+			exit;
 		}
 
 		if ($user->get_confirmkey() === $params['confirmkey'])
 		{
 			$user->set_confirmation(true);
-			#$user->update();
+			$user->update('confirmation');
 		}
 		else
 		{
 			sleep(1);
-			$mailer = new Mailer();
-			$mailer->send_confirmation($user);
-			$_SESSION['message'] = 'Security Error. A new confirmation mail has been sent to this account';
-			header("Location: /user/signup");	
+			$_SESSION['message'] = 'Confirmation failed';
+			header("Location: /user/signin");	
+			exit;
 		}
 
 		$_SESSION['message'] = 'Your mail is confirmed. Please sign in !';
@@ -104,12 +98,10 @@ class UserController extends Controller
 
 	public function connect($params)
 	{
-		$security = new Security();
-
-		$security->check_csrf('/user/signin');
+		$this->get_container()->get_SECURITY()->check_csrf('/user/signin');
 		unset($params['form_key']);
-
-		$security->validate_inputs_format($params, '/user/signin');
+		
+		$this->get_container()->get_SECURITY()->validate_inputs_format($params, '/user/signin');
 	}
 
 	public function update($params)

@@ -29,3 +29,12 @@ Camagru est alors disponible sur http://localhost.
 
 Et PhpMyAdmin sur http://localhost:8081.
 >login : root, password : mpressen
+
+## to-do lists
+
+infra :
+- [x] container pour serveur Apache & PHP.
+- [x] docker-compose pour créer une stack associant une base de donnée MySQL.
+- [x] ajout de PhpMyAdmin.
+- [x] ajout d'un serveur SMTP pour l'envoi de mails.
+- [x] optimisation de la config ( url-rewriting, *.env*, ... )

@@ -2,9 +2,15 @@
 
 class Controller
 {
-	public function __construct()
+	private $container;
+
+	public function __construct($container)
 	{
-		#echo "<h1>construct</h1>";
+		$this->container = $container;
+	}
+
+	public function get_container()
+	{
+		return $this->container;
 	}
 }
-?>

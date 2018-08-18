@@ -1,28 +1,23 @@
 <?php
 
 require_once ROOT_PATH."src/libraries/Classes/Model.class.php";
-
 require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
-
-require_once ROOT_PATH."src/libraries/Helpers/Security.class.php";
 
 class UserCollection extends Model
 {
-	public function __construct()
+	public function __construct($PDO, $SECURITY)
 	{
-		parent::__construct();
+		parent::__construct($PDO, $SECURITY);
 	}
 
 	public function new($params)
 	{
-		$security = new Security();
+		$params['confirmkey'] = $this->SECURITY->create_key();
 
-		$params['confirmkey'] = $security->create_key();
-
-		$params['pwd'] = $security->my_hash($params['pwd']);
+		$params['pwd'] = $this->SECURITY->my_hash($params['pwd']);
 
 		parent::insert($params);
 
-		return $params;
+		return new User($params, $this->PDO, $this->SECURITY);
 	}
 }

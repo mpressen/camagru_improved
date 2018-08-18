@@ -4,19 +4,27 @@ require_once ROOT_PATH."src/libraries/Classes/Model.class.php";
 
 class User extends Model
 {
-	private $user_id;
+	private $id;
 	private $login;
 	private $pwd;
 	private $mail;
 	private $confirmkey;
 	private $confirmation;
 
-	public function __construct($params)
+	public function __construct($params, $PDO, $SECURITY)
 	{
-		//parent::__construct();
+		parent::__construct($PDO, $SECURITY);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}
+	}
+
+
+
+	# GETTERS
+	public function get_id()
+	{
+		return $this->id;
 	}
 
 	public function get_login()
@@ -39,6 +47,9 @@ class User extends Model
 		return $this->confirmation;
 	}
 
+
+
+	# SETTERS
 	public function set_confirmation($value)
 	{
 		$this->confirmation = $value;

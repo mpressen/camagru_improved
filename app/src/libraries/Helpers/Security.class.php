@@ -34,7 +34,7 @@ class Security
 
 	public function check_csrf($redirect)
 	{	
-		$csrf = new FormKey();
+		$csrf = new FormKey($this);
 		if (!($csrf->validate()))
 		{	
 			$_SESSION['message'] = "CSRF attack spotted.";
@@ -57,5 +57,4 @@ class Security
 			}
 		}
 	}
-
 }
