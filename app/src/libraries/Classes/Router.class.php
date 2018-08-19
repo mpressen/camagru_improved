@@ -2,6 +2,7 @@
 
 require_once ROOT_PATH."src/MVC/controllers/HomeController.class.php";
 require_once ROOT_PATH."src/MVC/controllers/UserController.class.php";
+require_once ROOT_PATH."src/MVC/controllers/PictureController.class.php";
 
 class Router {
 	public function __construct($container)

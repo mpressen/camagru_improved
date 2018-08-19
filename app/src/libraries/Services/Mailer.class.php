@@ -21,4 +21,24 @@ class Mailer
 		$header .= "Content-Type: text/html; charset=UTF-8\r\n";
 		mail($user->get_mail(), $sujet, $message, $header);
 	}
+
+	public function reset_password($user)
+	{	
+		$message = "
+		<html>
+		  <body>
+		    <p> Hello ".$user->get_login().",
+		      <br>
+		        click on this link to set up a new password :
+		      <br>
+		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/reset_2?login=".$user->get_login()."&confirmkey=".$user->get_confirmkey()."'>
+			  	Reset your password
+			  </a>
+		  </body>
+		</html>";
+		$sujet = "Reset your password";
+		$header = "From: Camagru<camagru.mpressen@gmail.com>\r\n";
+		$header .= "Content-Type: text/html; charset=UTF-8\r\n";
+		mail($user->get_mail(), $sujet, $message, $header);
+	}
 }

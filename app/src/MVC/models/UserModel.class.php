@@ -59,4 +59,9 @@ class User extends Model
 	{
 		$this->confirmation = $value;
 	}
+
+	public function set_pwd($value)
+	{
+		$this->pwd = $this->security->my_hash($value);
+	}
 }

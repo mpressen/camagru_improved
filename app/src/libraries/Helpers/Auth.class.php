@@ -9,9 +9,9 @@ class Auth
         if (isset($_SESSION['user_id']))
             $this->user_id = $_SESSION['user_id'];
     }
-    public function connect($user_id)
+    public function connect($id)
     {
-        $_SESSION['user_id'] = $user_id;
+        $_SESSION['user_id'] = $id;
     }
 
     public function disconnect()

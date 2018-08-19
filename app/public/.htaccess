@@ -9,6 +9,14 @@ RewriteRule ^user/create/?$ /index.php [L]
 RewriteRule ^user/connect/?$ /index.php [L]
 RewriteRule ^user/confirm/?$ /index.php [L]
 
+RewriteRule ^user/reset/?$ /index.php [L]
+RewriteRule ^user/reset_1/?$ /index.php [L]
+RewriteRule ^user/reset_2/?$ /index.php [L]
+RewriteRule ^user/reset_password/?$ /index.php [L]
+RewriteRule ^user/reset_3/?$ /index.php [L]
+
+RewriteRule ^picture/workshop/?$ /index.php [L]
+
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

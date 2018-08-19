@@ -32,8 +32,8 @@ class Model
 	{
 		$class = strtolower(str_replace('Collection', '', get_class($this)))."s";
 		$getter = "get_".$attribute;
-		$update = $attribute."=".$this->$getter();
-		$prep = $this->pdo->prepare('UPDATE '.$class.' SET '.$update.' WHERE id='.$this->get_id())->execute($params);
+		$prep = $this->pdo->prepare('UPDATE '.$class.' SET '.$attribute.' = ? WHERE id = ?');
+		$prep->execute(array($this->$getter(), $this->get_id()));
 	}
 
 	public function find($field, $value)

@@ -22,7 +22,7 @@
 			}
 			else
 			{
-				echo '<li><a href="/user/workshop"';
+				echo '<li><a href="/picture/workshop"';
 				if ($data['title'] == "Workshop")
 					echo " class='active-link'";
 				echo ">WORKSHOP</a></li>";
