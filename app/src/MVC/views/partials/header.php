@@ -26,8 +26,17 @@
 				if ($data['title'] == "Workshop")
 					echo " class='active-link'";
 				echo ">WORKSHOP</a></li>";
-				echo '<li><a href="/user/signout"';
-				echo ">SIGN OUT</a></li>";
+				echo "
+				<li class='dropdown'>
+					<img class='drop-trigger img-profile' src='/images/no-pic-user.png'>
+					<ul class='drop-menu'>
+					<li><a href='/user/update'";
+					if ($data['title'] == "My profile")
+					echo " class='active-link'";
+				echo ">MY PROFILE</a></li>
+					<li><a href='/user/signout'>SIGN OUT</a></li>
+				</ul>
+				</li>";
 			}
 			?>
 		</ul>

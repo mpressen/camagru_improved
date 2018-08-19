@@ -10,7 +10,7 @@ class UserController extends Controller
 	}
 	
 
-	# SIGN UP (form -> mail -> insert in db)
+	# SIGN UP (form -> send mail -> insert in db)
 	public function signup($params)
 	{	
 		$this->container->get_auth()->being_auth(false);
@@ -143,7 +143,7 @@ class UserController extends Controller
 	}
 
 
-	# RESET (form -> mail -> control -> form -> update in db)
+	# RESET (form -> send mail -> control link -> form -> update in db)
 	public function reset()
 	{
 		$this->container->get_auth()->being_auth(false);
@@ -226,5 +226,14 @@ class UserController extends Controller
 		$user->update('pwd');
 		$_SESSION['message'] = 'Your password has been changed.';
 		header("Location: /");
+	}
+
+	public function update($params)
+	{	
+		$this->container->get_auth()->being_auth(true);
+
+		$csrf = $this->container->get_FormKey();
+
+		$this->container->get_View("signup.php", ['title' => 'My profile', 'csrf' => $csrf->outputKey()]);
 	}
 }
