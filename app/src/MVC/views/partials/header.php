@@ -28,9 +28,9 @@
 				echo ">WORKSHOP</a></li>";
 				echo "
 				<li class='dropdown'>
-					<img class='drop-trigger img-profile' src='/images/no-pic-user.png'>
+					<img class='drop-trigger img-profile' src='https://www.gravatar.com/avatar/".$data['user']->get_gravatar_hash()."?d=mp'>
 					<ul class='drop-menu'>
-					<li><a href='/user/update'";
+					<li><a href='/user/profile'";
 					if ($data['title'] == "My profile")
 					echo " class='active-link'";
 				echo ">MY PROFILE</a></li>

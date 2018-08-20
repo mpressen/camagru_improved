@@ -19,6 +19,11 @@ class User extends Model
 		}
 	}
 
+	public function get_gravatar_hash()
+	{
+		return md5(strtolower(trim($this->mail)));
+	}
+
 
 
 	# GETTERS
@@ -55,6 +60,16 @@ class User extends Model
 
 
 	# SETTERS
+	public function set_login($value)
+	{
+		$this->login = $value;
+	}
+
+	public function set_mail($value)
+	{
+		$this->mail = $value;
+	}
+
 	public function set_confirmation($value)
 	{
 		$this->confirmation = $value;

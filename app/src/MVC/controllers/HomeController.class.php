@@ -11,9 +11,12 @@ class HomeController extends Controller
 	
 	public function index($params)
 	{
-		$user = "user param";
+		$user_id = $this->container->get_auth()->being_auth('osef');
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
+
 		$data = [
 			'title' => 'Home',
+			'user' => $user
 		];
 		$this->container->get_View("gallery.php", $data);
 	}

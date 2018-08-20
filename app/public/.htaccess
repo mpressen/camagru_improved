@@ -14,6 +14,7 @@ RewriteRule ^user/connect/?$ /index.php [L]
 
 RewriteRule ^user/signout/?$ /index.php [L]
 
+RewriteRule ^user/profile/?$ /index.php [L]
 RewriteRule ^user/update/?$ /index.php [L]
 
 RewriteRule ^user/reset/?$ /index.php [L]

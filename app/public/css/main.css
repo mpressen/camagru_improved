@@ -143,7 +143,10 @@ h1,h2,h3,h4,h5,h6 {
 
 .img-profile {
 	width: auto;
-	height: 50%;
+	/*box-sizing: border-box;*/
+	height: 66%;
+	border-radius: 100px;
+	border: 3px outset transparent;
 }
 
 /* DROPDOWN STYLES */
@@ -177,7 +180,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 .dropdown:hover .drop-trigger {
-	opacity: 0.8;
+	border: 3px outset #ed6e2f;
 }
 
 /* HEADER SANDWITCH */
@@ -235,6 +238,10 @@ h1,h2,h3,h4,h5,h6 {
 }
 .inputs {
 	margin: 50px;
+}
+
+input {
+	width: 200px;
 }
 
 input:focus {
@@ -311,6 +318,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	opacity: 1;
 }
 
+
 /* FOOTER */
 .footer {
 	height: 20px;
@@ -338,7 +346,7 @@ input[type=submit]:hover, input[type=submit]:active {
 		box-sizing: border-box;
 		top: 60px;
 		left: 0;
-		height: 200px;
+		height: auto;
 		max-height: 0;
 		overflow: hidden;
 		padding: 0;
@@ -365,7 +373,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	}
 
 	.appear {
-		max-height: 130px;
+		max-height: 1000px;
 	}
 	.header-nav li {
 		display: block;
@@ -375,11 +383,33 @@ input[type=submit]:hover, input[type=submit]:active {
 		border-left: 0;
 		padding-left: 0;
 	}
-	.header-nav li:last-child {
+	.header-nav > li:last-child {
 		margin-bottom: 1em;
+	}
+	.header-nav > li.dropdown {
+		margin-bottom: 0;
 	}
 	.header-nav {
 		padding-right: 0;
+	}
+	.drop-trigger {
+		display: none;
+	}
+	.dropdown {
+		position: static;
+	}
+	.drop-menu {
+		display: block;
+		position: static;
+		border-top: 0;
+		box-shadow: none;
+	}
+	.drop-menu a {
+		display: block;
+		padding: 0;
+		font-weight: normal;
+		text-align: center;
+		white-space: nowrap;
 	}
 }
 
@@ -387,7 +417,10 @@ input[type=submit]:hover, input[type=submit]:active {
 	.header-logo {
 		padding-top: 12px;
 		font-size: 2.2rem;
-	}	
+	}
+	input {
+		width: 130px;
+	}
 }
 
 @media (max-width: 311px) {

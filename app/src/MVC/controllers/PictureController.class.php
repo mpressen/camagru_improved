@@ -11,11 +11,12 @@ class PictureController extends Controller
 	
 	public function workshop($params)
 	{
-		$this->container->get_auth()->being_auth(true);
+		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
 		
-		$user = "user param";
 		$data = [
 			'title' => 'Workshop',
+			'user' => $user
 		];
 		$this->container->get_View("workshop.php", $data);
 	}

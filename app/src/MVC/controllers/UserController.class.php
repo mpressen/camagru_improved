@@ -79,7 +79,7 @@ class UserController extends Controller
 			exit;
 		}
 		
-		$user->set_confirmation(true);
+		$user->set_confirmation(1);
 		$user->update('confirmation');
 		$_SESSION['message'] = 'Your mail is confirmed. Please sign in !';
 		header("Location: /user/signin");
@@ -208,7 +208,7 @@ class UserController extends Controller
 
 		$csrf = $this->container->get_FormKey();
 
-		$this->container->get_View("reset_password.php", ['title' => 'Reset Password', 'csrf' => $csrf->outputKey()]);
+		$this->container->get_View("reset_password.php", ['title' => 'Reset Password', 'csrf' => $csrf->outputKey(), 'user' => $user]);
 	}
 	public function reset_3($params)
 	{
@@ -228,12 +228,65 @@ class UserController extends Controller
 		header("Location: /");
 	}
 
-	public function update($params)
+	# UPDATE PROFILE INFO
+	public function profile($params)
 	{	
-		$this->container->get_auth()->being_auth(true);
+		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
 
 		$csrf = $this->container->get_FormKey();
 
-		$this->container->get_View("signup.php", ['title' => 'My profile', 'csrf' => $csrf->outputKey()]);
+		$this->container->get_View("update.php", ['title' => 'My profile', 'csrf' => $csrf->outputKey(), 'user' => $user]);
 	}
+	public function update($params)
+	{
+		$user_id = $this->container->get_auth()->being_auth(true);
+		
+		$this->container->get_security()->check_csrf('/user/profile');
+		unset($params['form_key']);
+
+		$this->container->get_security()->validate_inputs_format($params, '/user/profile');
+
+
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		$meta_user = $this->container->get_UserCollection();
+			
+		if (isset($params['login']))
+		{	
+			# stop if this login already exist
+			if ($meta_user->find('login', $params['login']))
+			{
+				$_SESSION['message'] = '"'.$params['login'].'" is already used.';
+				exit;
+			}
+			
+			$user->set_login($params['login']);
+			$user->update('login');
+			
+			$_SESSION['message'] = 'Your login has been updated !';
+		}
+		else if (isset($params['mail']))
+		{
+			# stop if this mail already exist
+			if ($meta_user->find('mail', $params['mail']))
+			{
+				$_SESSION['message'] = '"'.$params['mail'].'" is already used.';
+				exit;
+			}
+			
+			$user->set_mail($params['mail']);
+			$user->update('mail');
+			
+			$user->set_confirmation(0);
+			$user->update('confirmation');
+
+			$mailer = $this->container->get_Mailer();
+			$mailer->send_confirmation($user);
+
+			$_SESSION['message'] = 'Mail updated ! Now please check your mailbox to confirm your new email !';
+		}
+		else
+			$_SESSION['message'] = 'Nope !';
+	}
+
 }
