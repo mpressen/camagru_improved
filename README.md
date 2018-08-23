@@ -38,3 +38,9 @@ infra :
 - [x] ajout de PhpMyAdmin.
 - [x] ajout d'un serveur SMTP pour l'envoi de mails.
 - [x] optimisation de la config ( url-rewriting, *.env*, ... )
+
+app :
+- responsive-design
+- security (XSS, CSRF, SQL prepared statements, passwords hashed ...)
+- user connection.
+- user's profile and update. 

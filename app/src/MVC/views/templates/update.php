@@ -1,6 +1,7 @@
 <div class="form-container">
 	<form>
 		<?php echo $data['csrf']?>
+		<?php echo "<a href='https://fr.gravatar.com/'><img class='big-profile' src='https://www.gravatar.com/avatar/".$data['user']->get_gravatar_hash()."?d=mp&s=280'></a>" ?>
 		<div class="inputs">
 			<label for="login">Login :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<div class="tooltip">
@@ -12,33 +13,6 @@
 			<label for="mail">Email :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<input class='js' type="email" name="mail" value="<?php echo $data['user']->get_mail() ?>">
 		</div>
-		<a href="/user/reset_password">RESET PASSWORD</a>
+		<a class="reset-pwd" href="/user/reset_password">RESET PASSWORD</a>
 	</form>
 </div>
-
-<script type="text/javascript">
-	let inputs = document.getElementsByClassName("js");
-	for (var i = 0; i < inputs.length; i++)
-		inputs[i].addEventListener("change", test);
-
-	function test(ev)
-	{
-		let formData = new FormData();
-		let csrf = document.querySelector('input[name="form_key"]').value;
-
-		formData.append("form_key", csrf);
-		formData.append(this.name, this.value);
-
-		var request = new XMLHttpRequest();
-
-		request.addEventListener('load', function(event) {
-			window.location.replace("/user/profile");
-		});
-		request.addEventListener('error', function(event) {
-			alert('Oops! Something went wrong. Please retry later.');
-		});	
-
-		request.open("POST", "/user/update");
-		request.send(formData);
-	}
-</script>

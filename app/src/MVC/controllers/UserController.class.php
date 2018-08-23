@@ -81,6 +81,9 @@ class UserController extends Controller
 		
 		$user->set_confirmation(1);
 		$user->update('confirmation');
+
+		$user->set_confirmkey();
+		$user->update('confirmkey');
 		$_SESSION['message'] = 'Your mail is confirmed. Please sign in !';
 		header("Location: /user/signin");
 	}
@@ -198,13 +201,17 @@ class UserController extends Controller
 			exit;
 		}
 
+		$user->set_confirmkey();
+		$user->update('confirmkey');
+		
 		$this->container->get_auth()->connect($user->get_id());
 
 		header("Location: /user/reset_password");
 	}
 	public function reset_password()
 	{
-		$this->container->get_auth()->being_auth(true);
+		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
 
 		$csrf = $this->container->get_FormKey();
 

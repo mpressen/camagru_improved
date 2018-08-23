@@ -65,18 +65,23 @@ class User extends Model
 		$this->login = $value;
 	}
 
+	public function set_pwd($value)
+	{
+		$this->pwd = $this->security->my_hash($value);
+	}
+
 	public function set_mail($value)
 	{
 		$this->mail = $value;
 	}
 
+	public function set_confirmkey()
+	{
+		$this->confirmkey = $this->security->create_key();
+	}
+
 	public function set_confirmation($value)
 	{
 		$this->confirmation = $value;
-	}
-
-	public function set_pwd($value)
-	{
-		$this->pwd = $this->security->my_hash($value);
 	}
 }

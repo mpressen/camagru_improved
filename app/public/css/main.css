@@ -183,6 +183,16 @@ h1,h2,h3,h4,h5,h6 {
 	border: 3px outset #ed6e2f;
 }
 
+.big-profile {
+	margin-top: 50px;
+	border-radius: 1000px;
+	border: 5px outset transparent;
+}
+
+.big-profile:hover {
+	border: 5px outset #ed6e2f;
+}
+
 /* HEADER SANDWITCH */
 .sandwitch {
 	display: none;
@@ -291,6 +301,24 @@ input[type=submit]:hover, input[type=submit]:active {
 	left: 50%;
 	margin-left: -75px;
 }
+
+.reset-pwd {
+	margin-bottom: 50px;
+	background-color: white;
+    color: black;
+    border: 2px solid #ed6e2f;
+    padding: 10px 70px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.reset-pwd:hover {
+    background-color: #ed6e2f;
+    color: white;
+}
+
+
 
 .tooltip:hover .tooltiptext {
 	visibility: visible;
@@ -421,6 +449,9 @@ input[type=submit]:hover, input[type=submit]:active {
 	input {
 		width: 130px;
 	}
+	.reset-pwd {
+    padding: 10px 35px;
+}
 }
 
 @media (max-width: 311px) {
