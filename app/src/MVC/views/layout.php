@@ -10,5 +10,6 @@
 	<?php require_once($this->path."partials/footer.php") ?>
 	<script src="/js/header.js"></script>
 	<script src="/js/profile.js"></script>
+	<script src="/js/workshop.js"></script>
 </body>
 </html>

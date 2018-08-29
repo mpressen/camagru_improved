@@ -13,6 +13,6 @@
 			<label for="mail">Email :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<input class='js' type="email" name="mail" value="<?php echo $data['user']->get_mail() ?>">
 		</div>
-		<a class="reset-pwd" href="/user/reset_password">RESET PASSWORD</a>
+		<a class="button" href="/user/reset_password">RESET PASSWORD</a>
 	</form>
 </div>

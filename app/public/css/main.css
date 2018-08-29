@@ -165,6 +165,7 @@ h1,h2,h3,h4,h5,h6 {
 	position: absolute;
 	top: 60px;
 	right: 0px;
+	background-color: white;
 }
 
 .drop-menu a {
@@ -302,7 +303,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	margin-left: -75px;
 }
 
-.reset-pwd {
+.button {
 	margin-bottom: 50px;
 	background-color: white;
     color: black;
@@ -313,7 +314,7 @@ input[type=submit]:hover, input[type=submit]:active {
     display: inline-block;
 }
 
-.reset-pwd:hover {
+.button:hover {
     background-color: #ed6e2f;
     color: white;
 }
@@ -431,6 +432,7 @@ input[type=submit]:hover, input[type=submit]:active {
 		position: static;
 		border-top: 0;
 		box-shadow: none;
+		background-color: #eee;
 	}
 	.drop-menu a {
 		display: block;
