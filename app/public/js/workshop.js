@@ -169,10 +169,10 @@ function savepicture()
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
-				data = JSON.parse(httpRequest.response);
-				alert(data['frames']);
+				// data = JSON.parse(httpRequest.response);
+				// alert(data['frames']);
 				img = document.createElement('img');
-				img.src = data['base64data'];
+				img.src = "data:image/png;base64," + httpRequest.responseText;
 				workshop.insertAdjacentElement('afterbegin', img);
 			}
 			else
