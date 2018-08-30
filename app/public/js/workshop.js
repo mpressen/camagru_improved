@@ -1,45 +1,39 @@
+let shutter = new Audio('/sounds/shutter.mp3');
+
+let workshop = document.querySelector(".workshop-container");
+
+let preview = document.querySelector("#preview-container");
+let video = document.querySelector("#preview-element");
+let take_picture = document.querySelector("#take-picture");
+
+let picture_taken = document.querySelector("#picture_taken");
+let photo = document.querySelector("#photo");
+let save_picture = document.querySelector("#save-picture");
+
+let frames = document.querySelectorAll(".frames");
+let dropzones = document.querySelectorAll(".dropzones");
+
+
+
 // responsiveness
-let preview = document.querySelector("#preview-container")
-
-window.addEventListener("resize", function() {
-	if (window.matchMedia("(max-width: 520px)").matches) {
-		responsive();
-	}
-	else
-		responsive_back();
-});
-if (window.innerWidth < 520)
-	responsive();
-
-function getCssProperty(elem, property){
-	return window.getComputedStyle(elem,null).getPropertyValue(property);
-}
-
-function responsive()
-{
-	let frames = preview.querySelectorAll(".frames");
+function screenTest(e) {
+	let frames = workshop.querySelectorAll(".frames");
 	frames.forEach(function(frame){
-		x = parseInt(frame.style.left) / 2;
-		y = parseInt(frame.style.top) / 2;
-		frame.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
-		
+		if (e.matches) {
+			x = parseInt(frame.style.left) / 2;
+			y = parseInt(frame.style.top) / 2;
+		}
+		else {
+			x = parseInt(frame.style.left) * 2;
+			y = parseInt(frame.style.top) * 2;
+		}
+		frame.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");	
 	});
 }
-function responsive_back()
-{
-	let frames = preview.querySelectorAll(".frames");
-	frames.forEach(function(frame){
-		x = parseInt(frame.style.left) * 2;
-		y = parseInt(frame.style.top) * 2;
-		frame.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
-		
-	});
-}
+window.matchMedia('(max-width: 520px)').addListener(screenTest);
 
 
 // Activate webcam stream
-let video = document.querySelector("#preview-element");
-
 if (navigator.mediaDevices.getUserMedia) {       
 	navigator.mediaDevices.getUserMedia({video: true})
 	.then(function(stream) {
@@ -47,7 +41,6 @@ if (navigator.mediaDevices.getUserMedia) {
 	})
 	.catch(function(err0r) {
 		flash("You must allow the use of your camera to use our app !");
-		return;
 	});
 }
 
@@ -64,11 +57,6 @@ function flash (text)
 
 
 // Drag'n Drop functions
-let frames = document.querySelectorAll(".frames");
-let dropzones = document.querySelectorAll(".dropzones");
-
-let take_picture = document.querySelector("#take-picture");
-
 function allowDrop(ev) 
 {
 	ev.preventDefault();
@@ -90,9 +78,9 @@ function drop(ev)
 
 	img.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
 }
-// 		Attach events to proper elements and deal with :
-// 		- drag'n'drop (extra tmp layer for tweak on frame positioning)
-// 		-  taking picture only if a frame is on the preview
+// 		Attach d'n'd events to proper elements and deal with :
+// 		- drag'n'drop (extra tmp layer for precision tweak on frame positioning)
+// 		- taking picture only if a frame is on the preview
 for (var i = 0; i < frames.length; i++)
 {
 	frames[i].setAttribute('draggable', true);
@@ -124,7 +112,6 @@ for (var i = 0; i < frames.length; i++)
 
 	});
 }
-
 for (var i = 0; i < dropzones.length; i++)
 {
 	dropzones[i].addEventListener('drop', drop);
@@ -134,12 +121,6 @@ for (var i = 0; i < dropzones.length; i++)
 
 
 // Take picture and add frames
-let picture_taken = document.querySelector("#picture_taken");
-let photo = document.querySelector("#photo");
-let save_picture = document.querySelector("#save-picture");
-let shutter = new Audio('/sounds/shutter.mp3');
-
-
 function takepicture(ev) {
 	let frameExist = preview.childElementCount - 1;
 	if (!frameExist)
@@ -152,8 +133,8 @@ function takepicture(ev) {
 	
 	//draw picture
 	let tmpcanvas = document.createElement("canvas");
-	tmpcanvas.width = 500; 
-	tmpcanvas.height = 375; 
+	tmpcanvas.width = 502; 
+	tmpcanvas.height = 376; 
 	tmpcanvas.getContext('2d').drawImage(video, 0, 0, 500, 375);
 	let data = tmpcanvas.toDataURL('image/png');
 
@@ -169,32 +150,40 @@ function takepicture(ev) {
 	save_picture.style.opacity = 1;
 	photo.setAttribute('src', data);
 }
-
 take_picture.addEventListener('click', takepicture);
 
 
 
 // AJAX: Send picture and frames properties to save it back-end
 function savepicture()
-{
-	let data = photo.src;
-	let pic = "base64data=" + encodeURIComponent(data);
-	let saving = new XMLHttpRequest();
+{	
+	let data_frames = [];
+	let frames = picture_taken.querySelectorAll(".frames").forEach(function(frame){
+		data_frames.push({"name" : frame.id, "left" : frame.style.left, "top" : frame.style.top});
+	});
+	let data = "base64data=" + encodeURIComponent(photo.src) + "&frames=" + JSON.stringify(data_frames);
 
-	saving.onreadystatechange = function(){
-		if (saving.readyState == 4 && (saving.status == 200 || saving.status == 0))
-		{
-			flash("WIN");
+	let httpRequest = new XMLHttpRequest();
+
+	httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200)
+			{
+				data = JSON.parse(httpRequest.response);
+				alert(data['frames']);
+				img = document.createElement('img');
+				img.src = data['base64data'];
+				workshop.insertAdjacentElement('afterbegin', img);
+			}
+			else
+				flash("Internal problem. Please contact admin.")
 		}
-		else
-			flash("FAIL");
 	};
 
-	saving.open("POST", 'picture/save', true);
-	saving.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	saving.send(pic);
+	httpRequest.open("POST", 'save', true);
+	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	httpRequest.send(data);
 }
-
 save_picture.addEventListener('click', savepicture);
 
 

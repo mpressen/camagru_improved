@@ -5,9 +5,9 @@ require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
 
 class UserCollection extends Model
 {
-	public function __construct($pdo, $security)
+	public function __construct($pdo, $security, $container)
 	{
-		parent::__construct($pdo, $security);
+		parent::__construct($pdo, $security, $container);
 	}
 
 	public function new($params)
@@ -18,6 +18,6 @@ class UserCollection extends Model
 
 		parent::insert($params);
 
-		return new User($params, $this->pdo, $this->security);
+		return $this->container->getUser($params);
 	}
 }

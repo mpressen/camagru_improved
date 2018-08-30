@@ -11,8 +11,6 @@ CREATE TABLE IF NOT EXISTS `pictures` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11),
   `title` varchar(255),
-  `publish` int(1) DEFAULT '1',
-  `flip` tinyint(1),
   CONSTRAINT fk_users_to_pictures FOREIGN KEY (id) REFERENCES users(id)
 );
 CREATE TABLE IF NOT EXISTS `comments` (

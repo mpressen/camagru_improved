@@ -4,11 +4,13 @@ class Model
 {
 	protected $pdo;
 	protected $security;
+	protected $container;
 
-	public function __construct($pdo, $security)
+	public function __construct($pdo, $security, $container)
 	{
 		$this->pdo = $pdo;
 		$this->security = $security;
+		$this->container = $container;
 	}
 
 	public function insert($params)
@@ -43,8 +45,9 @@ class Model
 		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ?');
 		$prep->execute(array($value));
 		$ret = $prep->fetch();
+		$maker = "get_".$class;
 		if ($ret)
-			$ret = new $class($ret, $this->pdo, $this->security);
+			$ret = $this->container->$maker($ret);
 		return $ret;
 	}
 }

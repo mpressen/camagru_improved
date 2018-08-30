@@ -4,9 +4,18 @@ require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
 
 class Security
 {
+	private $container;
+
+	public function __construct($container)
+	{
+		$this->container = $container;
+	}
+
 	public function validate($params)
 	{
 		$args = array(
+			'frames' => array(),
+			'base64data' => FILTER_SANITIZE_STRING,
 			'form_key' => FILTER_SANITIZE_STRING,
 			'confirmkey' => FILTER_SANITIZE_STRING,
 			'login' => array(
@@ -34,7 +43,7 @@ class Security
 
 	public function check_csrf($redirect)
 	{	
-		$csrf = new FormKey($this);
+		$csrf = $this->container->get_FormKey($this);
 		if (!($csrf->validate()))
 		{	
 			$_SESSION['message'] = "CSRF attack spotted.";

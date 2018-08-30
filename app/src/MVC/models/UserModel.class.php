@@ -11,9 +11,9 @@ class User extends Model
 	private $confirmkey;
 	private $confirmation;
 
-	public function __construct($params, $pdo, $security)
+	public function __construct($params, $pdo, $security, $container)
 	{
-		parent::__construct($pdo, $security);
+		parent::__construct($pdo, $security, $container);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}

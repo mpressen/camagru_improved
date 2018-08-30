@@ -20,4 +20,12 @@ class PictureController extends Controller
 		];
 		$this->container->get_View("workshop.php", $data);
 	}
+
+	public function save($params)
+	{
+		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		
+		echo json_encode($params);
+	}
 }

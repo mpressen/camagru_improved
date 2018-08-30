@@ -9,7 +9,11 @@
 	</div>
 	<?php require_once($this->path."partials/footer.php") ?>
 	<script src="/js/header.js"></script>
-	<script src="/js/profile.js"></script>
-	<script src="/js/workshop.js"></script>
+	<?php 
+	if (isset($data['title']) && $data['title'] === 'Workshop')
+		echo '<script src="/js/workshop.js"></script>';
+	else if (isset($data['title']) && $data['title'] === 'My profile')
+		echo '<script src="/js/profile.js"></script>';
+	?>
 </body>
 </html>

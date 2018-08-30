@@ -20,6 +20,11 @@
 	overflow: hidden;
 }
 
+.photo {
+	width: 502px;
+	height: 376px;
+}
+
 .preview-container {
 	border: 10px #333 solid;
 }
@@ -121,6 +126,11 @@ li {
 		height: 188px;
 		margin: auto;
 	}
+	.photo {
+		width: 251px;
+		height: 188px;
+	}
+
 	.cat-wtf {
 	width: 125px;
 	height: 123px; 

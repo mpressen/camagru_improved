@@ -20,7 +20,7 @@ class Container
 
 	public function __construct()
 	{	
-		$this->security = new Security();
+		$this->security = new Security($this);
 		$this->auth = new Auth();
 	}
 
@@ -80,13 +80,27 @@ class Container
 	{
 		if (!isset($this->pdo))
 			$this->set_pdo();
-		return new User($params, $this->pdo, $this->security);
+		return new User($params, $this->pdo, $this->security, $this);
 	}
 
 	public function get_UserCollection()
 	{
 		if (!isset($this->pdo))
 			$this->set_pdo();
-		return new UserCollection($this->pdo, $this->security);
+		return new UserCollection($this->pdo, $this->security, $this);
+	}
+
+	public function get_Picture($params)
+	{
+		if (!isset($this->pdo))
+			$this->set_pdo();
+		return new Picture($params, $this->pdo, $this->security, $this);
+	}
+
+	public function get_PictureCollection()
+	{
+		if (!isset($this->pdo))
+			$this->set_pdo();
+		return new PictureCollection($this->pdo, $this->security, $this);
 	}
 }
