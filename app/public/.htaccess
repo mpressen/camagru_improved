@@ -26,6 +26,7 @@ RewriteRule ^user/reset_3/?$ /index.php [L]
 
 RewriteRule ^picture/workshop/?$ /index.php [L]
 RewriteRule ^picture/save/?$ /index.php [L]
+RewriteRule ^picture/delete/?$ /index.php [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !-f

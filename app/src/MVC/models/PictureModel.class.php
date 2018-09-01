@@ -6,7 +6,7 @@ class Picture extends Model
 {
 	private $id;
 	private $user_id;
-	private $title;
+	private $path;
 
 	public function __construct($params, $pdo, $security, $container)
 	{
@@ -28,9 +28,9 @@ class Picture extends Model
 		return $this->user_id;
 	}
 
-	public function get_title()
+	public function get_path()
 	{
-		return $this->title;
+		return $this->path;
 	}
 
 

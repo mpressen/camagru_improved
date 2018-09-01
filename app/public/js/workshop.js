@@ -15,6 +15,8 @@ let my_pics = document.querySelector(".pictures-container");
 let frames = document.querySelectorAll(".frames");
 let dropzones = document.querySelectorAll(".dropzones");
 
+let close = document.querySelectorAll(".close");
+
 
 
 // responsiveness
@@ -156,7 +158,7 @@ take_picture.addEventListener('click', takepicture);
 
 
 
-// AJAX: Send picture and frames properties to save it back-end
+// AJAX
 function savepicture()
 {	
 	let data_frames = [];
@@ -173,10 +175,22 @@ function savepicture()
 			{
 				// data = JSON.parse(httpRequest.response);
 				// alert(data['frames']);
+				pic = document.createElement('div');
+				let id = parseInt(my_pics.firstElementChild.id.substr(3,)) + 1;
+				pic.id = "pic" + id;
+				pic.className = "small-pic-container";
+
 				img = document.createElement('img');
 				img.className = "small-pic";
-				img.src = "data:image/png;base64," + httpRequest.responseText;
-				my_pics.insertAdjacentElement('afterbegin', img);
+				img.src = httpRequest.responseText;
+
+				close = document.createElement('a');
+				close.className = "close";
+				close.addEventListener('click', deletepicture);
+
+				pic.append(img);
+				pic.append(close);
+				my_pics.insertAdjacentElement('afterbegin', pic);
 			}
 			else
 				flash("Internal problem. Please contact admin.")
@@ -188,6 +202,29 @@ function savepicture()
 	httpRequest.send(data);
 }
 save_picture.addEventListener('click', savepicture);
+
+function deletepicture(ev)
+{
+	if (confirm("Are you sure you want to delete this picture ?"))
+	{
+		let elem = ev.currentTarget.parentElement;
+		let httpRequest = new XMLHttpRequest();
+
+		httpRequest.onreadystatechange = function(ev) {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200)
+					document.querySelector("#pic" + httpRequest.responseText).remove();
+				else
+					flash("Internal problem. Please contact admin.")
+			}
+		};
+
+		httpRequest.open("GET", 'delete?picture_id=' + elem.id, true);
+		httpRequest.send();
+	}
+}
+for (var i = 0; i < close.length; i++)
+	close[i].addEventListener('click', deletepicture);	
 
 
 

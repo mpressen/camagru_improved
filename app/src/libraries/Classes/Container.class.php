@@ -3,12 +3,17 @@
 require_once ROOT_PATH."src/libraries/Helpers/Security.class.php";
 require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
 
+require_once ROOT_PATH."src/libraries/Helpers/ImageHelper.class.php";
+
 require_once ROOT_PATH."src/libraries/Helpers/Auth.class.php";
 
 require_once ROOT_PATH."src/libraries/Classes/View.class.php";
 
 require_once ROOT_PATH."src/MVC/models/UserCollection.class.php";
 require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
+
+require_once ROOT_PATH."src/MVC/models/PictureCollection.class.php";
+require_once ROOT_PATH."src/MVC/models/PictureModel.class.php";
 
 require_once ROOT_PATH."src/libraries/Services/Mailer.class.php";
 
@@ -56,6 +61,11 @@ class Container
 	public function get_auth()
 	{
 		return $this->auth;
+	}
+
+	public function get_ImageHelper()
+	{
+		return new ImageHelper();
 	}
 
 

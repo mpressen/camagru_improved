@@ -26,7 +26,6 @@ class Model
 		}
 		$table_columns = substr($table_columns, 0, -2).")";
 		$table_bindings = substr($table_bindings, 0, -2).")";
-		
 		$prep = $this->pdo->prepare('INSERT INTO '.$class.$table_columns.' VALUES'.$table_bindings)->execute($params);
 	}
 
@@ -49,6 +48,22 @@ class Model
 		if ($ret)
 			$ret = $this->container->$maker($ret);
 		return $ret;
+	}
+
+	public function find_all($field, $value)
+	{
+		$class = str_replace('Collection', '', get_class($this));
+		$table = strtolower($class)."s";
+		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY id DESC');
+		$prep->execute(array($value));
+		$ret = $prep->fetchAll();
+		$maker = "get_".$class;
+		$list = [];
+		foreach($ret as $object)
+		{
+			array_push($list, $this->container->$maker($object));
+		}
+		return $list;
 	}
 }
 ?>

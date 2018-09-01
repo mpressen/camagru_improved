@@ -11,12 +11,15 @@ class User extends Model
 	private $confirmkey;
 	private $confirmation;
 
+	private $pictures;
+
 	public function __construct($params, $pdo, $security, $container)
 	{
 		parent::__construct($pdo, $security, $container);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}
+		$this->pictures = $container->get_PictureCollection()->user_pictures($this->get_id());
 	}
 
 	public function get_gravatar_hash()
@@ -55,6 +58,10 @@ class User extends Model
 	public function get_confirmation()
 	{
 		return $this->confirmation;
+	}
+	public function get_pictures()
+	{
+		return $this->pictures;
 	}
 
 
