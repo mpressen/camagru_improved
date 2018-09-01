@@ -20,5 +20,4 @@
 	</div>
 </div>
 <div class="pictures-container">
-	<img src="#">
 </div>

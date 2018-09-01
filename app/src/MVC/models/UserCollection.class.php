@@ -18,6 +18,6 @@ class UserCollection extends Model
 
 		parent::insert($params);
 
-		return $this->container->getUser($params);
+		return $this->container->get_User($params);
 	}
 }

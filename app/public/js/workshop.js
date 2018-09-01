@@ -10,6 +10,8 @@ let picture_taken = document.querySelector("#picture_taken");
 let photo = document.querySelector("#photo");
 let save_picture = document.querySelector("#save-picture");
 
+let my_pics = document.querySelector(".pictures-container");
+
 let frames = document.querySelectorAll(".frames");
 let dropzones = document.querySelectorAll(".dropzones");
 
@@ -135,7 +137,7 @@ function takepicture(ev) {
 	let tmpcanvas = document.createElement("canvas");
 	tmpcanvas.width = 502; 
 	tmpcanvas.height = 376; 
-	tmpcanvas.getContext('2d').drawImage(video, 0, 0, 500, 375);
+	tmpcanvas.getContext('2d').drawImage(video, 0, 0, 502, 376);
 	let data = tmpcanvas.toDataURL('image/png');
 
 	// remove old frames
@@ -172,8 +174,9 @@ function savepicture()
 				// data = JSON.parse(httpRequest.response);
 				// alert(data['frames']);
 				img = document.createElement('img');
+				img.className = "small-pic";
 				img.src = "data:image/png;base64," + httpRequest.responseText;
-				workshop.insertAdjacentElement('afterbegin', img);
+				my_pics.insertAdjacentElement('afterbegin', img);
 			}
 			else
 				flash("Internal problem. Please contact admin.")

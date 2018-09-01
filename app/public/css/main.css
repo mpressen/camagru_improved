@@ -58,6 +58,11 @@ input[type="submit"] {
 }
 
 /* GLOBAL STYLES */
+
+html, body, .content-container {
+	height: 100%;
+	overflow: hidden;
+}
 body {
 	display: flex;
 	flex-direction: column;
@@ -72,7 +77,8 @@ h1,h2,h3,h4,h5,h6 {
 .content-container {
 	display: flex;
 	flex: 1 1 auto;
-	width: 100%;
+/*	width: 100%;
+	height: 100%;*/
 }
 
 /* HEADER */
