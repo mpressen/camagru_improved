@@ -16,7 +16,7 @@ class UserCollection extends Model
 
 		$params['pwd'] = $this->security->my_hash($params['pwd']);
 
-		parent::insert($params);
+		$params['id'] = $this->insert($params);
 
 		return $this->container->get_User($params);
 	}

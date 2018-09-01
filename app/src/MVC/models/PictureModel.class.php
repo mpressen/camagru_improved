@@ -35,6 +35,7 @@ class Picture extends Model
 
 
 
+
 	# SETTERS
 	public function set_title($value)
 	{

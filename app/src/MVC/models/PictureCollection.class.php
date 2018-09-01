@@ -11,13 +11,11 @@ class PictureCollection extends Model
 
 	public function new($params)
 	{
-		parent::insert($params);
-
-		//return $this->container->getPicture($params);
+		return $this->insert($params);
 	}
 
 	public function user_pictures($user_id)
 	{
-		return parent::find_all('user_id', $user_id);
+		return $this->find_all('user_id', $user_id, 'DESC');
 	}
 }

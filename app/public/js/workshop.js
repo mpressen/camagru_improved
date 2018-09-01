@@ -153,6 +153,8 @@ function takepicture(ev) {
 	picture_taken.style.opacity = 1;
 	save_picture.style.opacity = 1;
 	photo.setAttribute('src', data);
+	save_picture.addEventListener('click', savepicture);
+	save_picture.style.cursor = 'pointer';
 }
 take_picture.addEventListener('click', takepicture);
 
@@ -173,24 +175,25 @@ function savepicture()
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
-				// data = JSON.parse(httpRequest.response);
-				// alert(data['frames']);
+				data = JSON.parse(httpRequest.response);
+
 				pic = document.createElement('div');
-				let id = parseInt(my_pics.firstElementChild.id.substr(3,)) + 1;
-				pic.id = "pic" + id;
+				pic.id = data['picture_id'];
 				pic.className = "small-pic-container";
 
 				img = document.createElement('img');
 				img.className = "small-pic";
-				img.src = httpRequest.responseText;
+				img.src = data['src'];
 
 				close = document.createElement('a');
 				close.className = "close";
 				close.addEventListener('click', deletepicture);
 
-				pic.append(img);
-				pic.append(close);
+				pic.append(img, close);
 				my_pics.insertAdjacentElement('afterbegin', pic);
+				save_picture.style.opacity = 0;
+				save_picture.style.cursor = 'default';
+				save_picture.removeEventListener('click', savepicture);
 			}
 			else
 				flash("Internal problem. Please contact admin.")
@@ -201,7 +204,6 @@ function savepicture()
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }
-save_picture.addEventListener('click', savepicture);
 
 function deletepicture(ev)
 {

@@ -44,7 +44,12 @@ class ImageHelper
         return '/images/users/'.$user_id."/".$file;
     }
 
-    public function get_folder($folder)
+    public function delete_image($public_path)
+    {
+        unlink(ROOT_PATH.'public'.$public_path);
+    }
+
+    private function get_folder($folder)
     {
         if (file_exists($folder) && is_dir($folder))
             return ($folder);
