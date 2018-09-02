@@ -126,7 +126,7 @@ class UserController extends Controller
 		else
 		{
 			$_SESSION['message'] = "Welcome ".$user->get_login()." !";
-			$this->container->get_auth()->connect($user->get_id());
+			$this->container->get_auth()->connect($user);
 		}
 		header("Location: /");
 	}
@@ -135,9 +135,7 @@ class UserController extends Controller
 	# SIGN OUT (redirect)
 	public function signout()
 	{
-		$user_id = $this->container->get_auth()->being_auth(true);
-
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		$user = $this->container->get_auth()->being_auth(true);
 
 		$_SESSION['message'] = 'Bye '.$user->get_login().' !!!';
 
@@ -164,8 +162,7 @@ class UserController extends Controller
 		
 		$this->container->get_security()->validate_inputs_format($params, '/user/reset');
 
-		$meta_user = $this->container->get_UserCollection();
-		$user = $meta_user->find('mail', $params['mail']);
+		$meta_user = $this->container->get_UserCollection();$user = $this->container->get_UserCollection()->find('mail', $params['mail']);
 		if (!$user)
 		{
 			$_SESSION['message'] = '"'.$params['mail'].'" is not registered. Please create your account first.';
@@ -182,9 +179,7 @@ class UserController extends Controller
 	{
 		$this->container->get_auth()->being_auth(false);
 
-		$meta_user = $this->container->get_UserCollection();
-		$user = $meta_user->find('login', $params['login']);
-		
+		$user = $this->container->get_UserCollection()->find('login', $params['login']);
 		if (!$user)
 		{
 			sleep(1);
@@ -204,14 +199,13 @@ class UserController extends Controller
 		$user->set_confirmkey();
 		$user->update('confirmkey');
 		
-		$this->container->get_auth()->connect($user->get_id());
+		$this->container->get_auth()->connect($user);
 
 		header("Location: /user/reset_password");
 	}
 	public function reset_password()
 	{
-		$user_id = $this->container->get_auth()->being_auth(true);
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		$user = $this->container->get_auth()->being_auth(true);
 
 		$csrf = $this->container->get_FormKey();
 
@@ -219,15 +213,12 @@ class UserController extends Controller
 	}
 	public function reset_3($params)
 	{
-		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_auth()->being_auth(true);
 		
 		$this->container->get_security()->check_csrf('/user/reset_password');
 		unset($params['form_key']);
 
 		$this->container->get_security()->validate_inputs_format($params, '/user/reset_password');
-
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
-		
 		
 		$user->set_pwd($params['pwd']);
 		$user->update('pwd');
@@ -238,8 +229,7 @@ class UserController extends Controller
 	# UPDATE PROFILE INFO
 	public function profile($params)
 	{	
-		$user_id = $this->container->get_auth()->being_auth(true);
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		$user = $this->container->get_auth()->being_auth(true);
 
 		$csrf = $this->container->get_FormKey();
 
@@ -247,15 +237,13 @@ class UserController extends Controller
 	}
 	public function update($params)
 	{
-		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_auth()->being_auth(true);
 		
 		$this->container->get_security()->check_csrf('/user/profile');
 		unset($params['form_key']);
 
 		$this->container->get_security()->validate_inputs_format($params, '/user/profile');
 
-
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
 		$meta_user = $this->container->get_UserCollection();
 			
 		if (isset($params['login']))

@@ -26,7 +26,7 @@ class Container
 	public function __construct()
 	{	
 		$this->security = new Security($this);
-		$this->auth = new Auth();
+		$this->auth = new Auth($this);
 	}
 
 	public function set_pdo()
@@ -83,7 +83,7 @@ class Container
 
 	public function get_View($template, $data)
 	{
-		return new View($template, $data, $this->auth->is_connected());
+		return new View($template, $data);
 	}
 
 	public function get_User($params)

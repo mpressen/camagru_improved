@@ -14,6 +14,8 @@
 		echo '<script src="/js/workshop.js"></script>';
 	else if (isset($data['title']) && $data['title'] === 'My profile')
 		echo '<script src="/js/profile.js"></script>';
+	else if (isset($data['title']) && $data['title'] === 'Home')
+		echo '<script src="/js/gallery.js"></script>';
 	?>
 </body>
 </html>

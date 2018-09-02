@@ -2,51 +2,46 @@
 
 class Auth
 {
-    private $user_id;
+    private $container;
 
-    public function __construct()
+    private $user;
+
+    public function __construct($container)
     {
-        if (isset($_SESSION['user_id']))
-            $this->user_id = $_SESSION['user_id'];
+        $this->container = $container;
     }
-    public function connect($id)
+
+    public function connect($user)
     {
-        $_SESSION['user_id'] = $id;
+        $user->set_current_session_id(session_id());
+        $user->update('current_session_id', session_id());
+        $this->user = $user;
     }
 
     public function disconnect()
     {
-        unset($_SESSION['user_id']);
+        $disconnect = $this->container->security->create_key();
+        $this->user->set_current_session_id($disconnect);
+        $this->user->update('current_session_id', $disconnect);
+        unset($this->user);
     }
-
-    public function get_user_id()
-    {
-        return $this->user_id;
-    }
-
-    public function is_connected()
-    {
-        if (isset($this->user_id))
-            return true;
-        return false;
-    }
-
 
     public function being_auth($bool)
-    {
-        if (!isset($this->user_id) && $bool === true)
+    {  
+        $this->user = $this->container->get_UserCollection()->find('current_session_id', session_id());
+        if (!$this->user && $bool === true)
         {
             $_SESSION['message'] = 'You must be connected.';
             header("Location: /user/signin");
             exit;
         }
-        else if (isset($this->user_id) && $bool === false)
+        else if ($this->user && $bool === false)
         {
             $_SESSION['message'] = 'You are already logged in.';
             header("Location: /");
             exit;
         }
-        return $this->user_id;
+        return $this->user;
     }
 
 }

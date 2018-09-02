@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `pwd` varchar(255) NOT NULL,
   `mail` varchar(50) UNIQUE NOT NULL,
   `confirmkey` varchar(255) NOT NULL,
-  `confirmation` tinyint(1) DEFAULT '0'
+  `confirmation` tinyint(1) DEFAULT '0',
+  `current_session_id` varchar(255) NOT NULL
 );
 CREATE TABLE IF NOT EXISTS `pictures` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,

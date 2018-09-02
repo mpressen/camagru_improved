@@ -14,8 +14,7 @@ class PictureController extends Controller
 	
 	public function workshop($params)
 	{
-		$user_id = $this->container->get_auth()->being_auth(true);
-		$user = $this->container->get_UserCollection()->find('id', $user_id);
+		$user = $this->container->get_auth()->being_auth(true);
 		
 		$data = [
 			'title' => 'Workshop',
@@ -27,32 +26,27 @@ class PictureController extends Controller
 	public function save($params)
 	{
 		// $params -> base64encode(str) and frames(array of objects)
-		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_auth()->being_auth(true);
 		$img = $this->image_helper->merge_image($params);
 		$img_path = $this->image_helper->save_image($img, $user_id);
-		$picture_id = $this->container->get_PictureCollection()->new(['user_id' => $user_id, 'path' => $img_path]);
+		$picture_id = $this->container->get_PictureCollection()->new(['user_id' => $user->get_id(), 'path' => $img_path]);
 		echo json_encode(['src' => $img_path, 'picture_id' => "pic".$picture_id]);
 	}
 
 	public function delete($params)
 	{
 		// $params -> picture_id
-		$user_id = $this->container->get_auth()->being_auth(true);
+		$user = $this->container->get_auth()->being_auth(true);
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
-		if ($picture->get_user_id() !== $user_id)
+		if ($picture->get_user_id() !== $user->get_id())
+		{
+			$_SESSION['message'] = 'You can only delete your own picture.';
+			header("Location: /user/signup");
 			exit;
-		try
-		{
-			$picture->delete();
-			$this->image_helper->delete_image($picture->get_path());
-			echo $params['picture_id'];
 		}
-		catch(Exception $e)
-		{
-			$_SESSION['message'] = "Error!: " . $e->getMessage();
-			Header('Location: '.$_SERVER['PHP_SELF']);
-		}
-		
+		$picture->delete();
+		$this->image_helper->delete_image($picture->get_path());
+		echo $params['picture_id'];
 	}
 
 }

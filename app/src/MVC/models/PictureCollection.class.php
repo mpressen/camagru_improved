@@ -18,4 +18,9 @@ class PictureCollection extends Model
 	{
 		return $this->find_all('user_id', $user_id, 'DESC');
 	}
+
+	public function all_pictures()
+	{
+		return $this->find_all('1', '1', 'DESC');
+	}
 }

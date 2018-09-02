@@ -16,6 +16,8 @@ class UserCollection extends Model
 
 		$params['pwd'] = $this->security->my_hash($params['pwd']);
 
+		$params['current_session_id'] = $this->security->create_key();
+
 		$params['id'] = $this->insert($params);
 
 		return $this->container->get_User($params);

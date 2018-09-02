@@ -10,8 +10,7 @@ class User extends Model
 	private $mail;
 	private $confirmkey;
 	private $confirmation;
-
-	private $pictures;
+	private $current_session_id;
 
 	public function __construct($params, $pdo, $security, $container)
 	{
@@ -19,7 +18,6 @@ class User extends Model
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}
-		$this->pictures = $container->get_PictureCollection()->user_pictures($this->get_id());
 	}
 
 	public function get_gravatar_hash()
@@ -59,9 +57,16 @@ class User extends Model
 	{
 		return $this->confirmation;
 	}
+
+	public function get_current_session_id()
+	{
+		return $this->current_session_id;
+	}
+
+
 	public function get_pictures()
 	{
-		return $this->pictures;
+		return $this->container->get_PictureCollection()->user_pictures($this->get_id());
 	}
 
 
@@ -90,5 +95,10 @@ class User extends Model
 	public function set_confirmation($value)
 	{
 		$this->confirmation = $value;
+	}
+
+	public function set_current_session_id($value)
+	{
+		$this->current_session_id = $value;
 	}
 }

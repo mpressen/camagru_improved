@@ -9,18 +9,7 @@
 				>HOME
 			</a></li>
 			<?php
-			if ($auth === false)
-			{
-				echo '<li><a href="/user/signin"';
-				if ($data['title'] == "Sign In")
-					echo " class='active-link'";
-				echo ">SIGN IN</a></li>";
-				echo '<li><a href="/user/signup"';
-				if ($data['title'] == "Sign Up")
-					echo " class='active-link'";
-				echo ">SIGN UP</a></li>";
-			}
-			else
+			if ($data['user'])
 			{
 				echo '<li><a href="/picture/workshop"';
 				if ($data['title'] == "Workshop")
@@ -37,6 +26,17 @@
 					<li><a href='/user/signout'>SIGN OUT</a></li>
 				</ul>
 				</li>";
+			}
+			else
+			{
+				echo '<li><a href="/user/signin"';
+				if ($data['title'] == "Sign In")
+					echo " class='active-link'";
+				echo ">SIGN IN</a></li>";
+				echo '<li><a href="/user/signup"';
+				if ($data['title'] == "Sign Up")
+					echo " class='active-link'";
+				echo ">SIGN UP</a></li>";
 			}
 			?>
 		</ul>

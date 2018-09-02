@@ -1,6 +1,6 @@
 <?php
 
-class Model
+abstract class Model
 {
 	protected $pdo;
 	protected $security;
@@ -35,15 +35,15 @@ class Model
 			$this->pdo->commit();
 			return $id;
 		}
-		catch(PDOExecption $e) {
+		catch(PDOExecption $e)
+		{
 			$this->pdo->rollback();
-			throw new Exception($e->getMessage());
 		}
 	}
 
 	public function update($attribute)
 	{
-		$class = strtolower(str_replace('Collection', '', get_class($this)))."s";
+		$class = strtolower(get_class($this))."s";
 		$getter = "get_".$attribute;
 		$prep = $this->pdo->prepare('UPDATE '.$class.' SET '.$attribute.' = ? WHERE id = ?');
 		try
@@ -55,7 +55,6 @@ class Model
 		catch(PDOExecption $e)
 		{
 			$this->pdo->rollback();
-			throw new Exception($e->getMessage());
 		}
 	}
 
@@ -99,7 +98,6 @@ class Model
 		catch(PDOExecption $e)
 		{
 			$this->pdo->rollback();
-			throw new Exception($e->getMessage());
 		}
 	}
 }
