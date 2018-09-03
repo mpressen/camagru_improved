@@ -165,15 +165,15 @@ function savepicture()
 			{
 				data = JSON.parse(httpRequest.response);
 
-				pic = document.createElement('div');
+				let pic = document.createElement('div');
 				pic.id = data['picture_id'];
 				pic.className = "small-pic-container";
 
-				img = document.createElement('img');
+				let img = document.createElement('img');
 				img.className = "small-pic";
 				img.src = data['src'];
 
-				close = document.createElement('a');
+				let close = document.createElement('a');
 				close.className = "close";
 				close.addEventListener('click', deletepicture);
 

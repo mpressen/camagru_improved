@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `user_id` int(11),
   `picture_id` int(11),
-  `comments` varchar(500) NOT NULL,
+  `comment` varchar(500) NOT NULL,
   `timestamp` timestamp DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT fk_users_to_comments FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_pictures_to_comments FOREIGN KEY (picture_id) REFERENCES pictures(id) ON DELETE CASCADE

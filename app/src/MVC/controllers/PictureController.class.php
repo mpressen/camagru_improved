@@ -67,4 +67,13 @@ class PictureController extends Controller
 		echo 'pic'.$picture_id;
 		
 	}
+
+	public function comment($params)
+	{
+		// $params -> picture_id and comment
+		$user = $this->container->get_auth()->being_auth(true);
+		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
+		$comment_id = $this->container->get_CommentCollection()->new(['user_id' => $user->get_id(), 'picture_id' => $params['picture_id'], 'comment' => $params['comment']]);
+		echo json_encode(['comment' => $params['comment'], 'owner_profile' => $user->get_gravatar_hash(), 'owner_login' => $user->get_login()]);
+	}
 }

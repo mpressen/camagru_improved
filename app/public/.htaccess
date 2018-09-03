@@ -30,6 +30,7 @@ RewriteRule ^picture/save/?$ /index.php [L]
 RewriteRule ^picture/delete/?$ /index.php [L]
 RewriteRule ^picture/like/?$ /index.php [L]
 RewriteRule ^picture/dislike/?$ /index.php [L]
+RewriteRule ^picture/comment/?$ /index.php [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !-f

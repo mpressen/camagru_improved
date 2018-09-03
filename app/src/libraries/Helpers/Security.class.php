@@ -14,6 +14,7 @@ class Security
 	public function validate($params)
 	{
 		$args = array(
+			'comment' => FILTER_SANITIZE_STRING,
 			'picture_id' => FILTER_SANITIZE_NUMBER_INT,
 			'like_id' => FILTER_SANITIZE_NUMBER_INT,
 			'frames' => array(),
