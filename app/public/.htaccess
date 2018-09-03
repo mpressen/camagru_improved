@@ -3,6 +3,7 @@ RewriteEngine on
 
 
 RewriteRule ^home/index/?$ /index.php [L]
+RewriteRule ^home/modal/?$ /index.php [L]
 
 
 RewriteRule ^user/signup/?$ /index.php [L]
@@ -27,6 +28,8 @@ RewriteRule ^user/reset_3/?$ /index.php [L]
 RewriteRule ^picture/workshop/?$ /index.php [L]
 RewriteRule ^picture/save/?$ /index.php [L]
 RewriteRule ^picture/delete/?$ /index.php [L]
+RewriteRule ^picture/like/?$ /index.php [L]
+RewriteRule ^picture/dislike/?$ /index.php [L]
 
 
 RewriteCond %{REQUEST_FILENAME} !-f

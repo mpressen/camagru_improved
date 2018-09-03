@@ -15,6 +15,9 @@ require_once ROOT_PATH."src/MVC/models/UserModel.class.php";
 require_once ROOT_PATH."src/MVC/models/PictureCollection.class.php";
 require_once ROOT_PATH."src/MVC/models/PictureModel.class.php";
 
+require_once ROOT_PATH."src/MVC/models/LikeCollection.class.php";
+require_once ROOT_PATH."src/MVC/models/LikeModel.class.php";
+
 require_once ROOT_PATH."src/libraries/Services/Mailer.class.php";
 
 class Container
@@ -112,5 +115,19 @@ class Container
 		if (!isset($this->pdo))
 			$this->set_pdo();
 		return new PictureCollection($this->pdo, $this->security, $this);
+	}
+
+	public function get_Like($params)
+	{
+		if (!isset($this->pdo))
+			$this->set_pdo();
+		return new Like($params, $this->pdo, $this->security, $this);
+	}
+
+	public function get_LikeCollection()
+	{
+		if (!isset($this->pdo))
+			$this->set_pdo();
+		return new LikeCollection($this->pdo, $this->security, $this);
 	}
 }

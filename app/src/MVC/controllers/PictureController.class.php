@@ -28,7 +28,7 @@ class PictureController extends Controller
 		// $params -> base64encode(str) and frames(array of objects)
 		$user = $this->container->get_auth()->being_auth(true);
 		$img = $this->image_helper->merge_image($params);
-		$img_path = $this->image_helper->save_image($img, $user_id);
+		$img_path = $this->image_helper->save_image($img, $user->get_id());
 		$picture_id = $this->container->get_PictureCollection()->new(['user_id' => $user->get_id(), 'path' => $img_path]);
 		echo json_encode(['src' => $img_path, 'picture_id' => "pic".$picture_id]);
 	}
@@ -40,8 +40,7 @@ class PictureController extends Controller
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
 		if ($picture->get_user_id() !== $user->get_id())
 		{
-			$_SESSION['message'] = 'You can only delete your own picture.';
-			header("Location: /user/signup");
+			header("HTTP/1.1 403 Forbidden");
 			exit;
 		}
 		$picture->delete();
@@ -49,4 +48,23 @@ class PictureController extends Controller
 		echo $params['picture_id'];
 	}
 
+	public function like($params)
+	{
+		// $params -> picture_id
+		$user = $this->container->get_auth()->being_auth(true);
+		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
+		$like_id = $this->container->get_LikeCollection()->new(['user_id' => $user->get_id(), 'picture_id' => $params['picture_id']]);
+		echo $like_id;
+	}
+
+	public function dislike($params)
+	{
+		// $params -> like_id
+		$user = $this->container->get_auth()->being_auth(true);
+		$like = $this->container->get_LikeCollection()->find('id', $params['like_id']);
+		$picture_id = $like->get_picture_id();
+		$like->delete();
+		echo 'pic'.$picture_id;
+		
+	}
 }

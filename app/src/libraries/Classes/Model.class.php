@@ -71,6 +71,19 @@ abstract class Model
 		return $ret;
 	}
 
+	public function find_cross($field, $value, $field2, $value2)
+	{
+		$class = str_replace('Collection', '', get_class($this));
+		$table = strtolower($class)."s";
+		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? AND '.$field2.' = ?');
+		$prep->execute(array($value, $value2));
+		$ret = $prep->fetch();
+		$maker = "get_".$class;
+		if ($ret)
+			$ret = $this->container->$maker($ret);
+		return $ret;
+	}
+
 	public function find_all($field, $value, $order = 'ASC', $key = 'id')
 	{
 		$class = str_replace('Collection', '', get_class($this));
@@ -99,6 +112,15 @@ abstract class Model
 		{
 			$this->pdo->rollback();
 		}
+	}
+
+	public function count($field, $value)
+	{
+		$class = str_replace('Collection', '', get_class($this));
+		$table = strtolower($class)."s";
+		$prep = $this->pdo->prepare('SELECT COUNT(*) AS COUNT FROM '.$table.' WHERE '.$field.' = ?');
+		$prep->execute(array(intval($value)));
+		return $prep->fetch()['COUNT'];
 	}
 }
 ?>

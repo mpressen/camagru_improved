@@ -48,18 +48,6 @@ if (navigator.mediaDevices.getUserMedia) {
 	});
 }
 
-
-// Helper: flash message
-function flash (text)
-{
-	let flash = document.createElement("div");
-	flash.className = "flash-message";
-	flash.innerHTML = text;
-	document.body.insertAdjacentElement('afterbegin', flash);
-}
-
-
-
 // Drag'n Drop functions
 function allowDrop(ev) 
 {
@@ -212,7 +200,7 @@ function deletepicture(ev)
 		let elem = ev.currentTarget.parentElement;
 		let httpRequest = new XMLHttpRequest();
 
-		httpRequest.onreadystatechange = function(ev) {
+		httpRequest.onreadystatechange = function() {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
 				if (httpRequest.status === 200)
 					document.querySelector("#pic" + httpRequest.responseText).remove();

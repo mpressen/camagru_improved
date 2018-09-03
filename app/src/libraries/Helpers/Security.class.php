@@ -15,6 +15,7 @@ class Security
 	{
 		$args = array(
 			'picture_id' => FILTER_SANITIZE_NUMBER_INT,
+			'like_id' => FILTER_SANITIZE_NUMBER_INT,
 			'frames' => array(),
 			'base64data' => FILTER_SANITIZE_STRING,
 			'form_key' => FILTER_SANITIZE_STRING,

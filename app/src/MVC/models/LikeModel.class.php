@@ -2,11 +2,11 @@
 
 require_once ROOT_PATH."src/libraries/Classes/Model.class.php";
 
-class Picture extends Model
+class Like extends Model
 {
 	private $id;
 	private $user_id;
-	private $path;
+	private $picture_id;
 
 	public function __construct($params, $pdo, $security, $container)
 	{
@@ -28,18 +28,8 @@ class Picture extends Model
 		return $this->user_id;
 	}
 
-	public function get_path()
+	public function get_picture_id()
 	{
-		return $this->path;
-	}
-
-	public function get_likes()
-	{
-		return $this->container->get_LikeCollection()->picture_likes($this->get_id());
-	}
-
-	public function is_liked_by_auth_user($user_id)
-	{
-		return $this->container->get_LikeCollection()->picture_liked_by_auth_user($this->get_id(), $user_id);
+		return $this->picture_id;
 	}
 }

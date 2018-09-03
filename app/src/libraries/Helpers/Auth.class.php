@@ -20,7 +20,7 @@ class Auth
 
     public function disconnect()
     {
-        $disconnect = $this->container->security->create_key();
+        $disconnect = $this->container->get_security()->create_key();
         $this->user->set_current_session_id($disconnect);
         $this->user->update('current_session_id', $disconnect);
         unset($this->user);

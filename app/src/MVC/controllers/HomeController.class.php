@@ -18,4 +18,23 @@ class HomeController extends Controller
 		];
 		$this->container->get_View("gallery.php", $data);
 	}
+
+	public function modal($params)
+	{
+		// $params -> picture_id
+		$user = $this->container->get_auth()->being_auth('osef');
+		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
+		$count = $picture->get_likes();
+		if ($user)
+		{
+			$auth_like = $picture->is_liked_by_auth_user($user->get_id());
+			if ($auth_like)
+				$auth_like = $auth_like->get_id();
+			$user = true;
+		}
+		else
+			$auth_like = false;
+
+		echo json_encode(['count' => $count, 'auth' => $user, 'auth_like' => $auth_like]);
+	}
 }
