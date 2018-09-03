@@ -24,17 +24,17 @@ class HomeController extends Controller
 		// $params -> picture_id
 		$user = $this->container->get_auth()->being_auth('osef');
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
+		$owner = $this->container->get_UserCollection()->find('id', $picture->get_user_id());
 		$count = $picture->get_likes();
 		if ($user)
 		{
 			$auth_like = $picture->is_liked_by_auth_user($user->get_id());
 			if ($auth_like)
 				$auth_like = $auth_like->get_id();
-			$user = true;
 		}
 		else
 			$auth_like = false;
 
-		echo json_encode(['count' => $count, 'auth' => $user, 'auth_like' => $auth_like]);
+		echo json_encode(['count' => $count, 'auth' => $user, 'auth_like' => $auth_like, 'owner_profile' => $owner->get_gravatar_hash(), 'owner_login' => $owner->get_login()]);
 	}
 }

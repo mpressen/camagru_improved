@@ -51,12 +51,6 @@
     animation-duration: 0.4s
 }
 
-.modal-header {
-    height: 32px;
-    background-color: #ed6e2f;
-    color: white;
-}
-
 .pic_container_modal {
     margin: 20px auto;
     width: 502px;
@@ -119,6 +113,27 @@
 
 .comment-area:focus {
     outline-color: #ed6e2f;
+    border: 2px solid #ed6e2f;
+}
+
+.modal-header {
+    height: 32px;
+    width: 100%;
+    background-color: #ed6e2f;
+    color: white;
+    position: relative;
+}
+.credential {
+    margin: auto;
+    width: 32px;
+}
+
+.owner-profile {
+    width: 28px;
+    height: 28px;
+    border: 2px solid black;
+    border-radius: 28px;
+    box-shadow: -1px 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 

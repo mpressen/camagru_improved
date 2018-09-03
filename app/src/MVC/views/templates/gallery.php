@@ -2,6 +2,9 @@
   <div class="myModal">
     <div class="modal-content">
       <div class="modal-header">
+        <div class="credential">
+          <img class='owner-profile'>
+        </div>
         <a class="close"></a>
       </div>
       <div class="modal-body">
@@ -18,7 +21,7 @@
           <div class="comments-add">
             <form>
               <?php echo $data['csrf']?>
-                <textarea class="comment-area" name="comments" placeholder="New comment (500 char. max)" required></textarea>
+              <textarea class="comment-area" name="comments" placeholder="New comment (500 char. max)" required></textarea>
             </form>
           </div>
         </div>

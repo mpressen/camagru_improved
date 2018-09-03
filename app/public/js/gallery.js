@@ -3,6 +3,7 @@ let close = document.querySelector(".close");
 let photo = document.querySelector(".photo-modal");
 let like = document.querySelector(".fa-thumbs-up");
 let count_likes = document.querySelector(".count-likes");
+let owner_profile = document.querySelector(".owner-profile");
 
 close.onclick = function() {
 	modal.style.display = "none";
@@ -30,6 +31,9 @@ function show_modal(ev)
 				data = JSON.parse(httpRequest.response);
 				// console.log(data);
 				count_likes.innerHTML = data['count'];
+				owner_profile.src = 'https://www.gravatar.com/avatar/' + data['owner_profile'] + "?d=mp";
+				owner_profile.title = data['owner_login'];
+
 				if (data['auth'] && !data['auth_like'])
 				{
 					like.addEventListener('click', add_like_picture);
