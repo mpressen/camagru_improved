@@ -11,10 +11,18 @@ class Security
 		$this->container = $container;
 	}
 
+	public function get_FormKey()
+	{
+		return $this->form_key;
+	}
+	
 	public function validate($params)
 	{
 		$args = array(
-			'comment' => FILTER_SANITIZE_STRING,
+			'comment' => array(
+				'filter'    => FILTER_VALIDATE_REGEXP,
+				'options'   => array("regexp" => "/([0-9]|\w)+.{0,500}/")),
+			'user_id' => FILTER_SANITIZE_NUMBER_INT,
 			'picture_id' => FILTER_SANITIZE_NUMBER_INT,
 			'like_id' => FILTER_SANITIZE_NUMBER_INT,
 			'frames' => array(),
@@ -23,11 +31,12 @@ class Security
 			'confirmkey' => FILTER_SANITIZE_STRING,
 			'login' => array(
 				'filter'    => FILTER_VALIDATE_REGEXP,
-				'options'   => array("regexp" => "/^(?=.*\w).{3,}$/")),
+				'options'   => array("regexp" => "/^(?=.*\w).{3,50}$/")),
 			'mail'  => FILTER_VALIDATE_EMAIL,
 			'pwd'   => array(
 				'filter'    => FILTER_VALIDATE_REGEXP,
-				'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/")));
+				'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255}$/")));
+		
 		return filter_input_array($params, $args, false);
 	}
 
@@ -44,29 +53,50 @@ class Security
 		return hash('whirlpool', $str);
 	}
 
-	public function check_csrf($redirect)
+	public function check_csrf($redirect, $ajax = false)
 	{	
-		$csrf = $this->container->get_FormKey($this);
-		if (!($csrf->validate()))
+		if (!($this->container->get_form_key()->validate()))
 		{	
+			if ($ajax)
+				return 1;
 			$_SESSION['message'] = "CSRF attack spotted.";
 			header("Location: ".$redirect);
 			exit;
 		}
 	}
 
-	public function validate_inputs_format($params, $redirect)
+	public function validate_inputs_format($params, $redirect, $ajax = false)
 	{	
 		foreach ($params as $key => $param) {
 			if (empty($param))
 			{
 				// slowing brute force
 				sleep(1);
-				
+				if ($ajax)
+					return 1;
 				$_SESSION['message'] = "Incorrect ".ucfirst($key)." field.";
 				header("Location: ".$redirect);
 				exit;
 			}
+		}
+	}
+
+	public function ajax_secure_and_display($user, $no_validation, $no_csrf, $form_key)
+	{
+		if (!$user) 
+		{
+			echo json_encode(['message' => 'log', 'csrf' => $form_key]);
+			return 1;
+		}
+		else if ($no_validation) 
+		{
+			echo json_encode(['message' => 'validation', 'csrf' => $form_key]);
+			return 1;
+		}
+		else if ($no_csrf) 
+		{
+			echo json_encode(['message' => 'csrf', 'csrf' => $form_key]);
+			return 1;
 		}
 	}
 }

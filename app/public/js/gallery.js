@@ -6,6 +6,7 @@ let count_likes = document.querySelector(".count-likes");
 let owner_profile = document.querySelector(".owner-profile");
 let input = document.querySelector(".comment-area");
 let comments_body = document.querySelector(".comments-body");
+let form_key = document.querySelector("#form_key");
 
 close.onclick = function() {
 	modal.style.display = "none";
@@ -42,18 +43,25 @@ function show_modal(ev)
 				if (data['auth'] && !data['auth_like'])
 				{
 					like.addEventListener('click', add_like_picture);
+					input.addEventListener("change", post_comment);
 					like.id = "like" + pic_container.id;
 					photo.id = "bis" + pic_container.id;
 				}
 				else if (data['auth'] && data['auth_like'])
 				{
 					like.addEventListener('click', remove_like_picture);
+					input.addEventListener("change", post_comment);
 					like.style.color = '#ed6e2f';
 					like.id = "like" + data['auth_like'];
 				}
 
 				else
+				{
 					like.style.cursor = 'not-allowed';
+					like.addEventListener('click', function() {flash('You must log in first.')});
+					input.style.cursor = 'not-allowed';
+					input.addEventListener('click', function() {flash('You must log in first.')});
+				}
 				photo.src = pic.src;
 				data['comments'].forEach(function(comment){
 					let comment_div = document.createElement('div');
@@ -95,14 +103,21 @@ for (var i = 0; i < pic.length; i++)
 
 function add_like_picture(ev)
 {
+	let data = "picture_id=" + ev.currentTarget.id
+	+ "&form_key=" + form_key.value;
+
 	let httpRequest = new XMLHttpRequest();
 
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
+				data = JSON.parse(httpRequest.response);
+				form_key.value = data['csrf'];
+				if (control_ajax_return(data))
+					return;
 				like.style.color = '#ed6e2f';
-				like.id = "like" + httpRequest.responseText;
+				like.id = "like" + data['like_id'];
 				count_likes.innerHTML = parseInt(count_likes.innerHTML) + 1;
 				like.removeEventListener('click', add_like_picture);
 				like.addEventListener('click', remove_like_picture);
@@ -115,20 +130,28 @@ function add_like_picture(ev)
 		}
 	};
 
-	httpRequest.open("GET", 'picture/like?picture_id=' + ev.currentTarget.id, true);
-	httpRequest.send();
+	httpRequest.open("POST", 'picture/like', true);
+	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	httpRequest.send(data);
 }
 
 function remove_like_picture(ev)
 {
+	let data = "like_id=" + ev.currentTarget.id
+	+ "&form_key=" + form_key.value;
+
 	let httpRequest = new XMLHttpRequest();
 
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
+				data = JSON.parse(httpRequest.response);
+				form_key.value = data['csrf'];
+				if (control_ajax_return(data))
+					return;
 				like.style.color = 'black';
-				like.id = "like" + httpRequest.responseText;
+				like.id = "like" + data['picture_id'];
 				count_likes.innerHTML = parseInt(count_likes.innerHTML) - 1;
 				like.removeEventListener('click', remove_like_picture);
 				like.addEventListener('click', add_like_picture);
@@ -140,13 +163,16 @@ function remove_like_picture(ev)
 		}
 	};
 
-	httpRequest.open("GET", 'picture/dislike?like_id=' + ev.currentTarget.id, true);
-	httpRequest.send();
+	httpRequest.open("POST", 'picture/dislike', true);
+	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	httpRequest.send(data);
 }
 
 function post_comment(ev)
-{
-	let data = "picture_id=" + photo.id + "&comment=" + ev.currentTarget.value;
+{	
+	let data = "picture_id=" + photo.id 
+	+ "&comment=" + ev.currentTarget.value 
+	+ "&form_key=" + form_key.value;
 	let httpRequest = new XMLHttpRequest();
 
 	httpRequest.onreadystatechange = function() {
@@ -154,7 +180,9 @@ function post_comment(ev)
 			if (httpRequest.status === 200)
 			{
 				data = JSON.parse(httpRequest.response);
-
+				form_key.value = data['csrf'];
+				if (control_ajax_return(data))
+					return;
 				let comment_div = document.createElement('div');
 				comment_div.className = "comment-div";
 
@@ -186,5 +214,4 @@ function post_comment(ev)
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }
-input.addEventListener("change", post_comment);
 

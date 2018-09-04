@@ -13,8 +13,9 @@ class HomeController extends Controller
 	{
 		$data = [
 			'title' => 'Home',
-			'user' => $this->container->get_auth()->being_auth('osef'),
-			'pictures' => $this->container->get_PictureCollection()->all_pictures()
+			'user' => $this->auth->being_auth('osef'),
+			'pictures' => $this->container->get_PictureCollection()->all_pictures(),
+			'csrf' => $this->form_key->outputKey()
 		];
 		$this->container->get_View("gallery.php", $data);
 	}
@@ -22,15 +23,18 @@ class HomeController extends Controller
 	public function modal($params)
 	{
 		// $params -> picture_id
-		$user = $this->container->get_auth()->being_auth('osef');
+		$user = $this->auth->being_auth('osef');
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
-		$owner = $this->container->get_UserCollection()->find('id', $picture->get_user_id());
+		$owner = $this->users->find('id', $picture->get_user_id());
 		$count = $picture->get_likes();
+
+		// change SQL requetes with a join
+		
 		$comments = $picture->get_comments();
 		$display_comments = [];
 		foreach($comments as $comment)
 		{
-			$owner = $this->container->get_UserCollection()->find('id', $comment->get_user_id());
+			$owner = $this->users->find('id', $comment->get_user_id());
 			array_push($display_comments, [
 				'text' => $comment->get_comment(),
 				'owner_profile' => $owner->get_gravatar_hash(),

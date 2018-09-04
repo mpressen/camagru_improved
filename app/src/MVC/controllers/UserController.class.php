@@ -13,26 +13,23 @@ class UserController extends Controller
 	# SIGN UP (form -> send mail -> insert in db)
 	public function signup($params)
 	{	
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 
-		$csrf = $this->container->get_FormKey();
-
-		$this->container->get_View("signup.php", ['title' => 'Sign Up', 'csrf' => $csrf->outputKey()]);
+		$this->container->get_View("signup.php", ['title' => 'Sign Up', 'csrf' => $this->form_key->outputKey()]);
 	}
 	public function create($params)
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 		
-		$this->container->get_security()->check_csrf('/user/signup');
+		$this->security->check_csrf('/user/signup');
 		unset($params['form_key']);
 
-		$this->container->get_security()->validate_inputs_format($params, '/user/signup');
+		$this->security->validate_inputs_format($params, '/user/signup');
 
 		// find if login and mail are already in database (must be uniques)
-		$meta_user = $this->container->get_UserCollection();
 		foreach(['login', 'mail'] as $field)
 		{
-			if ($meta_user->find($field, $params[$field]))
+			if ($this->users->find($field, $params[$field]))
 			{
 				$_SESSION['message'] = '"'.$params[$field].'" is already used.';
 				header("Location: /user/signup");
@@ -40,7 +37,7 @@ class UserController extends Controller
 			}
 		}
 
-		$new_user = $meta_user->new($params);
+		$new_user = $this->users->new($params);
 
 		$mailer = $this->container->get_Mailer();
 		$mailer->send_confirmation($new_user);
@@ -50,10 +47,10 @@ class UserController extends Controller
 	}
 	public function confirm($params)
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 
-		$meta_user = $this->container->get_UserCollection();
-		$user = $meta_user->find('login', $params['login']);
+		
+		$user = $this->users->find('login', $params['login']);
 		
 		if (!$user)
 		{
@@ -92,30 +89,28 @@ class UserController extends Controller
 	# SIGN IN (form -> redirect)
 	public function signin()
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 
-		$csrf = $this->container->get_FormKey();
-
-		$this->container->get_View("signin.php", ['title' => 'Sign In', 'csrf' => $csrf->outputKey()]);
+		$this->container->get_View("signin.php", ['title' => 'Sign In', 'csrf' => $this->form_key->outputKey()]);
 	}
 	public function connect($params)
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 		
-		$this->container->get_security()->check_csrf('/user/signin');
+		$this->security->check_csrf('/user/signin');
 		unset($params['form_key']);
 		
-		$this->container->get_security()->validate_inputs_format($params, '/user/signin');
+		$this->security->validate_inputs_format($params, '/user/signin');
 
-		$meta_user = $this->container->get_UserCollection();
-		$user = $meta_user->find('mail', $params['mail']);
+		
+		$user = $this->users->find('mail', $params['mail']);
 		if (!$user)
 		{
 			$_SESSION['message'] = '"'.$params['mail'].'" is not registered. Please create your account first.';
 			header("Location: /user/signup");
 			exit;	
 		}
-		if (!($user->get_pwd() === $this->container->get_security()->my_hash($params['pwd'])))
+		if (!($user->get_pwd() === $this->security->my_hash($params['pwd'])))
 		{
 			$_SESSION['message'] = 'Wrong password';
 			header("Location: /user/signin");
@@ -126,7 +121,7 @@ class UserController extends Controller
 		else
 		{
 			$_SESSION['message'] = "Welcome ".$user->get_login()." !";
-			$this->container->get_auth()->connect($user);
+			$this->auth->connect($user);
 		}
 		header("Location: /");
 	}
@@ -135,11 +130,11 @@ class UserController extends Controller
 	# SIGN OUT (redirect)
 	public function signout()
 	{
-		$user = $this->container->get_auth()->being_auth(true);
+		$user = $this->auth->being_auth(true);
 
 		$_SESSION['message'] = 'Bye '.$user->get_login().' !!!';
 
-		$this->container->get_auth()->disconnect();
+		$this->auth->disconnect();
 		header("Location: /");
 	}
 
@@ -147,22 +142,22 @@ class UserController extends Controller
 	# RESET (form -> send mail -> control link -> form -> update in db)
 	public function reset()
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 
-		$csrf = $this->container->get_FormKey();
+		$csrf = $this->form_key;
 
 		$this->container->get_View("reset.php", ['title' => 'Reset', 'csrf' => $csrf->outputKey()]);
 	}
 	public function reset_1($params)
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 		
-		$this->container->get_security()->check_csrf('/user/reset');
+		$this->security->check_csrf('/user/reset');
 		unset($params['form_key']);
 		
-		$this->container->get_security()->validate_inputs_format($params, '/user/reset');
+		$this->security->validate_inputs_format($params, '/user/reset');
 
-		$meta_user = $this->container->get_UserCollection();$user = $this->container->get_UserCollection()->find('mail', $params['mail']);
+		$user = $this->users->find('mail', $params['mail']);
 		if (!$user)
 		{
 			$_SESSION['message'] = '"'.$params['mail'].'" is not registered. Please create your account first.';
@@ -177,9 +172,9 @@ class UserController extends Controller
 	}
 	public function reset_2($params)
 	{
-		$this->container->get_auth()->being_auth(false);
+		$this->auth->being_auth(false);
 
-		$user = $this->container->get_UserCollection()->find('login', $params['login']);
+		$user = $this->users->find('login', $params['login']);
 		if (!$user)
 		{
 			sleep(1);
@@ -199,26 +194,26 @@ class UserController extends Controller
 		$user->set_confirmkey();
 		$user->update('confirmkey');
 		
-		$this->container->get_auth()->connect($user);
+		$this->auth->connect($user);
 
 		header("Location: /user/reset_password");
 	}
 	public function reset_password()
 	{
-		$user = $this->container->get_auth()->being_auth(true);
+		$user = $this->auth->being_auth(true);
 
-		$csrf = $this->container->get_FormKey();
+		$csrf = $this->form_key;
 
 		$this->container->get_View("reset_password.php", ['title' => 'Reset Password', 'csrf' => $csrf->outputKey(), 'user' => $user]);
 	}
 	public function reset_3($params)
 	{
-		$user = $this->container->get_auth()->being_auth(true);
+		$user = $this->auth->being_auth(true);
 		
-		$this->container->get_security()->check_csrf('/user/reset_password');
+		$this->security->check_csrf('/user/reset_password');
 		unset($params['form_key']);
 
-		$this->container->get_security()->validate_inputs_format($params, '/user/reset_password');
+		$this->security->validate_inputs_format($params, '/user/reset_password');
 		
 		$user->set_pwd($params['pwd']);
 		$user->update('pwd');
@@ -229,27 +224,32 @@ class UserController extends Controller
 	# UPDATE PROFILE INFO
 	public function profile($params)
 	{	
-		$user = $this->container->get_auth()->being_auth(true);
+		$user = $this->auth->being_auth(true);
 
-		$csrf = $this->container->get_FormKey();
+		$csrf = $this->form_key;
 
 		$this->container->get_View("update.php", ['title' => 'My profile', 'csrf' => $csrf->outputKey(), 'user' => $user]);
 	}
 	public function update($params)
 	{
-		$user = $this->container->get_auth()->being_auth(true);
+		$user = $this->auth->being_auth(true, true);
+		if ($user === NULL)
+		{
+			echo 'no-log';
+			exit;
+		}
 		
-		$this->container->get_security()->check_csrf('/user/profile');
+		$this->security->check_csrf('/user/profile');
 		unset($params['form_key']);
 
-		$this->container->get_security()->validate_inputs_format($params, '/user/profile');
+		$this->security->validate_inputs_format($params, '/user/profile');
 
-		$meta_user = $this->container->get_UserCollection();
+		
 			
 		if (isset($params['login']))
 		{	
 			# stop if this login already exist
-			if ($meta_user->find('login', $params['login']))
+			if ($this->users->find('login', $params['login']))
 			{
 				$_SESSION['message'] = '"'.$params['login'].'" is already used.';
 				exit;
@@ -263,7 +263,7 @@ class UserController extends Controller
 		else if (isset($params['mail']))
 		{
 			# stop if this mail already exist
-			if ($meta_user->find('mail', $params['mail']))
+			if ($this->users->find('mail', $params['mail']))
 			{
 				$_SESSION['message'] = '"'.$params['mail'].'" is already used.';
 				exit;

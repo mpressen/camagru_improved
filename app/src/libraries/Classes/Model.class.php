@@ -2,15 +2,15 @@
 
 abstract class Model
 {
+	protected $container;
 	protected $pdo;
 	protected $security;
-	protected $container;
 
-	public function __construct($pdo, $security, $container)
+	public function __construct($container)
 	{
-		$this->pdo = $pdo;
-		$this->security = $security;
 		$this->container = $container;
+		$this->pdo = $container->get_pdo();
+		$this->security = $container->get_security();
 	}
 
 	public function insert($params)

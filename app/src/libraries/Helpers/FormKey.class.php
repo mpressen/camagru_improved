@@ -1,32 +1,44 @@
 <?php
 
 class FormKey
-{
-    private $form_key;
+{   
+    private $container;
+    private $security;
+    private $key;
     
-    public function __construct($security)
-    {
+    public function __construct($container)
+    {   
+        $this->container = $container;
+        $this->security = $container->get_security();
         if (!isset($_SESSION['form_key']))
-            $_SESSION['form_key'] = $security->create_key();
-        $this->form_key = $_SESSION['form_key'];
+            $_SESSION['form_key'] = $this->security->create_key();
+        $this->key = $_SESSION['form_key'];
+    }
+
+    public function get_key()
+    {
+        return $this->key;
     }
 
     public function outputKey()
     {
-        return "<input type='hidden' name='form_key' id='form_key' value='".$this->form_key."'/>";
+        return "<input type='hidden' name='form_key' id='form_key' value='".$this->key."'/>";
     }
+
 
     public function validate()
     {
-        $this->_destroy_key();
-        if($_POST['form_key'] == $this->form_key)
+        $check_key = $this->key;
+        $this->_reset_key();
+        if($_POST['form_key'] == $check_key)
             return true;
         return false;
     }
 
-    private function _destroy_key()
+    private function _reset_key()
     {
-        unset($_SESSION['form_key']);
+        $_SESSION['form_key'] = $this->security->create_key();
+        $this->key = $_SESSION['form_key'];
     }
 
 }

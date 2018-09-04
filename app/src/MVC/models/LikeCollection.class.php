@@ -4,9 +4,9 @@ require_once ROOT_PATH."src/libraries/Classes/Model.class.php";
 
 class LikeCollection extends Model
 {
-	public function __construct($pdo, $security, $container)
+	public function __construct($container)
 	{
-		parent::__construct($pdo, $security, $container);
+		parent::__construct($container);
 	}
 
 	public function new($params)

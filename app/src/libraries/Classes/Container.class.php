@@ -28,14 +28,19 @@ class Container
 	private $pdo;
 	private $security;
 	private $auth;
+	private $form_key;
+	private $users;
 
 	public function __construct()
 	{	
+		$this->set_pdo();
 		$this->security = new Security($this);
 		$this->auth = new Auth($this);
+		$this->form_key = new FormKey($this);
+		$this->users = new UserCollection($this);
 	}
 
-	public function set_pdo()
+	private function set_pdo()
 	{
 		try
 		{
@@ -69,16 +74,21 @@ class Container
 		return $this->auth;
 	}
 
-	public function get_ImageHelper()
+	public function get_form_key()
 	{
-		return new ImageHelper();
+		return $this->form_key;
+	}
+
+	public function get_users()
+	{
+		return $this->users;
 	}
 
 
 
-	public function get_FormKey()
+	public function get_ImageHelper()
 	{
-		return new FormKey($this->security);
+		return new ImageHelper();
 	}
 
 	public function get_Mailer()
@@ -94,57 +104,37 @@ class Container
 
 	public function get_User($params)
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new User($params, $this->pdo, $this->security, $this);
+		return new User($params, $this);
 	}
 
-	public function get_UserCollection()
-	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new UserCollection($this->pdo, $this->security, $this);
-	}
 
 	public function get_Picture($params)
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new Picture($params, $this->pdo, $this->security, $this);
+		return new Picture($params, $this);
 	}
 
 	public function get_PictureCollection()
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new PictureCollection($this->pdo, $this->security, $this);
+		return new PictureCollection($this);
 	}
 
 	public function get_Like($params)
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new Like($params, $this->pdo, $this->security, $this);
+		return new Like($params, $this);
 	}
 
 	public function get_LikeCollection()
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new LikeCollection($this->pdo, $this->security, $this);
+		return new LikeCollection($this);
 	}
 
 	public function get_Comment($params)
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new Comment($params, $this->pdo, $this->security, $this);
+		return new Comment($params, $this);
 	}
 
 	public function get_CommentCollection()
 	{
-		if (!isset($this->pdo))
-			$this->set_pdo();
-		return new CommentCollection($this->pdo, $this->security, $this);
+		return new CommentCollection($this);
 	}
 }

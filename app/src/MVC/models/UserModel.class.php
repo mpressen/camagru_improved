@@ -12,9 +12,9 @@ class User extends Model
 	private $confirmation;
 	private $current_session_id;
 
-	public function __construct($params, $pdo, $security, $container)
+	public function __construct($params, $container)
 	{
-		parent::__construct($pdo, $security, $container);
+		parent::__construct($container);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}

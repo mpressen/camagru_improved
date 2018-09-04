@@ -20,6 +20,7 @@
 	</div>
 </div>
 <div class="pictures-container">
+	<?php echo $data['csrf']?>
 	<?php 
 	foreach($data['user']->get_pictures() as $picture)
 	{

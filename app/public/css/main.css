@@ -233,6 +233,7 @@ h1,h2,h3,h4,h5,h6 {
 /* FLASH */
 .flash-message {
 	position: absolute;
+	z-index: 101;
 	top: -50px;
 	width: 100%;
 	background: #fde073;

@@ -8,9 +8,9 @@ class Picture extends Model
 	private $user_id;
 	private $path;
 
-	public function __construct($params, $pdo, $security, $container)
+	public function __construct($params, $container)
 	{
-		parent::__construct($pdo, $security, $container);
+		parent::__construct($container);
 		foreach ($params as $key => $param) {
 			$this->$key = $param;
 		}
