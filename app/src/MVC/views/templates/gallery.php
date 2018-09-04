@@ -1,4 +1,5 @@
-<div class="gallery">
+<span class="scrolled">0</span>
+<div class="gallery" tabindex="-1">
   <div class="myModal">
     <div class="modal-content">
       <?php echo $data['csrf']?>
@@ -20,19 +21,18 @@
           <h2 class="comments-title">COMMENTS</h2>
           <div class="comments-body"></div>
           <div class="comments-add">
-              <textarea class="comment-area" name="comments" placeholder="New comment (500 char. max)" required></textarea>
+            <textarea class="comment-area" name="comments" placeholder="New comment (500 char. max)" required></textarea>
           </div>
         </div>
       </div>
     </div>
-
   </div>
   <?php 
-  foreach($data['pictures'] as $picture)
-  {
-    echo '<div id="pic'.$picture->get_id().'" class="gallery-picture-container">';
-    echo '<img class="gallery-photo" src="'.$picture->get_path().'">';
-    echo '</div>';
-  }
-  ?>
+foreach($data['pictures'] as $picture)
+{
+  echo '<div id="pic'.$picture->get_id().'" class="gallery-picture-container">';
+  echo '<img class="gallery-photo" src="'.$picture->get_path().'">';
+  echo '</div>';
+}
+?>
 </div>

@@ -41,4 +41,26 @@ class Mailer
 		$header .= "Content-Type: text/html; charset=UTF-8\r\n";
 		mail($user->get_mail(), $sujet, $message, $header);
 	}
+
+	public function comment_received($user, $picture)
+	{	
+		$message = "
+		<html>
+		  <body>
+		    <p> Hello ".$user->get_login().",
+		      <br>
+		        Someone has just commented this picture :
+		      <br>
+		      <img src='".$_SERVER['HTTP_ORIGIN'].$picture->get_path()."'>
+		      <br>
+		      <a href='".$_SERVER['HTTP_ORIGIN']."'>
+			  	Go to website
+			  </a>
+		  </body>
+		</html>";
+		$sujet = "You received a new comment";
+		$header = "From: Camagru<camagru.mpressen@gmail.com>\r\n";
+		$header .= "Content-Type: text/html; charset=UTF-8\r\n";
+		mail($user->get_mail(), $sujet, $message, $header);
+	}
 }

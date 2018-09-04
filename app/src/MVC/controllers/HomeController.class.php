@@ -14,7 +14,7 @@ class HomeController extends Controller
 		$data = [
 			'title' => 'Home',
 			'user' => $this->auth->being_auth('osef'),
-			'pictures' => $this->container->get_PictureCollection()->all_pictures(),
+			'pictures' => $this->container->get_PictureCollection()->all_pictures(20),
 			'csrf' => $this->form_key->outputKey()
 		];
 		$this->container->get_View("gallery.php", $data);
@@ -52,5 +52,20 @@ class HomeController extends Controller
 			$auth_like = false;
 
 		echo json_encode(['count' => $count, 'auth' => $user, 'auth_like' => $auth_like, 'owner_profile' => $owner->get_gravatar_hash(), 'owner_login' => $owner->get_login(), 'comments' => $display_comments]);
+	}
+	public function infinite($params)
+	{
+		// $params -> picture_id
+		$pictures = $this->container->get_PictureCollection()->all_pictures_before($params['picture_id'], 5);
+	
+		$display_pictures = [];
+		foreach($pictures as $picture)
+		{
+			array_push($display_pictures, [
+				'id' => $picture->get_id(),
+				'path' => $picture->get_path()
+			]);
+		}
+		echo json_encode(['pictures' => $display_pictures]);
 	}
 }

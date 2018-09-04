@@ -84,12 +84,36 @@ abstract class Model
 		return $ret;
 	}
 
-	public function find_all($field, $value, $order = 'ASC', $key = 'id')
+	public function find_all($field, $value, $order = 'ASC', $key = 'id', $limit = false)
 	{
 		$class = str_replace('Collection', '', get_class($this));
 		$table = strtolower($class)."s";
-		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
+		if ($limit)
+		{
+			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order." LIMIT ".$limit);
+		}
+		else
+			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
 		$prep->execute(array($value));
+		$ret = $prep->fetchAll();
+		$maker = "get_".$class;
+		$list = [];
+		foreach($ret as $object)
+			array_push($list, $this->container->$maker($object));
+		return $list;
+	}
+
+	public function find_all_before($field, $start, $order = 'ASC', $key = 'id', $limit = false)
+	{
+		$class = str_replace('Collection', '', get_class($this));
+		$table = strtolower($class)."s";
+		if ($limit)
+		{
+			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' < ? ORDER BY '.$key." ".$order." LIMIT ".$limit);
+		}
+		else
+			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
+		$prep->execute(array($start));
 		$ret = $prep->fetchAll();
 		$maker = "get_".$class;
 		$list = [];

@@ -105,6 +105,11 @@ class PictureController extends Controller
 
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
 		$comment_id = $this->container->get_CommentCollection()->new(['user_id' => $user->get_id(), 'picture_id' => $params['picture_id'], 'comment' => $params['comment']]);
+
+		$owner = $picture->get_owner();
+		$mailer = $this->container->get_Mailer();
+		$mailer->comment_received($owner, $picture);
+
 		echo json_encode(['comment' => $params['comment'], 'owner_profile' => $user->get_gravatar_hash(), 'owner_login' => $user->get_login(), 'csrf' => $form_key]);
 	}
 }

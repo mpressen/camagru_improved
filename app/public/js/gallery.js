@@ -7,6 +7,10 @@ let owner_profile = document.querySelector(".owner-profile");
 let input = document.querySelector(".comment-area");
 let comments_body = document.querySelector(".comments-body");
 let form_key = document.querySelector("#form_key");
+let gallery = document.querySelector(".gallery");
+let scrolled = document.querySelector(".scrolled");
+
+gallery.focus();
 
 close.onclick = function() {
 	modal.style.display = "none";
@@ -23,6 +27,57 @@ window.onclick = function(event) {
 
 	}
 }
+
+// infinite scrolling
+gallery.addEventListener("scroll", function (ev) {
+	let old = scrolled.innerHTML;
+	let tmp = parseInt(this.scrollTop / 240);
+	if (tmp > old)
+	{
+		scrolled.innerHTML = tmp;
+		load_more_pictures();
+	}
+  // if( $el.innerHeight()+$el.scrollTop() >= this.scrollHeight-5 ){
+  //   var d = new Date();
+  //   $el.append('more text added on '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+'<br>');
+  // }
+});
+
+function load_more_pictures()
+{
+	let httpRequest = new XMLHttpRequest();
+
+	httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200)
+			{	
+				data = JSON.parse(httpRequest.response);
+				data['pictures'].forEach(function(picture){
+					let picture_div = document.createElement('div');
+					picture_div.id = "pic" + picture.id;
+					picture_div.className = "gallery-picture-container";
+
+					let moar_picture = document.createElement('img');
+					moar_picture.className = "gallery-photo";
+					moar_picture.src = picture.path;
+					
+					picture_div.append(moar_picture);
+					gallery.append(picture_div);
+				});
+				
+
+			}
+			else
+			{
+				flash("Internal problem. Please contact admin.")
+			}
+		}
+	};
+
+	httpRequest.open("GET", 'home/infinite?picture_id=' + gallery.lastElementChild.id, false);
+	httpRequest.send();
+};
+
 
 function show_modal(ev)
 {	

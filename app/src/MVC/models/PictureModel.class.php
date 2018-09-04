@@ -47,4 +47,9 @@ class Picture extends Model
 	{
 		return $this->container->get_CommentCollection()->picture_comments($this->get_id());
 	}
+
+	public function get_owner()
+	{
+		return $this->container->get_users()->find('id', $this->get_user_id());
+	}
 }

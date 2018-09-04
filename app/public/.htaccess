@@ -4,6 +4,7 @@ RewriteEngine on
 
 RewriteRule ^home/index/?$ /index.php [L]
 RewriteRule ^home/modal/?$ /index.php [L]
+RewriteRule ^home/infinite/?$ /index.php [L]
 
 
 RewriteRule ^user/signup/?$ /index.php [L]
