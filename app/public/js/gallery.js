@@ -9,6 +9,10 @@ let comments_body = document.querySelector(".comments-body");
 let form_key = document.querySelector("#form_key");
 let gallery = document.querySelector(".gallery");
 
+if (modal.id)
+	show_modal();
+
+
 gallery.focus();
 
 // infinite scrolling
@@ -26,15 +30,15 @@ function load_pictures_count()
 {
 	switch (true) {
 		case (window.innerWidth <= 502):
-			return 1;
+		return 1;
 		case (window.innerWidth <= 1004):
-			return 2;
+		return 2;
 		case (window.innerWidth <= 1506):
-			return 3;
+		return 3;
 		case (window.innerWidth <= 2008):
-			return 4;
+		return 4;
 		default:
-			return 5;
+		return 5;
 	}
 }
 
@@ -73,7 +77,7 @@ function load_more_pictures()
 		}
 	};
 
-	httpRequest.open("GET", 'home/infinite?picture_id=' + gallery.lastElementChild.id + '&load_count=' + sum, true);
+	httpRequest.open("GET", '/home/infinite?picture_id=' + gallery.lastElementChild.id + '&load_count=' + sum, true);
 	httpRequest.send();
 };
 
@@ -99,9 +103,7 @@ function reset_modal(ev)
 
 function show_modal(ev)
 {	
-	let pic_container = ev.currentTarget
-	let pic = pic_container.firstElementChild;
-
+	let pic_container_id = modal.id ? modal.id : ev.currentTarget.id;
 	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -111,14 +113,14 @@ function show_modal(ev)
 				count_likes.innerHTML = data['count'];
 				owner_profile.src = 'https://www.gravatar.com/avatar/' + data['owner_profile'] + "?d=mp";
 				owner_profile.title = data['owner_login'];
-				photo.src = pic.src;
+				photo.src = data['image_path'];
 
 				if (data['auth'] && !data['auth_like'])
 				{
 					like.addEventListener('click', add_like_picture);
 					input.addEventListener("change", post_comment);
-					like.id = "like" + pic_container.id;
-					photo.id = "bis" + pic_container.id;
+					like.id = "like" + pic_container_id;
+					photo.id = "bis" + pic_container_id;
 				}
 				else if (data['auth'] && data['auth_like'])
 				{
@@ -162,7 +164,7 @@ function show_modal(ev)
 		}
 	};
 
-	httpRequest.open("GET", 'home/modal?picture_id=' + pic_container.id, true);
+	httpRequest.open("GET", '/home/modal?picture_id=' + pic_container_id, true);
 	httpRequest.send();
 }
 let pic = document.querySelectorAll(".gallery-picture-container");
@@ -174,7 +176,7 @@ for (let i = 0; i < pic.length; i++)
 function add_like_picture(ev)
 {
 	let data = "picture_id=" + ev.currentTarget.id
-			 + "&form_key=" + form_key.value;
+	+ "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
@@ -200,7 +202,7 @@ function add_like_picture(ev)
 		}
 	};
 
-	httpRequest.open("POST", 'picture/like', true);
+	httpRequest.open("POST", '/picture/like', true);
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }
@@ -208,7 +210,7 @@ function add_like_picture(ev)
 function remove_like_picture(ev)
 {
 	let data = "like_id=" + ev.currentTarget.id
-			 + "&form_key=" + form_key.value;
+	+ "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
@@ -233,7 +235,7 @@ function remove_like_picture(ev)
 		}
 	};
 
-	httpRequest.open("POST", 'picture/dislike', true);
+	httpRequest.open("POST", '/picture/dislike', true);
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }
@@ -241,8 +243,8 @@ function remove_like_picture(ev)
 function post_comment(ev)
 {	
 	let data = "picture_id=" + photo.id 
-			 + "&comment=" + ev.currentTarget.value 
-			 + "&form_key=" + form_key.value;
+	+ "&comment=" + ev.currentTarget.value 
+	+ "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
@@ -281,7 +283,7 @@ function post_comment(ev)
 		}
 	};
 
-	httpRequest.open("POST", 'picture/comment', true);
+	httpRequest.open("POST", '/picture/comment', true);
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }

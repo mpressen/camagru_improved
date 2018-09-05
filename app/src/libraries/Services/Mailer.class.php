@@ -49,12 +49,9 @@ class Mailer
 		  <body>
 		    <p> Hello ".$user->get_login().",
 		      <br>
-		        Someone has just commented this picture :
-		      <br>
-		      <img src='".$_SERVER['HTTP_ORIGIN'].$picture->get_path()."'>
-		      <br>
-		      <a href='".$_SERVER['HTTP_ORIGIN']."'>
-			  	Go to website
+		        Someone has just commented one of your picture :
+		      <a href='".$_SERVER['HTTP_ORIGIN']."/home/index?picture_id=".$picture->get_id()."'>
+			  	Go to your picture
 			  </a>
 		  </body>
 		</html>";

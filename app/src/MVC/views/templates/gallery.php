@@ -1,5 +1,5 @@
 <div class="gallery" tabindex="-1">
-  <div class="myModal">
+  <div class="myModal" id="<?php echo $data['picture']; ?>">
     <div class="modal-content">
       <?php echo $data['csrf']?>
       <div class="modal-header">
@@ -27,11 +27,11 @@
     </div>
   </div>
   <?php 
-foreach($data['pictures'] as $picture)
-{
-  echo '<div id="pic'.$picture->get_id().'" class="gallery-picture-container">';
-  echo '<img class="gallery-photo" src="'.$picture->get_path().'">';
-  echo '</div>';
-}
-?>
+  foreach($data['pictures'] as $picture)
+  {
+    echo '<div id="pic'.$picture->get_id().'" class="gallery-picture-container">';
+    echo '<img class="gallery-photo" src="'.$picture->get_path().'">';
+    echo '</div>';
+  }
+  ?>
 </div>
