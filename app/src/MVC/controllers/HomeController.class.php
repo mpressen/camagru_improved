@@ -11,15 +11,24 @@ class HomeController extends Controller
 	
 	public function index($params)
 	{
+		if ($params['picture_id'])
+		{
+			$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
+			if (!$picture)
+			{
+				$_SESSION['message'] = 'This picture doesn\'t exist.';
+				header("Location: /");
+				exit;
+			}
+		}
+
 		$data = [
 			'title' => 'Home',
 			'user' => $this->auth->being_auth('osef'),
 			'pictures' => $this->container->get_PictureCollection()->all_pictures(20),
-			'csrf' => $this->form_key->outputKey()
+			'csrf' => $this->form_key->outputKey(),
+			'picture' => $params['picture_id']
 		];
-		if ($params['picture_id'])
-			$data['picture'] = $params['picture_id'];
-			
 		$this->container->get_View("gallery.php", $data);
 	}
 
@@ -56,7 +65,7 @@ class HomeController extends Controller
 	{
 		// $params -> picture_id
 		$pictures = $this->container->get_PictureCollection()->all_pictures_before($params['picture_id'], $params['load_count']);
-	
+
 		$display_pictures = [];
 		foreach($pictures as $picture)
 		{
