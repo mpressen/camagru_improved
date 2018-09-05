@@ -30,16 +30,16 @@ class HomeController extends Controller
 
 		// change SQL requetes with a join
 		
-		$comments = $picture->get_comments();
+		$comments_with_user_infos = $picture->get_comments_with_user_infos();
+		// echo json_encode(['comments' => $comments]);
 		$display_comments = [];
-		foreach($comments as $comment)
+		foreach($comments_with_user_infos as $comment)
 		{
-			$owner = $this->users->find('id', $comment->get_user_id());
 			array_push($display_comments, [
-				'text' => $comment->get_comment(),
-				'owner_profile' => $owner->get_gravatar_hash(),
-				'owner_login' =>$owner->get_login(),
-				'timestamp' => date_format(date_create($comment->get_timestamp()), 'd/m/Y H:i:s')
+				'text' => $comment['comment'],
+				'owner_profile' => md5(strtolower(trim($comment['mail']))),
+				'owner_login' =>$comment['login'],
+				'timestamp' => date_format(date_create($comment['timestamp']), 'd/m/Y H:i:s')
 			]);
 		}
 		if ($user)
@@ -56,7 +56,7 @@ class HomeController extends Controller
 	public function infinite($params)
 	{
 		// $params -> picture_id
-		$pictures = $this->container->get_PictureCollection()->all_pictures_before($params['picture_id'], 5);
+		$pictures = $this->container->get_PictureCollection()->all_pictures_before($params['picture_id'], $params['load_count']);
 	
 		$display_pictures = [];
 		foreach($pictures as $picture)

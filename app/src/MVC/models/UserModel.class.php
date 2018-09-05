@@ -69,6 +69,11 @@ class User extends Model
 		return $this->container->get_PictureCollection()->user_pictures($this->get_id());
 	}
 
+	public function get_pictures_count()
+	{
+		return $this->container->get_PictureCollection()->user_pictures_count($this->get_id());
+	}
+
 
 
 	# SETTERS

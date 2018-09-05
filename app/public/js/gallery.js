@@ -8,43 +8,43 @@ let input = document.querySelector(".comment-area");
 let comments_body = document.querySelector(".comments-body");
 let form_key = document.querySelector("#form_key");
 let gallery = document.querySelector(".gallery");
-let scrolled = document.querySelector(".scrolled");
 
 gallery.focus();
 
-close.onclick = function() {
-	modal.style.display = "none";
-}
-window.onclick = function(event) {
-	if (event.target == modal) {
-		modal.style.display = "none";
-		like.style.color = 'black';
-		like.removeEventListener('click', add_like_picture);
-		like.removeEventListener('click', remove_like_picture);
-		while (comments_body.firstChild) {
-			comments_body.removeChild(comments_body.firstChild);
-		}
-
-	}
-}
-
 // infinite scrolling
-gallery.addEventListener("scroll", function (ev) {
-	let old = scrolled.innerHTML;
-	let tmp = parseInt(this.scrollTop / 240);
-	if (tmp > old)
-	{
-		scrolled.innerHTML = tmp;
+let scroll = 0;
+let ref = 0;
+gallery.addEventListener("scroll", scrolling);
+
+function scrolling() 
+{
+	if (!scroll || parseInt(this.scrollTop / ref) > 0)
 		load_more_pictures();
+}
+
+function load_pictures_count()
+{
+	switch (true) {
+		case (window.innerWidth <= 502):
+			return 1;
+		case (window.innerWidth <= 1004):
+			return 2;
+		case (window.innerWidth <= 1506):
+			return 3;
+		case (window.innerWidth <= 2008):
+			return 4;
+		default:
+			return 5;
 	}
-  // if( $el.innerHeight()+$el.scrollTop() >= this.scrollHeight-5 ){
-  //   var d = new Date();
-  //   $el.append('more text added on '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds()+'<br>');
-  // }
-});
+}
 
 function load_more_pictures()
 {
+	ref += 360 - (scroll * 30);
+	scroll += 1;
+	gallery.removeEventListener("scroll", scrolling);
+	let images_on_row = load_pictures_count();
+	let sum = images_on_row - ((parseInt(gallery.childElementCount) - 1) % images_on_row);
 	let httpRequest = new XMLHttpRequest();
 
 	httpRequest.onreadystatechange = function() {
@@ -63,21 +63,39 @@ function load_more_pictures()
 					
 					picture_div.append(moar_picture);
 					gallery.append(picture_div);
+					gallery.addEventListener("scroll", scrolling);
 				});
 				
 
 			}
 			else
-			{
 				flash("Internal problem. Please contact admin.")
-			}
 		}
 	};
 
-	httpRequest.open("GET", 'home/infinite?picture_id=' + gallery.lastElementChild.id, false);
+	httpRequest.open("GET", 'home/infinite?picture_id=' + gallery.lastElementChild.id + '&load_count=' + sum, true);
 	httpRequest.send();
 };
 
+
+// modal
+close.onclick = function() { reset_modal(); }
+
+window.onclick = function(event) {
+	if (event.target == modal)
+		reset_modal();
+}
+
+function reset_modal(ev)
+{
+	modal.style.display = "none";
+	like.style.color = 'black';
+	like.removeEventListener('click', add_like_picture);
+	like.removeEventListener('click', remove_like_picture);
+	while (comments_body.firstChild) {
+		comments_body.removeChild(comments_body.firstChild);
+	}
+}
 
 function show_modal(ev)
 {	
@@ -85,7 +103,6 @@ function show_modal(ev)
 	let pic = pic_container.firstElementChild;
 
 	let httpRequest = new XMLHttpRequest();
-
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
@@ -94,6 +111,7 @@ function show_modal(ev)
 				count_likes.innerHTML = data['count'];
 				owner_profile.src = 'https://www.gravatar.com/avatar/' + data['owner_profile'] + "?d=mp";
 				owner_profile.title = data['owner_login'];
+				photo.src = pic.src;
 
 				if (data['auth'] && !data['auth_like'])
 				{
@@ -109,21 +127,19 @@ function show_modal(ev)
 					like.style.color = '#ed6e2f';
 					like.id = "like" + data['auth_like'];
 				}
-
 				else
 				{
-					like.style.cursor = 'not-allowed';
 					like.addEventListener('click', function() {flash('You must log in first.')});
-					input.style.cursor = 'not-allowed';
 					input.addEventListener('click', function() {flash('You must log in first.')});
+					like.style.cursor = 'not-allowed';
+					input.style.cursor = 'not-allowed';
 				}
-				photo.src = pic.src;
 				data['comments'].forEach(function(comment){
 					let comment_div = document.createElement('div');
 					comment_div.className = "comment-div";
 
 					let comment_pic = document.createElement('img');
-					comment_pic.className = "owner-profile comment-pic";
+					comment_pic.className = "owner-profile";
 					comment_pic.src = 'https://www.gravatar.com/avatar/' + comment.owner_profile + "?d=mp";
 					comment_pic.title = comment.owner_login;
 
@@ -142,35 +158,36 @@ function show_modal(ev)
 
 			}
 			else
-			{
 				flash("Internal problem. Please contact admin.")
-			}
 		}
 	};
 
 	httpRequest.open("GET", 'home/modal?picture_id=' + pic_container.id, true);
 	httpRequest.send();
 }
-
 let pic = document.querySelectorAll(".gallery-picture-container");
-for (var i = 0; i < pic.length; i++)
+for (let i = 0; i < pic.length; i++)
 	pic[i].addEventListener('click', show_modal);
 
+
+// ajax
 function add_like_picture(ev)
 {
 	let data = "picture_id=" + ev.currentTarget.id
-	+ "&form_key=" + form_key.value;
+			 + "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();
-
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
 				data = JSON.parse(httpRequest.response);
+				
 				form_key.value = data['csrf'];
+				
 				if (control_ajax_return(data))
 					return;
+				
 				like.style.color = '#ed6e2f';
 				like.id = "like" + data['like_id'];
 				count_likes.innerHTML = parseInt(count_likes.innerHTML) + 1;
@@ -179,9 +196,7 @@ function add_like_picture(ev)
 
 			}
 			else
-			{
 				flash("Internal problem. Please contact admin.")
-			}
 		}
 	};
 
@@ -193,18 +208,20 @@ function add_like_picture(ev)
 function remove_like_picture(ev)
 {
 	let data = "like_id=" + ev.currentTarget.id
-	+ "&form_key=" + form_key.value;
+			 + "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();
-
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
 				data = JSON.parse(httpRequest.response);
+				
 				form_key.value = data['csrf'];
+				
 				if (control_ajax_return(data))
 					return;
+				
 				like.style.color = 'black';
 				like.id = "like" + data['picture_id'];
 				count_likes.innerHTML = parseInt(count_likes.innerHTML) - 1;
@@ -212,9 +229,7 @@ function remove_like_picture(ev)
 				like.addEventListener('click', add_like_picture);
 			}
 			else
-			{
 				flash("Internal problem. Please contact admin.")
-			}
 		}
 	};
 
@@ -226,18 +241,21 @@ function remove_like_picture(ev)
 function post_comment(ev)
 {	
 	let data = "picture_id=" + photo.id 
-	+ "&comment=" + ev.currentTarget.value 
-	+ "&form_key=" + form_key.value;
-	let httpRequest = new XMLHttpRequest();
+			 + "&comment=" + ev.currentTarget.value 
+			 + "&form_key=" + form_key.value;
 
+	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === 200)
 			{
 				data = JSON.parse(httpRequest.response);
+
 				form_key.value = data['csrf'];
+				
 				if (control_ajax_return(data))
 					return;
+				
 				let comment_div = document.createElement('div');
 				comment_div.className = "comment-div";
 
@@ -259,9 +277,7 @@ function post_comment(ev)
 				input.value = '';
 			}
 			else
-			{
 				flash("Internal problem. Please contact admin.")
-			}
 		}
 	};
 
@@ -269,4 +285,3 @@ function post_comment(ev)
 	httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	httpRequest.send(data);
 }
-

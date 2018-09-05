@@ -26,7 +26,9 @@ abstract class Model
 		}
 		$table_columns = substr($table_columns, 0, -2).")";
 		$table_bindings = substr($table_bindings, 0, -2).")";
-		$prep = $this->pdo->prepare('INSERT INTO '.$class.$table_columns.' VALUES'.$table_bindings);
+		$prep = $this->pdo->prepare('
+			INSERT INTO '.$class.$table_columns.' 
+			VALUES'.$table_bindings);
 		try
 		{
 			$this->pdo->beginTransaction();
@@ -45,7 +47,10 @@ abstract class Model
 	{
 		$class = strtolower(get_class($this))."s";
 		$getter = "get_".$attribute;
-		$prep = $this->pdo->prepare('UPDATE '.$class.' SET '.$attribute.' = ? WHERE id = ?');
+		$prep = $this->pdo->prepare('
+			UPDATE '.$class.' 
+			SET '.$attribute.' = ? 
+			WHERE id = ?');
 		try
 		{
 			$this->pdo->beginTransaction();
@@ -62,7 +67,11 @@ abstract class Model
 	{
 		$class = str_replace('Collection', '', get_class($this));
 		$table = strtolower($class)."s";
-		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
+		$prep = $this->pdo->prepare('
+			SELECT * 
+			FROM '.$table.' 
+			WHERE '.$field.' = ? 
+			ORDER BY '.$key." ".$order);
 		$prep->execute(array($value));
 		$ret = $prep->fetch();
 		$maker = "get_".$class;
@@ -75,7 +84,11 @@ abstract class Model
 	{
 		$class = str_replace('Collection', '', get_class($this));
 		$table = strtolower($class)."s";
-		$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? AND '.$field2.' = ?');
+		$prep = $this->pdo->prepare('
+			SELECT * 
+			FROM '.$table.' 
+			WHERE '.$field.' = ? 
+			AND '.$field2.' = ?');
 		$prep->execute(array($value, $value2));
 		$ret = $prep->fetch();
 		$maker = "get_".$class;
@@ -90,10 +103,19 @@ abstract class Model
 		$table = strtolower($class)."s";
 		if ($limit)
 		{
-			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order." LIMIT ".$limit);
+			$prep = $this->pdo->prepare('
+				SELECT * 
+				FROM '.$table.' 
+				WHERE '.$field.' = ? 
+				ORDER BY '.$key." ".$order." 
+				LIMIT ".$limit);
 		}
 		else
-			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
+			$prep = $this->pdo->prepare('
+				SELECT * 
+				FROM '.$table.' 
+				WHERE '.$field.' = ? 
+				ORDER BY '.$key." ".$order);
 		$prep->execute(array($value));
 		$ret = $prep->fetchAll();
 		$maker = "get_".$class;
@@ -103,16 +125,41 @@ abstract class Model
 		return $list;
 	}
 
+	public function find_all_with_join($join_field, $join_table, $field, $value, $order = 'ASC', $key = 'id')
+	{
+		$class = str_replace('Collection', '', get_class($this));
+		$table = strtolower($class)."s";
+		$prep = $this->pdo->prepare("
+			SELECT * 
+			FROM ".$table." 
+			LEFT JOIN ".$join_table." 
+			ON ".$table.".".$join_field." = ".$join_table.".id 
+			WHERE ".$table.".".$field." = ? 
+			ORDER BY ".$table.".".$key." ".$order);
+		$prep->execute(array($value));
+		$ret = $prep->fetchAll();
+		return $ret;
+	}
+
 	public function find_all_before($field, $start, $order = 'ASC', $key = 'id', $limit = false)
 	{
 		$class = str_replace('Collection', '', get_class($this));
 		$table = strtolower($class)."s";
 		if ($limit)
 		{
-			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' < ? ORDER BY '.$key." ".$order." LIMIT ".$limit);
+			$prep = $this->pdo->prepare('
+				SELECT * 
+				FROM '.$table.' 
+				WHERE '.$field.' < ? 
+				ORDER BY '.$key." ".$order." 
+				LIMIT ".$limit);
 		}
 		else
-			$prep = $this->pdo->prepare('SELECT * FROM '.$table.' WHERE '.$field.' = ? ORDER BY '.$key." ".$order);
+			$prep = $this->pdo->prepare('
+				SELECT * 
+				FROM '.$table.' 
+				WHERE '.$field.' = ? 
+				ORDER BY '.$key." ".$order);
 		$prep->execute(array($start));
 		$ret = $prep->fetchAll();
 		$maker = "get_".$class;
@@ -125,7 +172,9 @@ abstract class Model
 	public function delete()
 	{
 		$table = strtolower(get_class($this))."s";
-		$prep = $this->pdo->prepare('DELETE FROM '.$table.' WHERE id = ?');
+		$prep = $this->pdo->prepare('
+			DELETE FROM '.$table.' 
+			WHERE id = ?');
 		try
 		{
 			$this->pdo->beginTransaction();
@@ -142,7 +191,11 @@ abstract class Model
 	{
 		$class = str_replace('Collection', '', get_class($this));
 		$table = strtolower($class)."s";
-		$prep = $this->pdo->prepare('SELECT COUNT(*) AS COUNT FROM '.$table.' WHERE '.$field.' = ?');
+		$prep = $this->pdo->prepare('
+			SELECT COUNT(*) 
+			AS COUNT 
+			FROM '.$table.' 
+			WHERE '.$field.' = ?');
 		$prep->execute(array(intval($value)));
 		return $prep->fetch()['COUNT'];
 	}

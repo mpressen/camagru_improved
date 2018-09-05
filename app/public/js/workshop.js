@@ -1,22 +1,15 @@
 let shutter = new Audio('/sounds/shutter.mp3');
-
 let workshop = document.querySelector(".workshop-container");
-
 let preview = document.querySelector("#preview-container");
 let video = document.querySelector("#preview-element");
 let take_picture = document.querySelector("#take-picture");
-
 let picture_taken = document.querySelector("#picture_taken");
 let photo = document.querySelector("#photo");
 let save_picture = document.querySelector("#save-picture");
-
 let my_pics = document.querySelector(".pictures-container");
-
 let frames = document.querySelectorAll(".frames");
 let dropzones = document.querySelectorAll(".dropzones");
-
 let close = document.querySelectorAll(".close");
-
 let form_key = document.querySelector("#form_key");
 
 
@@ -55,12 +48,14 @@ function allowDrop(ev)
 {
 	ev.preventDefault();
 }
+
 function drag(ev) 
 {	
 	ev.dataTransfer.setData("image_id", ev.target.id);
 	ev.dataTransfer.setData("x-drag-offset", ev.offsetX);
 	ev.dataTransfer.setData("y-drag-offset", ev.offsetY);
 }
+
 function drop(ev) 
 {
 	ev.preventDefault();
@@ -72,19 +67,22 @@ function drop(ev)
 
 	img.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
 }
+
 // 		Attach d'n'd events to proper elements and deal with :
 // 		- drag'n'drop (extra tmp layer for precision tweak on frame positioning)
 // 		- taking picture only if a frame is on the preview
-for (var i = 0; i < frames.length; i++)
+for (let i = 0; i < frames.length; i++)
 {
 	frames[i].setAttribute('draggable', true);
 	
 	frames[i].addEventListener('dragstart', drag);
 
 	frames[i].addEventListener('dragenter', function(ev) {
-		layer = document.createElement('div');
-		layer.className = "dropzone-layer";
-		ev.target.parentElement.insertAdjacentElement('afterbegin', layer);
+		dropzones.forEach(function(dropzone){
+			layer = document.createElement('div');
+			layer.className = "dropzone-layer";
+			dropzone.insertAdjacentElement('afterbegin', layer);
+		});
 	});
 	
 	frames[i].addEventListener('dragend', function(ev) {
@@ -106,7 +104,7 @@ for (var i = 0; i < frames.length; i++)
 
 	});
 }
-for (var i = 0; i < dropzones.length; i++)
+for (let i = 0; i < dropzones.length; i++)
 {
 	dropzones[i].addEventListener('drop', drop);
 	dropzones[i].addEventListener('dragover', allowDrop);
@@ -137,6 +135,7 @@ function takepicture(ev) {
 	// copy new frames
 	preview.querySelectorAll('.frames').forEach(function(frame){
 		let clone = frame.cloneNode(true);
+		clone.draggable = false;
 		picture_taken.appendChild(clone);
 	});
 	// make picture appear with associated frames
@@ -185,6 +184,7 @@ function savepicture()
 				close.addEventListener('click', deletepicture);
 
 				pic.append(img, close);
+				my_pics.firstChild.remove();
 				my_pics.insertAdjacentElement('afterbegin', pic);
 				save_picture.style.opacity = 0;
 				save_picture.style.cursor = 'default';
@@ -231,5 +231,5 @@ function deletepicture(ev)
 		httpRequest.send(data);
 	}
 }
-for (var i = 0; i < close.length; i++)
+for (let i = 0; i < close.length; i++)
 	close[i].addEventListener('click', deletepicture);

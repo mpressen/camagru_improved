@@ -43,9 +43,9 @@ class Picture extends Model
 		return $this->container->get_LikeCollection()->picture_liked_by_auth_user($this->get_id(), $user_id);
 	}
 
-	public function get_comments()
+	public function get_comments_with_user_infos()
 	{
-		return $this->container->get_CommentCollection()->picture_comments($this->get_id());
+		return $this->container->get_CommentCollection()->picture_comments_with_user_infos($this->get_id());
 	}
 
 	public function get_owner()

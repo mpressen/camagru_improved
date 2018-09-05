@@ -25,6 +25,7 @@ class Security
 			'user_id' => FILTER_SANITIZE_NUMBER_INT,
 			'picture_id' => FILTER_SANITIZE_NUMBER_INT,
 			'like_id' => FILTER_SANITIZE_NUMBER_INT,
+			'load_count' => FILTER_SANITIZE_NUMBER_INT,
 			'frames' => array(),
 			'base64data' => FILTER_SANITIZE_STRING,
 			'form_key' => FILTER_SANITIZE_STRING,
@@ -83,19 +84,20 @@ class Security
 
 	public function ajax_secure_and_display($user, $no_validation, $no_csrf, $form_key)
 	{
+
 		if (!$user) 
 		{
-			echo json_encode(['message' => 'log', 'csrf' => $form_key]);
+			echo json_encode(['message' => 'You must be logged in.', 'csrf' => $form_key]);
 			return 1;
 		}
 		else if ($no_validation) 
 		{
-			echo json_encode(['message' => 'validation', 'csrf' => $form_key]);
+			echo json_encode(['message' => 'Invalid input.', 'csrf' => $form_key]);
 			return 1;
 		}
 		else if ($no_csrf) 
 		{
-			echo json_encode(['message' => 'csrf', 'csrf' => $form_key]);
+			echo json_encode(['message' => 'CSRF protection. Refresh.', 'csrf' => $form_key]);
 			return 1;
 		}
 	}

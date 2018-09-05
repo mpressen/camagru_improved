@@ -22,8 +22,6 @@
 
 
 
-
-
 /* The Modal (background) */
 .myModal {
     display: none;
@@ -146,6 +144,18 @@
     min-height: 32px;
     height: auto;
     overflow: auto;
+    animation: slide-down 0.5s ease-out;
+}
+
+@keyframes slide-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .comment-text {
@@ -201,18 +211,21 @@
 
 @media (max-width: 2008px) {
 	.gallery-picture-container {
-       width: 25%;
-   }
+        width: 25%;
+    }
+}
 
-   @media (max-width: 1506px) {
-       .gallery-picture-container {
-           width: 33.33%;
-       }
-       @media (max-width: 1004px) {
-           .gallery-picture-container {
-               width: 50%;
-           }
-           @media (max-width: 502px) {
-               .gallery-picture-container {
-                   width: 100%;
-               }
+@media (max-width: 1506px) {
+    .gallery-picture-container {
+        width: 33.33%;
+    }
+}
+@media (max-width: 1004px) {
+    .gallery-picture-container {width: 50%;
+    }
+}
+@media (max-width: 502px) {
+    .gallery-picture-container {
+        width: 100%;
+    }
+}

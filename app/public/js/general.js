@@ -3,7 +3,6 @@ function sandwitch(x) {
 	x.classList.toggle("change");
 }
 
-// Helper: flash message
 function flash (text)
 {
 	let flash = document.createElement("div");
@@ -16,12 +15,7 @@ function control_ajax_return(data)
 {
 	if (data['message'])
 	{	
-		if (data['message'] === 'validation')
-			flash('Invalid input.');
-		else if (data['message'] === 'csrf')
-			flash('CSRF PROTECTION ACTIVATED.');
-		else
-			flash(message);
+		flash(data['message']);
 		return true;
 	}
 	return false;

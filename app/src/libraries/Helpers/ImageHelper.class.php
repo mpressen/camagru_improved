@@ -10,6 +10,7 @@ class ImageHelper
         $filteredData = substr($filteredData, strpos($filteredData, ",") + 1);
         $unencodedData = base64_decode($filteredData);
         $destination = imagecreatefromstring($unencodedData);
+        imageflip($destination, IMG_FLIP_HORIZONTAL);
 
         $largeur_destination = imagesx($destination);
         $hauteur_destination = imagesy($destination);

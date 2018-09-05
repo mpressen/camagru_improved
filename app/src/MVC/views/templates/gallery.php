@@ -1,4 +1,3 @@
-<span class="scrolled">0</span>
 <div class="gallery" tabindex="-1">
   <div class="myModal">
     <div class="modal-content">

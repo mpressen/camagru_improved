@@ -12,6 +12,11 @@
 	text-align: center;
 }
 
+.title-workshop {
+	margin-bottom: 50px;
+	cursor: default;
+}
+
 .preview-container, .preview-element {
 	text-align: left;
 	width: 502px;
@@ -20,7 +25,7 @@
 	overflow: hidden;
 }
 
-.preview-element {
+.preview-element, .photo {
 	transform: rotateY(180deg);
 }
 
@@ -94,7 +99,7 @@ li {
 	border-left: 1px solid rgba(220, 220, 220, 0.5);
 	flex: 0 0 300px; 
 	padding-top: 10px;
-    overflow: auto;
+	overflow: auto;
 }
 
 .small-pic-container {
@@ -102,6 +107,19 @@ li {
 	height: 188px;
 	margin: 5px auto;
 	position: relative;
+	animation: slide-down 0.7s ease-out;
+	transition: all 0.7s;
+}
+
+@keyframes slide-down {
+    0% {
+        opacity: 0;
+        transform: translateY(-1000px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .small-pic {
@@ -114,44 +132,71 @@ li {
 }
 
 .close {
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  width: 16px;
-  height: 16px;
-  opacity: 0.5;
+	position: absolute;
+	right: 8px;
+	top: 8px;
+	width: 16px;
+	height: 16px;
+	opacity: 0.5;
 }
 .close:hover {
-  opacity: 1;
+	opacity: 1;
 }
 .close:before, .close:after {
-  position: absolute;
-  left: 7.5px;
-  content: ' ';
-  height: 16.5px;
-  width: 1px;
-  background-color: #6b2404;
-  border: 0.1px solid rgba(255, 255, 255, 0.1);
+	position: absolute;
+	left: 7.5px;
+	content: ' ';
+	height: 16.5px;
+	width: 1px;
+	background-color: #6b2404;
+	border: 0.1px solid rgba(255, 255, 255, 0.1);
 }
 .close:before {
-  transform: rotate(45deg);
+	transform: rotate(45deg);
 }
 .close:after {
-  transform: rotate(-45deg);
+	transform: rotate(-45deg);
 }
 
 @media (max-width: 1125px) {
-	.content-container {
+	.meta-workshop {
 		display: block;
+		overflow: auto;
+	}
+	.pictures-container {
+		display: block;
+		width: 100%;
+	}
+	.small-pic-container {
+		display: inline-block;
+		width: 25%;
+		height: auto;
+		margin: 0;
+		padding: 0 2px;
+		box-sizing: border-box;
+	}
+	.small-pic {
+		width: 100%;
+		height: auto;
 	}
 	.workshop-container, .pictures-container {
-		border-left: 0;
+		border: 0;
 		border-top: 1px solid rgba(220, 220, 220, 0.5);
 	}
-	.pictures-container li, .frame-container img {
-		display: inline-block;
+}
+
+@media (max-width: 800px) {
+	.small-pic-container {
+		width: 33.33%;
 	}
 }
+
+@media (max-width: 500px) {
+	.small-pic-container {
+		width: 50%;
+	}
+}
+
 
 @media (max-width: 522px) {
 	.preview-container, .preview-element {

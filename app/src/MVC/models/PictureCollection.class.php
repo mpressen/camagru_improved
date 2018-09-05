@@ -19,6 +19,11 @@ class PictureCollection extends Model
 		return $this->find_all('user_id', $user_id, 'DESC');
 	}
 
+	public function user_pictures_count($user_id)
+	{
+		return $this->count('user_id', $user_id);
+	}
+
 	public function all_pictures($limit)
 	{
 		return $this->find_all('1', '1', 'DESC', 'id', $limit);

@@ -14,8 +14,8 @@ class CommentCollection extends Model
 		return $this->insert($params);
 	}
 
-	public function picture_comments($picture_id)
+	public function picture_comments_with_user_infos($picture_id)
 	{
-		return $this->find_all('picture_id', $picture_id, 'DESC');
+		return $this->find_all_with_join('user_id', 'users', 'picture_id', $picture_id, 'DESC');
 	}
 }
