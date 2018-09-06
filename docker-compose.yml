@@ -1,7 +1,8 @@
 version: "3"
 services:
   web:
-    build: .
+    #build: .
+    image: mpressen/camagru
     container_name: camagru_app
     ports:
       - "80:80"

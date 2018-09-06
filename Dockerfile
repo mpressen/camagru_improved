@@ -3,8 +3,6 @@ FROM php:7.2.8-apache
 ENV PROJECT_ROOT /var/www/html/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public/
 
-COPY ./app/ PROJECT_ROOT
-
 RUN apt-get update && apt-get install -y libpng-dev
 RUN docker-php-ext-install gd 
 

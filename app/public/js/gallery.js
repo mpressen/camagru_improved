@@ -117,6 +117,7 @@ function show_modal(ev)
 				owner_profile.src = 'https://www.gravatar.com/avatar/' + data['owner_profile'] + "?d=mp";
 				owner_profile.title = data['owner_login'];
 				photo.src = data['image_path'];
+				owner_profile.id = 'comment' + pic_container_id;
 
 				if (data['auth'] && !data['auth_like'])
 				{
@@ -244,7 +245,7 @@ function remove_like_picture(ev)
 
 function post_comment(ev)
 {	
-	let data = "picture_id=" + like.id 
+	let data = "picture_id=" + owner_profile.id 
 	+ "&comment=" + ev.currentTarget.value 
 	+ "&form_key=" + form_key.value;
 
