@@ -104,6 +104,7 @@ function reset_modal(ev)
 function show_modal(ev)
 {	
 	let pic_container_id = modal.id ? modal.id : ev.currentTarget.id;
+	modal.id = '';
 	let httpRequest = new XMLHttpRequest();
 	httpRequest.onreadystatechange = function() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -120,7 +121,6 @@ function show_modal(ev)
 					like.addEventListener('click', add_like_picture);
 					input.addEventListener("change", post_comment);
 					like.id = "like" + pic_container_id;
-					photo.id = "bis" + pic_container_id;
 				}
 				else if (data['auth'] && data['auth_like'])
 				{
@@ -185,7 +185,7 @@ function add_like_picture(ev)
 			{
 				data = JSON.parse(httpRequest.response);
 				
-				form_key.value = data['csrf'];
+				form_key.value = data['key'];
 				
 				if (control_ajax_return(data))
 					return;
@@ -219,7 +219,7 @@ function remove_like_picture(ev)
 			{
 				data = JSON.parse(httpRequest.response);
 				
-				form_key.value = data['csrf'];
+				form_key.value = data['key'];
 				
 				if (control_ajax_return(data))
 					return;
@@ -242,7 +242,7 @@ function remove_like_picture(ev)
 
 function post_comment(ev)
 {	
-	let data = "picture_id=" + photo.id 
+	let data = "picture_id=" + like.id 
 	+ "&comment=" + ev.currentTarget.value 
 	+ "&form_key=" + form_key.value;
 
@@ -253,7 +253,7 @@ function post_comment(ev)
 			{
 				data = JSON.parse(httpRequest.response);
 
-				form_key.value = data['csrf'];
+				form_key.value = data['key'];
 				
 				if (control_ajax_return(data))
 					return;
@@ -275,7 +275,9 @@ function post_comment(ev)
 				comment_time.innerHTML = 'Just now';
 
 				comment_div.append(comment_pic, comment_text, comment_time);
-				comments_body.insertAdjacentElement('afterbegin', comment_div);
+				// comments_body.insertAdjacentElement('afterbegin', comment_div);
+				comments_body.append(comment_div);
+				comments_body.scrollTop = comments_body.scrollHeight;
 				input.value = '';
 			}
 			else

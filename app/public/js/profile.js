@@ -12,16 +12,24 @@ function update_field(ev)
 		formData.append("form_key", form_key);
 		formData.append(this.name, this.value);
 
-		let request = new XMLHttpRequest();
-		request.addEventListener('load', function(event) {
-			window.location.replace("/user/profile");
-		});
-		request.addEventListener('error', function(event) {
-			flash('Oops! Something went wrong. Please retry later.');
-		});	
+		let httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === XMLHttpRequest.DONE) {
+			if (httpRequest.status === 200)
+			{
+				data = JSON.parse(httpRequest.response);
+				form_key.value = data['key'];
+				if (data['field'])
+					document.querySelector("#login").value = data['field'];
+				control_ajax_return(data);
+			}
+			else
+				flash("Internal problem. Please contact admin.")
+		}
+	};
 
-		request.open("POST", "/user/update");
-		request.send(formData);
+		httpRequest.open("POST", "/user/update");
+		httpRequest.send(formData);
 	}
 	else
 		window.location.replace("/user/profile");

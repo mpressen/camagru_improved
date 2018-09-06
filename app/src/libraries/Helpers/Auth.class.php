@@ -41,7 +41,6 @@ class Auth
         }
         else if ($this->auth_user && $bool === false)
         {
-            $_SESSION['message'] = 'You are already logged in.';
             header("Location: /");
             exit;
         }

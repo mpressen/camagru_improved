@@ -134,8 +134,8 @@ abstract class Model
 			FROM ".$table." 
 			LEFT JOIN ".$join_table." 
 			ON ".$table.".".$join_field." = ".$join_table.".id 
-			WHERE ".$table.".".$field." = ? 
-			ORDER BY ".$table.".".$key." ".$order);
+			WHERE ".$table.".".$field." = ?"); 
+			// ORDER BY ".$table.".".$key." ".$order);
 		$prep->execute(array($value));
 		$ret = $prep->fetchAll();
 		return $ret;

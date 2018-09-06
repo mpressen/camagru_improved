@@ -11,7 +11,7 @@ class Mailer
 		      <br>
 		        click on this link to activate your account :
 		      <br>
-		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/confirm?login=".$user->get_login()."&confirmkey=".$user->get_confirmkey()."'>
+		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/confirm?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
 			  	Activate your account
 			  </a>
 		  </body>
@@ -31,7 +31,7 @@ class Mailer
 		      <br>
 		        click on this link to set up a new password :
 		      <br>
-		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/reset_2?login=".$user->get_login()."&confirmkey=".$user->get_confirmkey()."'>
+		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/reset_2?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
 			  	Reset your password
 			  </a>
 		  </body>

@@ -26,10 +26,11 @@ class Security
 			'picture_id' => FILTER_SANITIZE_NUMBER_INT,
 			'like_id' => FILTER_SANITIZE_NUMBER_INT,
 			'load_count' => FILTER_SANITIZE_NUMBER_INT,
-			'frames' => array(),
+			'frames' => array(
+				'filter'    => FILTER_DEFAULT,
+				'options'   => FILTER_REQUIRE_ARRAY),
 			'base64data' => FILTER_SANITIZE_STRING,
 			'form_key' => FILTER_SANITIZE_STRING,
-			'confirmkey' => FILTER_SANITIZE_STRING,
 			'login' => array(
 				'filter'    => FILTER_VALIDATE_REGEXP,
 				'options'   => array("regexp" => "/^(?=.*\w).{3,50}$/")),
@@ -37,8 +38,16 @@ class Security
 			'pwd'   => array(
 				'filter'    => FILTER_VALIDATE_REGEXP,
 				'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255}$/")));
+
+		$params = filter_input_array($params, $args, false);
 		
-		return filter_input_array($params, $args, false);
+		foreach(['login', 'comment'] as $field)
+		{
+			if (isset($params[$field]))
+			$params[$field] = filter_var($params[$field], FILTER_SANITIZE_STRING, false);
+		}
+
+		return $params;
 	}
 
 	public function create_key()
@@ -82,22 +91,27 @@ class Security
 		}
 	}
 
-	public function ajax_secure_and_display($user, $no_validation, $no_csrf, $form_key)
+	public function ajax_secure_and_display($params, $user, $csrf, $response)
 	{
-
 		if (!$user) 
 		{
-			echo json_encode(['message' => 'You must be logged in.', 'csrf' => $form_key]);
+			$response['message'] = 'You must be logged in.';
+			echo json_encode($response);
 			return 1;
 		}
-		else if ($no_validation) 
+
+		if ($csrf) 
 		{
-			echo json_encode(['message' => 'Invalid input.', 'csrf' => $form_key]);
+			$response['message'] = 'CSRF protection. Refresh.';
+			echo json_encode($response);
 			return 1;
 		}
-		else if ($no_csrf) 
+		
+		$validation_failed = $this->validate_inputs_format($params, 'osef', true);
+		if ($validation_failed) 
 		{
-			echo json_encode(['message' => 'CSRF protection. Refresh.', 'csrf' => $form_key]);
+			$response['message'] = 'Invalid input.';
+			echo json_encode($response);
 			return 1;
 		}
 	}

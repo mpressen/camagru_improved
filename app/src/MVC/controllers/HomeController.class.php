@@ -10,7 +10,8 @@ class HomeController extends Controller
 	}
 	
 	public function index($params)
-	{
+	{	
+		// $params : OPTIONAL picture_id(int)
 		if ($params['picture_id'])
 		{
 			$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
@@ -34,7 +35,7 @@ class HomeController extends Controller
 
 	public function modal($params)
 	{
-		// $params -> picture_id
+		// $params : picture_id(int)
 		$user = $this->auth->being_auth('osef');
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
 		$owner = $this->users->find('id', $picture->get_user_id());
@@ -47,7 +48,7 @@ class HomeController extends Controller
 				'text' => $comment['comment'],
 				'owner_profile' => md5(strtolower(trim($comment['mail']))),
 				'owner_login' =>$comment['login'],
-				'timestamp' => date_format(date_create($comment['timestamp'])->setTimezone(new DateTimeZone('Europe/Paris')), 'd/m/Y H:i:s')
+				'timestamp' => date_format(date_create($comment['timestamp'])->setTimezone(new DateTimeZone('Europe/Paris')), 'd/m/Y H:i')
 			]);
 		}
 		if ($user)
@@ -63,7 +64,7 @@ class HomeController extends Controller
 	}
 	public function infinite($params)
 	{
-		// $params -> picture_id
+		// $params : picture_id(int)
 		$pictures = $this->container->get_PictureCollection()->all_pictures_before($params['picture_id'], $params['load_count']);
 
 		$display_pictures = [];

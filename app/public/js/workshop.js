@@ -13,8 +13,9 @@ let close = document.querySelectorAll(".close");
 let form_key = document.querySelector("#form_key");
 
 
-
 // responsiveness
+my_pics.firstChild.remove();
+
 function screenTest(e) {
 	let frames = workshop.querySelectorAll(".frames");
 	frames.forEach(function(frame){
@@ -167,7 +168,7 @@ function savepicture()
 			if (httpRequest.status === 200)
 			{
 				data = JSON.parse(httpRequest.response);
-				form_key.value = data['csrf'];
+				form_key.value = data['key'];
 				if (control_ajax_return(data))
 					return;
 
@@ -184,7 +185,6 @@ function savepicture()
 				close.addEventListener('click', deletepicture);
 
 				pic.append(img, close);
-				my_pics.firstChild.remove();
 				my_pics.insertAdjacentElement('afterbegin', pic);
 				save_picture.style.opacity = 0;
 				save_picture.style.cursor = 'default';
@@ -215,7 +215,7 @@ function deletepicture(ev)
 				if (httpRequest.status === 200)
 				{
 					data = JSON.parse(httpRequest.response);
-					form_key.value = data['csrf'];
+					form_key.value = data['key'];
 					if (control_ajax_return(data))
 						return;
 					document.querySelector("#pic" + data['picture_id']).remove();

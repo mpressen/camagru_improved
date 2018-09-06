@@ -5,7 +5,7 @@
 		<div class="inputs">
 			<label for="login">Login :&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</label>
 			<div class="tooltip">
-				<input class='js' type="text" name="login" value="<?php echo $data['user']->get_login() ?>">
+				<input class='js' id="login" type="text" name="login" value="<?php echo $data['user']->get_login() ?>">
 				<span class="tooltiptext">Only letters, numbers and underscores allowed. 3 chars min.</span>
 			</div>
 		</div>

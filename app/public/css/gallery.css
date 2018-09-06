@@ -1,6 +1,7 @@
 .gallery {
 	padding: 18.66px 1% 0% 1%;
 	overflow: auto;
+    width: 100%;
 }
 .gallery-picture-container {
 	width: 20%;
