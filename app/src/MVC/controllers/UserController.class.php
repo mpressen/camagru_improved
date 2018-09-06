@@ -1,6 +1,6 @@
 <?php
 
-require_once ROOT_PATH."src/libraries/Classes/Controller.class.php";
+require_once ROOT_PATH."src/libraries/MVC_Classes/Controller.class.php";
 
 class UserController extends Controller
 {

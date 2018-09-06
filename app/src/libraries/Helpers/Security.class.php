@@ -1,7 +1,5 @@
 <?php
 
-require_once ROOT_PATH."src/libraries/Helpers/FormKey.class.php";
-
 class Security
 {
 	private $container;

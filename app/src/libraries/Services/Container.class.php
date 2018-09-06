@@ -7,7 +7,7 @@ require_once ROOT_PATH."src/libraries/Helpers/ImageHelper.class.php";
 
 require_once ROOT_PATH."src/libraries/Helpers/Auth.class.php";
 
-require_once ROOT_PATH."src/libraries/Classes/View.class.php";
+require_once ROOT_PATH."src/libraries/MVC_Classes/View.class.php";
 
 require_once ROOT_PATH."src/MVC/models/UserCollection.class.php";
 require_once ROOT_PATH."src/MVC/models/UserModel.class.php";

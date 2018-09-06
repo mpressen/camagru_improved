@@ -68,6 +68,8 @@ function load_more_pictures()
 					picture_div.append(moar_picture);
 					gallery.append(picture_div);
 					gallery.addEventListener("scroll", scrolling);
+					picture_div.addEventListener('click', show_modal);
+
 				});
 				
 

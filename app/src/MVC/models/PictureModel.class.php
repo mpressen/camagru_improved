@@ -1,6 +1,6 @@
 <?php
 
-require_once ROOT_PATH."src/libraries/Classes/Model.class.php";
+require_once ROOT_PATH."src/libraries/MVC_Classes/Model.class.php";
 
 class Picture extends Model
 {

@@ -12,8 +12,8 @@ Stack imposée :
 
 Pour ce projet, j'ai choisi :
 - [x] d'implémenter mon propre [*AMP](https://fr.wikipedia.org/wiki/*AMP) avec **Docker**.
-- [x] de créer mon propre micro-framework MVC.
-- [x] de proposer une UI/UX responsive, flat designed, et ajaxifié.
+- [x] de créer **mon propre micro-framework MVC** avec notamment un proto-ORM, un routeur basique et un conteneur de service.
+- [x] de proposer une **UI/UX responsive et dynamique** (drag'n'drop, infinite scrolling, modal display)
 - [] de le déployer en production avec **Amazon ECS** (Elastic Container Service).
 
 ## Getting started
