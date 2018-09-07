@@ -8,12 +8,25 @@ let input = document.querySelector(".comment-area");
 let comments_body = document.querySelector(".comments-body");
 let form_key = document.querySelector("#form_key");
 let gallery = document.querySelector(".gallery");
+let fcbk_button = document.querySelector(".fb-share-button");
+// let fcbk_link = document.querySelector(".fb-xfbml-parse-ignore");
+let og_url = document.querySelector("meta[name=og_url]");
+let og_image = document.querySelector("meta[name=og_image]");
 
 if (modal.id)
 	show_modal();
 
 
 gallery.focus();
+
+// facebook sharing
+(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = 'https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v3.1&appId=697366577108902&autoLogAppEvents=1';
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
 
 // infinite scrolling
 let scroll = 0;
@@ -116,8 +129,13 @@ function show_modal(ev)
 				count_likes.innerHTML = data['count'];
 				owner_profile.src = 'https://www.gravatar.com/avatar/' + data['owner_profile'] + "?d=mp";
 				owner_profile.title = data['owner_login'];
-				photo.src = data['image_path'];
+				photo.src        = data['image_path'];
+				og_image.content = "https://www.camagru.maximilien-pressense.fr" + data['image_path'];
 				owner_profile.id = 'comment' + pic_container_id;
+				let int_id = pic_container_id.substr(3);
+				fcbk_button.dataset.href = "https://www.camagru.maximilien-pressense.fr/home/index?picture_id=" + int_id;
+				og_url.content           = "https://www.camagru.maximilien-pressense.fr/home/index?picture_id=" + int_id;
+				// fcbk_link.href = "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcamagru.maximilien-pressense.fr%2Fhome%2Findex%3Fpicture_id%253F" + int_id + "&amp;src=sdkpreparse"
 
 				if (data['auth'] && !data['auth_like'])
 				{

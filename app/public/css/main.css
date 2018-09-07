@@ -483,6 +483,9 @@ input[type=submit]:hover, input[type=submit]:active {
 
 
 /*GALLERY*/
+#fb-root {
+	display: none;
+}
 .gallery {
 	padding: 18.66px 1% 0% 1%;
 	overflow: auto;
@@ -563,6 +566,11 @@ input[type=submit]:hover, input[type=submit]:active {
 	text-align: center;
 	font-size: 28px;
 	margin-bottom: 10px;
+}
+
+.fb-share-button {
+	text-align: center;
+	display: block !important;
 }
 
 .fa-thumbs-up {
