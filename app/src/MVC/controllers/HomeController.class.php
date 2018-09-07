@@ -24,11 +24,11 @@ class HomeController extends Controller
 		}
 
 		$data = [
-			'title' => 'Home',
-			'user' => $this->auth->being_auth('osef'),
+			'title'    => 'Home',
+			'user'     => $this->auth->being_auth('osef'),
 			'pictures' => $this->container->get_PictureCollection()->all_pictures(20),
-			'csrf' => $this->form_key->outputKey(),
-			'picture' => $params['picture_id']
+			'csrf'     => $this->form_key->outputKey(),
+			'picture'  => $params['picture_id']
 		];
 		$this->container->get_View("gallery.php", $data);
 	}
@@ -36,19 +36,21 @@ class HomeController extends Controller
 	public function modal($params)
 	{
 		// $params : picture_id(int)
-		$user = $this->auth->being_auth('osef');
+		$user    = $this->auth->being_auth('osef');
+
 		$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
-		$owner = $this->users->find('id', $picture->get_user_id());
-		$count = $picture->get_likes();
+		$count   = $picture->get_likes();
 		$comments_with_user_infos = $picture->get_comments_with_user_infos();
+		$owner   = $this->users->find('id', $picture->get_user_id());
+		
 		$display_comments = [];
 		foreach($comments_with_user_infos as $comment)
 		{
 			array_push($display_comments, [
-				'text' => $comment['comment'],
+				'text'          => $comment['comment'],
 				'owner_profile' => md5(strtolower(trim($comment['mail']))),
-				'owner_login' =>$comment['login'],
-				'timestamp' => date_format(date_create($comment['timestamp'])->setTimezone(new DateTimeZone('Europe/Paris')), 'd/m/Y H:i')
+				'owner_login'   => $comment['login'],
+				'timestamp'     => date_format(date_create($comment['timestamp'])->setTimezone(new DateTimeZone('Europe/Paris')), 'd/m/Y H:i')
 			]);
 		}
 		if ($user)
@@ -60,7 +62,14 @@ class HomeController extends Controller
 		else
 			$auth_like = false;
 
-		echo json_encode(['count' => $count, 'auth' => $user, 'auth_like' => $auth_like, 'owner_profile' => $owner->get_gravatar_hash(), 'owner_login' => $owner->get_login(), 'comments' => $display_comments, 'image_path' => $picture->get_path()]);
+		echo json_encode([
+			'count'         => $count,
+			'auth'          => $user,
+			'auth_like'     => $auth_like,
+			'owner_profile' => $owner->get_gravatar_hash(),
+			'owner_login'   => $owner->get_login(),
+			'comments'      => $display_comments,
+			'image_path'    => $picture->get_path()]);
 	}
 	public function infinite($params)
 	{
@@ -71,7 +80,7 @@ class HomeController extends Controller
 		foreach($pictures as $picture)
 		{
 			array_push($display_pictures, [
-				'id' => $picture->get_id(),
+				'id'   => $picture->get_id(),
 				'path' => $picture->get_path()
 			]);
 		}

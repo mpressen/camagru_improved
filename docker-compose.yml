@@ -30,7 +30,7 @@ services:
     image: namshi/smtp
     container_name: camagru_smtp
     ports:
-      - "25:26"
+      - "26:25"
     environment:
       GMAIL_USER: $GMAIL_USER
       GMAIL_PASSWORD: $GMAIL_PASSWORD

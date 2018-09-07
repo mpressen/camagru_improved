@@ -228,10 +228,50 @@ class UserController extends Controller
 		$this->container->get_View("update.php", ['title' => 'My profile', 'csrf' => $this->form_key->outputKey(), 'user' => $user]);
 	}
 	
-	public function update($params)
+	public function update($params, $response = false, $user = false)
 	{
 		// $params : login(str) or pwd(str) | form_key(str)
-		$this->ajax($params, 'update');
+		if (!$response)
+			$this->ajax($this, $params, 'update');
+		else
+		{
+			if (isset($params['login']))
+			{	
+				if ($this->users->find('login', $params['login']))
+				{
+					$response['message'] = '"'.$params['login'].'" is already used.';
+					echo json_encode($response);
+					exit;
+				}
+
+				$user->set_login($params['login']);
+				$user->update('login');
+				
+				$response['message'] = 'Your login has been updated !';
+				$response['field'] = $params['login'];
+			}
+			else if (isset($params['mail']))
+			{
+				if ($this->users->find('mail', $params['mail']))
+				{
+					$response['message'] = '"'.$params['mail'].'" is already used.';
+					echo json_encode($response);
+					exit;
+				}
+				
+				$user->set_mail($params['mail']);
+				$user->update('mail');
+				$user->set_confirmation(0);
+				$user->update('confirmation');
+				
+				$mailer = $this->container->get_Mailer();
+				$mailer->send_confirmation($user);
+				
+				$response['message'] = 'Mail updated ! Now please check your mailbox to confirm your new email !';
+			}
+			
+			echo json_encode($response);
+		}
 	}
 
 }
