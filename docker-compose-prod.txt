@@ -4,8 +4,8 @@ services:
     build: .
     container_name: camagru_app
     ports:
-      - "80:80"
       - "443:443"
+      - "80:80"
     volumes:
      - ./app/:/var/www/html/
     links:
@@ -18,21 +18,14 @@ services:
       MYSQL_DATABASE: $MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
     volumes:
-     - "volume:/var/lib/mysql"
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: camagru_phpmyadmin
-    ports:
-      - "8081:80"
-    links:
-      - db
+     - "bdd:/var/lib/mysql"
   mail:
     image: namshi/smtp
     container_name: camagru_smtp
     ports:
-      - "25:25"
+      - "26:25"
     environment:
       GMAIL_USER: $GMAIL_USER
       GMAIL_PASSWORD: $GMAIL_PASSWORD
 volumes:
-  volume:
+  bdd:

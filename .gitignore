@@ -1,3 +1,2 @@
-reset_docker.sh
 app/public/images/users/*
 !app/public/images/users/.gitkeep
