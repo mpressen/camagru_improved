@@ -4,8 +4,8 @@ services:
     build: $ENV
     container_name: camagru_app
     ports:
-      - "80:80"
       - "443:443"
+      - "80:80"
     volumes:
      - ./app/:/var/www/html/
     links:
@@ -30,7 +30,7 @@ services:
     image: namshi/smtp
     container_name: camagru_smtp
     ports:
-      - "25:25"
+      - "26:25"
     environment:
       GMAIL_USER: $GMAIL_USER
       GMAIL_PASSWORD: $GMAIL_PASSWORD
