@@ -25,12 +25,12 @@
           <i class="fa fa-thumbs-up"></i>
           <integer class="count-likes"></integer>
         </div>
-      <div class="fb-share-button" data-href="" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="" class="fb-xfbml-parse-ignore">Partager</a></div>
+      <div class="fb-share-button" data-layout="button" data-size="small" data-mobile-iframe="true"><a target="_blank" href="" class="fb-xfbml-parse-ignore">Partager</a></div>
       <div class="comments">
         <h2 class="comments-title">COMMENTS</h2>
         <div class="comments-body"></div>
         <div class="comments-add">
-          <textarea class="comment-area" name="comments" placeholder="New comment (500 char. max)" required></textarea>
+          <textarea title="Press <TAB> to send new comment (500 char. max)." class="comment-area" name="comments" placeholder="Press <TAB> to send new comment (500 char. max)." required></textarea>
         </div>
       </div>
     </div>

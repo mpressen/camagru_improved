@@ -38,4 +38,4 @@ docker-compose up
 Camagru est alors disponible sur http://localhost.
 
 Et PhpMyAdmin sur http://localhost:8081.
->login : root, password : mpressen
+>login : root, password : root

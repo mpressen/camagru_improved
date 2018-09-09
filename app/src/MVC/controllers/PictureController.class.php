@@ -129,7 +129,7 @@ class PictureController extends Controller
 			$owner  = $picture->get_owner();
 
 			$mailer = $this->container->get_Mailer();
-			$mailer->comment_received($owner, $picture);
+			$mailer->comment_received($owner, $picture, $user);
 
 			$response['comment']       = $params['comment'];
 			$response['owner_profile'] = $user->get_gravatar_hash();

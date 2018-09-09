@@ -604,6 +604,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	padding: 5px;
 	font-family: Tahoma, sans-serif;
 	resize: none;
+	white-space: pre-line;
 }
 .comment-add {
 	width: 100%;
@@ -653,6 +654,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	top: 29.5px;
 	margin-bottom: 3px;
 	word-break: break-all;
+	white-space: pre-line;
 }
 
 .comment-time {
@@ -663,6 +665,7 @@ input[type=submit]:hover, input[type=submit]:active {
 	font-style: italic;
 	font-size: 12px;
 	opacity: 0.5;
+
 }
 
 .comments-body {

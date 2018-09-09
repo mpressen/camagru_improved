@@ -42,14 +42,14 @@ class Mailer
 		mail($user->get_mail(), $sujet, $message, $header);
 	}
 
-	public function comment_received($user, $picture)
+	public function comment_received($user, $picture, $poster)
 	{	
 		$message = "
 		<html>
 		  <body>
 		    <p> Hello ".$user->get_login().",
 		      <br>
-		        Someone has just commented one of your picture :
+		        ".$poster->get_login()." has just commented one of your picture :
 		      <a href='".$_SERVER['HTTP_ORIGIN']."/home/index?picture_id=".$picture->get_id()."'>
 			  	Go to your picture
 			  </a>

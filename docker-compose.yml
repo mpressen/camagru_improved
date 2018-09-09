@@ -1,7 +1,7 @@
 version: "3"
 services:
   web:
-    build: .
+    build: $ENV
     container_name: camagru_app
     ports:
       - "80:80"
@@ -18,7 +18,7 @@ services:
       MYSQL_DATABASE: $MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
     volumes:
-     - "volume:/var/lib/mysql"
+     - "bdd:/var/lib/mysql"
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: camagru_phpmyadmin
@@ -35,4 +35,4 @@ services:
       GMAIL_USER: $GMAIL_USER
       GMAIL_PASSWORD: $GMAIL_PASSWORD
 volumes:
-  volume:
+  bdd:

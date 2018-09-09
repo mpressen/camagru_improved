@@ -154,8 +154,13 @@ take_picture.addEventListener('click', takepicture);
 function savepicture()
 {	
 	let data_frames = [];
+	let adapter = (window.innerWidth < 522 || window.innerHeight < 1050) ? 2 : 1;
 	let frames = picture_taken.querySelectorAll(".frames").forEach(function(frame){
-		data_frames.push({"name" : frame.id, "left" : frame.style.left, "top" : frame.style.top});
+		data_frames.push({
+			"name" : frame.id,
+			"left" : parseInt(frame.style.left) * adapter,
+			"top" : parseInt(frame.style.top) * adapter
+		});
 	});
 	let data = "base64data=" + encodeURIComponent(photo.src)
 	+ "&frames=" + JSON.stringify(data_frames)
@@ -219,7 +224,7 @@ function deletepicture(ev)
 					if (control_ajax_return(data))
 						return;
 					document.querySelector("#pic" + data['picture_id']).remove();
-					
+
 				}
 				else
 					flash("Internal problem. Please contact admin.")

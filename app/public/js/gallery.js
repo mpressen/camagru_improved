@@ -9,8 +9,6 @@ let comments_body = document.querySelector(".comments-body");
 let form_key = document.querySelector("#form_key");
 let gallery = document.querySelector(".gallery");
 let fcbk_button = document.querySelector(".fb-share-button");
-// let fcbk_link = document.querySelector(".fb-xfbml-parse-ignore");
-let og_url = document.querySelector("meta[name=og_url]");
 let og_image = document.querySelector("meta[name=og_image]");
 
 if (modal.id)
@@ -133,20 +131,17 @@ function show_modal(ev)
 				og_image.content = "https://www.camagru.maximilien-pressense.fr" + data['image_path'];
 				owner_profile.id = 'comment' + pic_container_id;
 				let int_id = pic_container_id.substr(3);
-				fcbk_button.dataset.href = "https://www.camagru.maximilien-pressense.fr/home/index?picture_id=" + int_id;
-				og_url.content           = "https://www.camagru.maximilien-pressense.fr/home/index?picture_id=" + int_id;
-				// fcbk_link.href = "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcamagru.maximilien-pressense.fr%2Fhome%2Findex%3Fpicture_id%253F" + int_id + "&amp;src=sdkpreparse"
 
 				if (data['auth'] && !data['auth_like'])
 				{
 					like.addEventListener('click', add_like_picture);
-					input.addEventListener("change", post_comment);
+					input.addEventListener("keydown", change_comment);
 					like.id = "like" + pic_container_id;
 				}
 				else if (data['auth'] && data['auth_like'])
 				{
 					like.addEventListener('click', remove_like_picture);
-					input.addEventListener("change", post_comment);
+					input.addEventListener("keydown", change_comment);
 					like.style.color = '#ed6e2f';
 					like.id = "like" + data['auth_like'];
 				}
@@ -261,6 +256,13 @@ function remove_like_picture(ev)
 	httpRequest.send(data);
 }
 
+function change_comment(ev)
+{
+	if (event.keyCode === 9) {
+		post_comment(ev);
+	}
+}
+
 function post_comment(ev)
 {	
 	let data = "picture_id=" + owner_profile.id 
@@ -289,6 +291,7 @@ function post_comment(ev)
 
 				let comment_text = document.createElement('p');
 				comment_text.className = "comment-text";
+				console.log(data['comment']);
 				comment_text.innerHTML = data['comment'];
 
 				let comment_time = document.createElement('p');
