@@ -8,6 +8,7 @@ services:
       - "80:80"
     volumes:
      - ./app/:/var/www/html/
+     - "letsencrypt:/etc/letsencrypt"
     links:
      - db
      - mail
@@ -36,3 +37,4 @@ services:
       GMAIL_PASSWORD: $GMAIL_PASSWORD
 volumes:
   bdd:
+  letsencrypt:

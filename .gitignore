@@ -1,2 +1,6 @@
 app/public/images/users/*
 !app/public/images/users/.gitkeep
+prod/credentials
+.env
+app/database/db_env.php
+app/public/.htaccess
