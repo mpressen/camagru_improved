@@ -28,6 +28,7 @@ class Security
 				'filter'    => FILTER_DEFAULT,
 				'options'   => FILTER_REQUIRE_ARRAY),
 			'base64data' => FILTER_SANITIZE_STRING,
+			'message' => FILTER_SANITIZE_NUMBER_INT,
 			'form_key' => FILTER_SANITIZE_STRING,
 			'login' => array(
 				'filter'    => FILTER_VALIDATE_REGEXP,

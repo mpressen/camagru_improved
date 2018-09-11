@@ -20,3 +20,14 @@ function control_ajax_return(data)
 	}
 	return false;
 }
+
+// mobile not compatible with webcam
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+	let worktab = document.querySelector('#workshop-link');
+	if (worktab)
+	{
+		worktab.style.cursor = 'not-allowed';
+		worktab.href = '#';
+		worktab.addEventListener('click', function() {flash('Workshop feature only available on Desktop.')});
+	}
+}

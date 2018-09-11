@@ -11,7 +11,7 @@ class HomeController extends Controller
 	
 	public function index($params)
 	{	
-		// $params : OPTIONAL picture_id(int)
+		// $params : OPTIONALS picture_id(int) | message(int)
 		if ($params['picture_id'])
 		{
 			$picture = $this->container->get_PictureCollection()->find('id', $params['picture_id']);
@@ -22,6 +22,9 @@ class HomeController extends Controller
 				exit;
 			}
 		}
+		if ($params['message'] && $params['message'] == 1)
+			$_SESSION['message'] = 'Workshop feature only available on Desktop.';
+
 
 		$data = [
 			'title'    => 'Home',

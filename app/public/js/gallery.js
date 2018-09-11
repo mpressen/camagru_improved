@@ -291,7 +291,6 @@ function post_comment(ev)
 
 				let comment_text = document.createElement('p');
 				comment_text.className = "comment-text";
-				console.log(data['comment']);
 				comment_text.innerHTML = data['comment'];
 
 				let comment_time = document.createElement('p');

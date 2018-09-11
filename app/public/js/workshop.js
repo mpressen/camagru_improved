@@ -12,6 +12,10 @@ let dropzones = document.querySelectorAll(".dropzones");
 let close = document.querySelectorAll(".close");
 let form_key = document.querySelector("#form_key");
 
+// mobile not compatible with webcam
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+	location.href = '/home/index' + '?message=1';
+}
 
 // responsiveness
 my_pics.firstChild.remove();

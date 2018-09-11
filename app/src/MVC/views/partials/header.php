@@ -11,7 +11,7 @@
 			<?php
 			if ($data['user'])
 			{
-				echo '<li><a href="/picture/workshop"';
+				echo '<li><a id="workshop-link" href="/picture/workshop"';
 				if ($data['title'] == "Workshop")
 					echo " class='active-link'";
 				echo ">WORKSHOP</a></li>";
