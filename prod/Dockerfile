@@ -3,15 +3,12 @@ FROM php:7.2.8-apache
 ENV PROJECT_ROOT /var/www/html/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public/
 
-ENV AWS_CONFIG_FILE /var/www/html/.aws/credentials
-
 #SSL certificate
 COPY certbot.list /etc/apt/sources.list.d/
 RUN apt-get update
 RUN apt-get install -y python-certbot-apache -t stretch-backports
 RUN apt-get install -y python3-pip
 RUN pip3 install certbot-dns-route53
-COPY credentials ${AWS_CONFIG_FILE}
 RUN certbot -n --dns-route53 --installer apache --agree-tos -d camagru.maximilien-pressense.fr -m maximilien.pressense.pro@gmail.com
 
 RUN apt-get install -y libpng-dev
