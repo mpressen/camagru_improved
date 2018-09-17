@@ -31,6 +31,7 @@
         <div class="comments-body"></div>
         <div class="comments-add">
           <textarea title="Press <TAB> to send new comment (500 char. max)." class="comment-area" name="comments" placeholder="Press <TAB> to send new comment (500 char. max)." required></textarea>
+        <button type="submit" id="comment-button" class="comment-button">Comment</button>
         </div>
       </div>
     </div>

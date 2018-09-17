@@ -10,6 +10,7 @@ let form_key = document.querySelector("#form_key");
 let gallery = document.querySelector(".gallery");
 let fcbk_button = document.querySelector(".fb-share-button");
 let og_image = document.querySelector("meta[name=og_image]");
+let button_comment = document.querySelector("#comment-button");
 
 if (modal.id)
 	show_modal();
@@ -136,12 +137,14 @@ function show_modal(ev)
 				{
 					like.addEventListener('click', add_like_picture);
 					input.addEventListener("keydown", change_comment);
+					button_comment.addEventListener('click', post_comment);
 					like.id = "like" + pic_container_id;
 				}
 				else if (data['auth'] && data['auth_like'])
 				{
 					like.addEventListener('click', remove_like_picture);
 					input.addEventListener("keydown", change_comment);
+					button_comment.addEventListener('click', post_comment);
 					like.style.color = '#ed6e2f';
 					like.id = "like" + data['auth_like'];
 				}
@@ -266,7 +269,7 @@ function change_comment(ev)
 function post_comment(ev)
 {	
 	let data = "picture_id=" + owner_profile.id 
-	+ "&comment=" + ev.currentTarget.value 
+	+ "&comment=" + input.value 
 	+ "&form_key=" + form_key.value;
 
 	let httpRequest = new XMLHttpRequest();

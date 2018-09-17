@@ -65,7 +65,6 @@ function drop(ev)
 {
 	ev.preventDefault();
 	let img = document.getElementById(ev.dataTransfer.getData("image_id"));
-	console.log(img);
 	if (img && img.draggable == true)
 	{
 		ev.currentTarget.appendChild(img);

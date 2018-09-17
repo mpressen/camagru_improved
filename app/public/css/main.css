@@ -568,6 +568,14 @@ input[type=submit]:hover, input[type=submit]:active {
 	margin-bottom: 10px;
 }
 
+.comment-button {
+	display: block;
+	margin: 5px auto;
+	border: 1px solid #ed6e2f;
+	border-radius: 4px;
+	background-color: white;
+}
+
 .fb-share-button {
 	text-align: center;
 	display: block !important;
