@@ -65,12 +65,16 @@ function drop(ev)
 {
 	ev.preventDefault();
 	let img = document.getElementById(ev.dataTransfer.getData("image_id"));
-	ev.currentTarget.appendChild(img);
+	console.log(img);
+	if (img && img.draggable == true)
+	{
+		ev.currentTarget.appendChild(img);
 
-	let x = ev.offsetX - ev.dataTransfer.getData("x-drag-offset");
-	let y = ev.offsetY - ev.dataTransfer.getData("y-drag-offset");
+		let x = ev.offsetX - ev.dataTransfer.getData("x-drag-offset");
+		let y = ev.offsetY - ev.dataTransfer.getData("y-drag-offset");
 
-	img.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
+		img.setAttribute("style", "position: absolute; top: "+y+"px; left:"+x+"px;");
+	}
 }
 
 // 		Attach d'n'd events to proper elements and deal with :
