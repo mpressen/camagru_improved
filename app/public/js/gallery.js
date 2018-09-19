@@ -75,7 +75,7 @@ function reset_modal() {
 	input.value = "";
 }
 
-function show_modal(event) {
+function show_modal() {
 	let modal = document.querySelector('.myModal');
 	let pic_container_id = modal.id ? modal.id : event.currentTarget.id;
 	modal.id = '';
