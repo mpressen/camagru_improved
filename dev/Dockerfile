@@ -2,9 +2,11 @@ FROM php:7.2.8-apache
 
 ENV PROJECT_ROOT /var/www/html/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public/
+ENV PROTOCOL http
+ENV SERVER_NAME localhost
 
 RUN apt-get update && apt-get install -y libpng-dev
-RUN docker-php-ext-install gd 
+RUN docker-php-ext-install gd
 
 RUN docker-php-ext-install pdo_mysql
 

@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 class Mailer
 {
 	public function send_confirmation($user)
-	{	
+	{
 		$message = "
 		<html>
 		  <body>
@@ -11,7 +11,7 @@ class Mailer
 		      <br>
 		        click on this link to activate your account :
 		      <br>
-		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/confirm?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
+		      <a href='".getenv('PROTOCOL')."://".getenv('SERVER_NAME')."/user/confirm?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
 			  	Activate your account
 			  </a>
 		  </body>
@@ -23,7 +23,7 @@ class Mailer
 	}
 
 	public function reset_password($user)
-	{	
+	{
 		$message = "
 		<html>
 		  <body>
@@ -31,7 +31,7 @@ class Mailer
 		      <br>
 		        click on this link to set up a new password :
 		      <br>
-		      <a href='".$_SERVER['HTTP_ORIGIN']."/user/reset_2?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
+		      <a href='".getenv('PROTOCOL')."://".getenv('SERVER_NAME')."/user/reset_2?login=".$user->get_login()."&form_key=".$user->get_confirmkey()."'>
 			  	Reset your password
 			  </a>
 		  </body>
@@ -43,14 +43,14 @@ class Mailer
 	}
 
 	public function comment_received($user, $picture, $poster)
-	{	
+	{
 		$message = "
 		<html>
 		  <body>
 		    <p> Hello ".$user->get_login().",
 		      <br>
 		        ".$poster->get_login()." has just commented one of your picture :
-		      <a href='".$_SERVER['HTTP_ORIGIN']."/home/index?picture_id=".$picture->get_id()."'>
+		      <a href='".getenv('PROTOCOL')."://".getenv('SERVER_NAME')."/home/index?picture_id=".$picture->get_id()."'>
 			  	Go to your picture
 			  </a>
 		  </body>

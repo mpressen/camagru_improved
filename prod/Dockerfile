@@ -2,6 +2,8 @@ FROM php:7.2.8-apache
 
 ENV PROJECT_ROOT /var/www/html/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public/
+ENV PROTOCOL https
+ENV SERVER_NAME camagru.maximilien-pressense.fr
 
 #SSL certificate
 COPY certbot.list /etc/apt/sources.list.d/
