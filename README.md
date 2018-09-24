@@ -2,7 +2,7 @@
 
 Il s'agit d'une petite app' de partage de photos à la webcam, développée **sans utiliser de librairies ou frameworks** .
 
-[[https://github.com/mpressen/camagru_improved/snapshot-camagru.png|alt=camagru]]
+[[https://github.com/mpressen/camagru_improved/blob/master/snapshot-camagru.png|alt=camagru]]
 
 ---
 
