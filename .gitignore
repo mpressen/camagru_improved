@@ -3,3 +3,5 @@ app/public/images/users/*
 .env
 app/database/db_env.php
 app/public/.htaccess
+camagru2.pem
+Backup-codes-camagru.mpressen.txt
