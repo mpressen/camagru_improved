@@ -181,59 +181,58 @@ document.addEventListener("DOMContentLoaded", function () {
 			.then(function (stream) {
 				let video = document.querySelector("#preview-element");
 				video.srcObject = stream;
+				// 		Attach d'n'd events to proper elements and deal with :
+				// 		- drag'n'drop (extra tmp layer for precision tweak on frame positioning)
+				// 		- taking picture only if a frame is on the preview
+				let frames = document.querySelectorAll(".frames");
+				let dropzones = document.querySelectorAll(".dropzones");
+				let take_picture = document.querySelector("#take-picture");
+				frames.forEach(frame => {
+					frame.setAttribute('draggable', true);
+
+					frame.addEventListener('dragstart', () => { drag(); });
+
+					frame.addEventListener('dragenter', function () {
+						dropzones.forEach(dropzone => {
+							let layer = document.createElement('div');
+							layer.className = "dropzone-layer";
+							dropzone.insertAdjacentElement('afterbegin', layer);
+							dropzone.style.overflow = 'hidden';
+						});
+					});
+
+					frame.addEventListener('dragend', function () {
+						document.querySelectorAll(".dropzone-layer").forEach(a => {
+							a.remove();
+						});
+						// check if a frame has been set in preview container
+						let preview = document.querySelector("#preview-container");
+						let frameExist = preview.childElementCount - 1;
+						if (frameExist) {
+							take_picture.setAttribute("style", "cursor: pointer;");
+							take_picture.classList.add("pressed-button");
+						}
+						else {
+							take_picture.setAttribute("style", "cursor: not-allowed;");
+							take_picture.classList.remove("pressed-button");
+						}
+
+					});
+				})
+
+				dropzones.forEach(dropzone => {
+					dropzone.addEventListener('drop', () => { drop(); });
+					dropzone.addEventListener('dragover', () => { allowDrop(); });
+				})
+
+				take_picture.addEventListener('click', () => { takepicture(); });
+				let closes = document.querySelectorAll(".close");
+				closes.forEach(close => {
+					close.addEventListener('click', () => { deletepicture(); });
+				})
 			})
 			.catch(function (err0r) {
 				flash("You must allow the use of your camera to use our app !");
 			});
 	}
-
-	// 		Attach d'n'd events to proper elements and deal with :
-	// 		- drag'n'drop (extra tmp layer for precision tweak on frame positioning)
-	// 		- taking picture only if a frame is on the preview
-	let frames = document.querySelectorAll(".frames");
-	let dropzones = document.querySelectorAll(".dropzones");
-	let take_picture = document.querySelector("#take-picture");
-	frames.forEach(frame => {
-		frame.setAttribute('draggable', true);
-
-		frame.addEventListener('dragstart', () => { drag(); });
-
-		frame.addEventListener('dragenter', function () {
-			dropzones.forEach(dropzone => {
-				let layer = document.createElement('div');
-				layer.className = "dropzone-layer";
-				dropzone.insertAdjacentElement('afterbegin', layer);
-				dropzone.style.overflow = 'hidden';
-			});
-		});
-
-		frame.addEventListener('dragend', function () {
-			document.querySelectorAll(".dropzone-layer").forEach(a => {
-				a.remove();
-			});
-			// check if a frame has been set in preview container
-			let preview = document.querySelector("#preview-container");
-			let frameExist = preview.childElementCount - 1;
-			if (frameExist) {
-				take_picture.setAttribute("style", "cursor: pointer;");
-				take_picture.classList.add("pressed-button");
-			}
-			else {
-				take_picture.setAttribute("style", "cursor: not-allowed;");
-				take_picture.classList.remove("pressed-button");
-			}
-
-		});
-	})
-
-	dropzones.forEach(dropzone => {
-		dropzone.addEventListener('drop', () => { drop(); });
-		dropzone.addEventListener('dragover', () => { allowDrop(); });
-	})
-
-	take_picture.addEventListener('click', () => { takepicture(); });
-	let closes = document.querySelectorAll(".close");
-	closes.forEach(close => {
-		close.addEventListener('click', () => { deletepicture(); });
-	})
 });
