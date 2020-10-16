@@ -9,11 +9,6 @@ class Security
 		$this->container = $container;
 	}
 
-	public function get_FormKey()
-	{
-		return $this->form_key;
-	}
-	
 	public function validate($params)
 	{
 		$args = array(
@@ -39,7 +34,7 @@ class Security
 				'options'   => array("regexp" => "/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,255}$/")));
 
 		$params = filter_input_array($params, $args, false);
-		
+
 		foreach(['login', 'comment'] as $field)
 		{
 			if (isset($params[$field]))
@@ -58,14 +53,14 @@ class Security
 	}
 
 	public function my_hash($str)
-	{	
+	{
 		return hash('whirlpool', $str);
 	}
 
 	public function check_csrf($redirect, $ajax = false)
-	{	
+	{
 		if (!($this->container->get_form_key()->validate()))
-		{	
+		{
 			if ($ajax)
 				return 1;
 			$_SESSION['message'] = "CSRF attack spotted.";
@@ -75,7 +70,7 @@ class Security
 	}
 
 	public function validate_inputs_format($params, $redirect, $ajax = false)
-	{	
+	{
 		foreach ($params as $key => $param) {
 			if (empty($param))
 			{
@@ -92,22 +87,22 @@ class Security
 
 	public function ajax_secure_and_display($params, $user, $csrf, $response)
 	{
-		if (!$user) 
+		if (!$user)
 		{
 			$response['message'] = 'You must be logged in.';
 			echo json_encode($response);
 			return 1;
 		}
 
-		if ($csrf) 
+		if ($csrf)
 		{
 			$response['message'] = 'CSRF protection. Refresh.';
 			echo json_encode($response);
 			return 1;
 		}
-		
+
 		$validation_failed = $this->validate_inputs_format($params, 'osef', true);
-		if ($validation_failed) 
+		if ($validation_failed)
 		{
 			$response['message'] = 'Invalid input.';
 			echo json_encode($response);
